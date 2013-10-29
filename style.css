@@ -1,0 +1,27 @@
+#container {
+    width: 500px;
+    height: 500px;
+    background: #404040;
+}
+
+.layer {
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    display: none;
+}
+
+#menu {
+    text-align: center;
+    padding-top: 180px;
+}
+
+#menu p {
+    margin: 10px;
+    font-size: 24px;
+}
+
+#menu p:hover {
+    border: 1px solid black;
+    cursor: default;
+}

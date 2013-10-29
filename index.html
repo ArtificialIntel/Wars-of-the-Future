@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Future Wars</title>
+        <link href="style.css" rel="stylesheet">
+        <script src="scripts/common.js"></script>
+        <script src="scripts/jquery-1.10.2.min.js"></script>
+        <script src="scripts/game.js"></script>
+        <script src="scripts/mouse.js"></script>
+        <script src="scripts/maps.js"></script>
+    </head>
+
+    <body>
+        <div id="container">
+            <canvas id="mainCanvas" class="layer"></canvas>
+
+            <div id="menu" class="layer">
+                <!-- TODO add menu buttons here !-->
+                <p onclick='singleplayer.start();'>Play</p>
+                <p>Multiplayer</p>
+            </div>
+
+            <div id="setupScreen" class="layer">
+                <input type="button" id="startGame" onclick="singleplayer.play();">Play</p>
+            </div>
+
+            <div id="loadingScreen" class="layer">
+                <div id="loadingMessage"></div>
+            </div>
+
+            <div id="endscreen" class="layer">
+                <p id="gameOverMessage">Game Over</p>
+                <!-- TODO add menu buttons here !-->
+            </div>
+        </div>
+    </body>
+</html>
