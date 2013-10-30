@@ -60,7 +60,6 @@ var game = {
 		// game.handlePanning();
 		
 		if (game.refreshBackground){
-            console.log(game.canvasHeight);
 			game.backgroundContext.drawImage(game.currentMapImage,game.offsetX,game.offsetY,game.canvasWidth,game.canvasHeight, 0,0,game.canvasWidth,game.canvasHeight);
 			game.refreshBackground = false;
 		}
@@ -70,7 +69,7 @@ var game = {
 
 		// Start drawing the foreground elements
 
-		// mouse.draw()
+		mouse.draw()
 
 		// Call the drawing loop for the next frame using request animation frame
 		if (game.running){

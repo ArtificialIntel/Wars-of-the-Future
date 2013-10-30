@@ -40,14 +40,16 @@
 }
 
 #gameScreen canvas {
-    height: 480px;
-    width: 480px;
-}
-
-#gameScreen #backgroundCanvas {
-    z-index: 0;
+    height:480px;
+    width:480px;
+    position:absolute;
 }
 
 #gameScreen #foregroundCanvas {
-    z-index: 1;
+    z-index:1;
 }
+
+#gameScreen #backgroundCanvas {
+    z-index:0;
+}
+

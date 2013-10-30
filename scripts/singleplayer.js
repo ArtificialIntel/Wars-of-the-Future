@@ -28,11 +28,9 @@ var singleplayer = {
 	    // Enable the enter mission button once all assets are loaded
 	    if (loader.loaded){
 	        $("#startGame").removeAttr("disabled");
-                console.log("disabled");
 	    } else {
 	        loader.onload = function(){
 	            $("#startGame").removeAttr("disabled");
-                console.log("disabled");
 	        }
 	    }
 
