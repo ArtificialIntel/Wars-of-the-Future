@@ -53,7 +53,16 @@ var game = {
     },
 
     animationLoop:function(){
+        // Animate each of the elements within the game
+        for (var i = game.items.length - 1; i >= 0; i--){
+            game.items[i].animate();
+        };
 
+        // Sort game items into a sortedItems array based on their x,y coordinates
+        game.sortedItems = $.extend([],game.items);
+        game.sortedItems.sort(function(a,b){
+            return b.y-a.y + ((b.y==a.y)?(a.x-b.x):0);
+          });
     },
 
     drawingLoop:function(){
@@ -65,9 +74,12 @@ var game = {
 		}
 
 		// Clear foreground canvas
-		game.foregroundCanvas.width = game.foregroundCanvas.width;
+		game.foregroundContext.clearRect(0, 0, game.canvasWidth, game.canvasHeight);
 
-		// Start drawing the foreground elements
+        // Start drawing the foreground elements
+        for (var i = game.sortedItems.length - 1; i >= 0; i--){
+            game.sortedItems[i].draw();
+        };
 
 		mouse.draw()
 
@@ -75,5 +87,59 @@ var game = {
 		if (game.running){
 			requestAnimationFrame(game.drawingLoop);	
 		}						
-    }
+    },
+
+	resetArrays:function(){
+	    game.counter = 0;
+	    game.items = [];
+	    game.sortedItems = [];
+	    game.staticUnits = [];
+	    game.dynamicUnits = [];
+	    game.movableUnits = [];
+	    game.terrain = [];
+	    game.triggeredEvents = [];
+	    game.selectedItems = [];
+	    game.sortedItems = [];
+	},
+
+	add:function(itemDetails) {
+	    if (!itemDetails.uid){
+	        itemDetails.uid = game.counter++;
+	    }
+
+	    var item = window[itemDetails.type].add(itemDetails);
+
+	    // Add the item to the items array
+	    game.items.push(item);
+	    // Add the item to the type specific array
+	    game[item.type].push(item);
+	    return item;
+	},
+
+	remove:function(item){
+        // Unselect item if it is selected
+        item.selected = false;
+        for (var i = game.selectedItems.length - 1; i >= 0; i--){
+            if(game.selectedItems[i].uid == item.uid){
+                game.selectedItems.splice(i,1);
+                break;
+            }
+        };
+
+        // Remove item from the items array
+        for (var i = game.items.length - 1; i >= 0; i--){
+            if(game.items[i].uid == item.uid){
+                game.items.splice(i,1);
+                break;
+            }
+        };
+
+        // Remove items from the type specific array
+        for (var i = game[item.type].length - 1; i >= 0; i--){
+            if(game[item.type][i].uid == item.uid){
+                game[item.type].splice(i,1);
+                break;
+            }
+        };
+	},
 }

@@ -65,3 +65,52 @@ var loader = {
         }
     }
 }
+
+// Loads an item(unit) including sprites
+function loadItem(name){
+    var item = this.units[name];
+    if(item.spriteArray){
+        // item was already loaded
+        return;
+    }
+    item.spriteSheet = loader.loadImage('images/'+this.defaults.type+'/'+name+'.png');
+    item.spriteArray = [];
+    item.spriteCount = 0;
+
+    for (var i=0; i < item.spriteImages.length; i++){
+        var constructImageCount = item.spriteImages[i].count;
+        var constructDirectionCount = item.spriteImages[i].directions;
+        if (constructDirectionCount){
+            for (var j=0; j < constructDirectionCount; j++) {
+                var constructImageName = item.spriteImages[i].name +"-"+j;
+                item.spriteArray[constructImageName] = {
+                    name:constructImageName,
+                    count:constructImageCount,
+                    offset:item.spriteCount
+                };
+                item.spriteCount += constructImageCount;
+            };
+        } else {
+            var constructImageName = item.spriteImages[i].name;
+            item.spriteArray[constructImageName] = {
+                name:constructImageName,
+                count:constructImageCount,
+                offset:item.spriteCount
+            };
+            item.spriteCount += constructImageCount;
+        }
+
+    }
+}
+
+function addItem(details){
+    var item = {};
+    var name = details.name;
+    // Apply defaults for entity type
+    $.extend(item,this.defaults);
+    // Add the properties specific for the unit
+    $.extend(item,this.units[name]);
+    item.life = item.hitPoints;
+    $.extend(item,details);
+    return item;
+}
