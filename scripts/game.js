@@ -5,6 +5,14 @@ $(window).load(function(){
 
 var game = {
     mode:"intro",
+    // Size of one square in the grid
+    squareSize:16,
+    backgroundChanged:true,
+    refreshBackground:true,
+    offsetX:0,
+    offsetY:0,
+    // Time in ms until animationloop is called
+    animationTimeout:100,
 
     init:function() {
         loader.init();
@@ -14,8 +22,14 @@ var game = {
         // Display menu
         $('#menu').show();
 
-        game.canvas = $('#mainCanvas')[0];
-        game.context = game.canvas.getContext('2d');
+        game.foregroundCanvas = document.getElementById('foregroundCanvas');
+        game.foregroundContext = game.foregroundCanvas.getContext('2d');
+
+        game.backgroundCanvas = document.getElementById('backgroundCanvas');
+        game.backgroundContext = game.backgroundCanvas.getContext('2d');
+
+        game.canvasWidth = game.backgroundCanvas.width;
+        game.canvasHeight = game.backgroundCanvas.height;
     },
 
     load:function(){
@@ -30,64 +44,37 @@ var game = {
 
     startGame:function(){
         $('.layer').hide();
-        $('#mainCanvas').show();
-        game.mode = "intro";
-        game.offsetLeft = 0;
-        game.ended = false;
-        game.animationFrame = window.requestAnimationFrame(game.animate,game.canvas);
-    },
-    maxSpeed:3,
-    minOffset:0,
-    maxOffset:1500,
-    offsetLeft:0,
+        $('#gameScreen').show();
 
-    panTo:function(newCenter){
-        // console.log("panning to " + newCenter);
-        if(Math.abs(newCenter - game.offsetLeft - game.canvas.width / 4) > 0) {
-            var deltaX = Math.round((newCenter - game.offsetLeft - game.canvas.width / 4) / 2);
-            if (deltaX && Math.abs(deltaX) > game.maxSpeed){
-                deltaX = game.maxSpeed * Math.abs(deltaX) / (deltaX);
-            }
-            game.offsetLeft += deltaX;
-        } else {
-            return true;
-        }
+        game.running = true;
+        game.refreshBackground = true;
 
-        if(game.offsetLeft < game.minOffset){
-            game.offsetLeft = game.minOffset;
-            return true;
-        } else if(game.offsetLeft > game.maxOffset) {
-            game.offsetLeft = game.maxOffset;
-            return true;
-        }
-        return false;
+        game.drawingLoop();
     },
 
-    handlePanning:function(){
-        if(game.mode == "intro"){
-            if(mouse.dragging){
-                game.panTo(mouse.x + game.offsetLeft);
-            }
-        } else {
-            game.offsetLeft++;
-        }
+    animationLoop:function(){
+
     },
 
-    drawForeground:function(){
-        game.context.fillText('Magic happens here', 100, 100);
-    },
+    drawingLoop:function(){
+		// game.handlePanning();
+		
+		if (game.refreshBackground){
+            console.log(game.canvasHeight);
+			game.backgroundContext.drawImage(game.currentMapImage,game.offsetX,game.offsetY,game.canvasWidth,game.canvasHeight, 0,0,game.canvasWidth,game.canvasHeight);
+			game.refreshBackground = false;
+		}
 
-    animate:function(){
-        // Animate the background
-        game.handlePanning();
-        // Draw the background
-        game.context.drawImage(game.backgroundImage,game.offsetLeft/4,0,500,500,0,0,500,500);
-        game.drawForeground();
-        // game.context.drawImage(game.currentLevel.foregroundImage,game.offsetLeft,0,640,480,0,0,640,480);
-        // game.context.drawImage(game.slingshotImage,game.slingshotX-game.offsetLeft,game.slingshotY);
-        // game.context.drawImage(game.slingshotFrontImage,game.slingshotX-game.offsetLeft,game.slingshotY);
-        if (!game.ended){
-            game.animationFrame = window.requestAnimationFrame(game.animate, game.canvas);
-        }
+		// Clear foreground canvas
+		game.foregroundCanvas.width = game.foregroundCanvas.width;
+
+		// Start drawing the foreground elements
+
+		// mouse.draw()
+
+		// Call the drawing loop for the next frame using request animation frame
+		if (game.running){
+			requestAnimationFrame(game.drawingLoop);	
+		}						
     }
 }

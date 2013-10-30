@@ -7,7 +7,6 @@
         <script src="scripts/common.js"></script>
         <script src="scripts/jquery-1.10.2.min.js"></script>
         <script src="scripts/game.js"></script>
-		<script src="scripts/singleplayer.js"></script>
         <script src="scripts/mouse.js"></script>
         <script src="scripts/maps.js"></script>
         <script src="scripts/singleplayer.js"></script>
@@ -15,8 +14,6 @@
 
     <body>
         <div id="container">
-            <canvas id="mainCanvas" class="layer"></canvas>
-
             <div id="menu" class="layer">
                 <!-- TODO add menu buttons here !-->
                 <p onclick='singleplayer.start();'>Singleplayer</p>
@@ -28,7 +25,12 @@
             </div>
 
             <div id="loadingScreen" class="layer">
-                <div id="loadingMessage"></div>
+                <div id="loadingMessage">Loading</div>
+            </div>
+
+            <div id="gameScreen" class="layer">
+                <canvas id="backgroundCanvas"></canvas>
+                <canvas id="foregroundCanvas"></canvas>
             </div>
 
             <div id="endscreen" class="layer">

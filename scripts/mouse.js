@@ -1,6 +1,13 @@
 var mouse = {
+    // coordinates on canvas
     x:0,
     y:0,
+    // coordinates relative to top left of the map
+    mapX:0,
+    mapY:0,
+    // coordinates on grid
+    gridX:0,
+    gridY:0,
     down:false,
     init:function(){
         $('#mainCanvas').mousemove(mouse.mouseMoveHandler);

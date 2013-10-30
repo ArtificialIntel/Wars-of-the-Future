@@ -53,11 +53,11 @@ var loader = {
     },
 
     itemLoaded:function(){
-        this.loadedCount++;
-        $('loadingMessage').html('Loaded ' + loader.loadedCount + ' of ' + loader.totalCount);
+        loader.loadedCount++;
+        $('#loadingMessage').html('Loaded ' + loader.loadedCount + ' of ' + loader.totalCount);
         if (loader.loadedCount == loader.totalCount) {
             loader.loaded = true;
-            $('loadingScreen').hide();
+            $('#loadingScreen').hide();
             if (loader.onload){
                 loader.onload();
                 loader.onload = undefined;

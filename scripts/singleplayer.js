@@ -22,15 +22,17 @@ var singleplayer = {
 	    game.currentMapImage = loader.loadImage(level.mapImage);
 	    game.currentLevel = level;
 
-	    game.offsetX = level.startX * game.gridSize;
-	    game.offsetY = level.startY * game.gridSize;
+	    game.offsetX = level.startX * game.squareSize;
+	    game.offsetY = level.startY * game.squareSize;
 
 	    // Enable the enter mission button once all assets are loaded
 	    if (loader.loaded){
 	        $("#startGame").removeAttr("disabled");
+                console.log("disabled");
 	    } else {
 	        loader.onload = function(){
 	            $("#startGame").removeAttr("disabled");
+                console.log("disabled");
 	        }
 	    }
 

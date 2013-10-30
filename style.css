@@ -1,12 +1,11 @@
 #container {
-    width: 500px;
-    height: 500px;
-    background: #404040;
+    width: 480px
+    height: 480px;
 }
 
 .layer {
-    width: 500px;
-    height: 500px;
+    width: 480px;
+    height: 480px;
     position: absolute;
     display: none;
 }
@@ -14,6 +13,7 @@
 #menu {
     text-align: center;
     padding-top: 180px;
+    background: #404040;
 }
 
 #menu p {
@@ -24,4 +24,30 @@
 #menu p:hover {
     border: 1px solid black;
     cursor: default;
+}
+
+#loadingScreen {
+    background: #404040;
+}
+
+#loadingMessage {
+    margin-top:400px;
+    text-align:center;
+    height:48px;
+    color:white;
+    background:url(images/loader.gif) no-repeat center;
+    font:12px Arial;
+}
+
+#gameScreen canvas {
+    height: 480px;
+    width: 480px;
+}
+
+#gameScreen #backgroundCanvas {
+    z-index: 0;
+}
+
+#gameScreen #foregroundCanvas {
+    z-index: 1;
 }
