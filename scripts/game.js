@@ -52,6 +52,7 @@ var game = {
         game.drawingLoop();
     },
 
+    // Called every animationTimeout ms
     animationLoop:function(){
         // Animate each of the elements within the game
         for (var i = game.items.length - 1; i >= 0; i--){
@@ -65,6 +66,7 @@ var game = {
           });
     },
 
+    // Called by browser
     drawingLoop:function(){
 		// game.handlePanning();
 		
@@ -117,7 +119,6 @@ var game = {
 	},
 
 	remove:function(item){
-        // Unselect item if it is selected
         item.selected = false;
         for (var i = game.selectedItems.length - 1; i >= 0; i--){
             if(game.selectedItems[i].uid == item.uid){

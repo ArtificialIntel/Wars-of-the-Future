@@ -20,7 +20,6 @@ var staticUnits = {
             ],
             sight:3,
             hitPoints:500,
-            cost:5000,
             spriteImages:[
                 {name:"alive",count:4}
             ],
@@ -56,8 +55,8 @@ var staticUnits = {
         },
 
         draw:function(){
-            var x = (this.x*game.squareSize) - game.offsetX-this.pixelOffsetX;
-            var y = (this.y*game.squareSize) - game.offsetY-this.pixelOffsetY;
+            var x = (this.x * game.squareSize) - game.offsetX - this.pixelOffsetX;
+            var y = (this.y * game.squareSize) - game.offsetY - this.pixelOffsetY;
 
             var colorIndex = (this.team == "A") ? 0 : 1;
             var colorOffset = colorIndex * this.pixelHeight;

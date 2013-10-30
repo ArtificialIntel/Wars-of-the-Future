@@ -4,9 +4,9 @@ var maps = {
             "name":"Introduction",
             "mapImage":"images/maps/level-one-debug-grid.png",
             "startX":0,
-            "startY":4,
+            "startY":0,
 
-            // Items to be preloaded
+            // Items to be loaded before game can start
             "requirements":{
 			    "staticUnits":["base"],
 			    "dynamicUnits":[],
