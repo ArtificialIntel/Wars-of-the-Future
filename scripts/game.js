@@ -69,7 +69,7 @@ var game = {
     // Called by browser
     drawingLoop:function(){
         // game.handlePanning();
-        
+
         if (game.refreshBackground){
             game.backgroundContext.drawImage(game.currentMapImage,game.offsetX,game.offsetY,game.canvasWidth,game.canvasHeight, 0,0,game.canvasWidth,game.canvasHeight);
             game.refreshBackground = false;
@@ -83,12 +83,10 @@ var game = {
             game.sortedItems[i].draw();
         };
 
-        mouse.draw()
-
         // Call the drawing loop for the next frame using request animation frame
         if (game.running){
-            requestAnimationFrame(game.drawingLoop);    
-        }                       
+            requestAnimationFrame(game.drawingLoop);
+        }
     },
 
     resetArrays:function(){
@@ -151,6 +149,7 @@ var game = {
     healthBarHealthyFillColor:"rgba(0,255,0,0.5)",
     healthBarDamagedFillColor:"rgba(255,0,0,0.5)",
     lifeBarHeight:5,
+
     clearSelection:function(){
         while(game.selectedItems.length>0){
             game.selectedItems.pop().selected = false;
