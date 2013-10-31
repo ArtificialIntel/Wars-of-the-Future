@@ -68,57 +68,57 @@ var game = {
 
     // Called by browser
     drawingLoop:function(){
-		// game.handlePanning();
-		
-		if (game.refreshBackground){
-			game.backgroundContext.drawImage(game.currentMapImage,game.offsetX,game.offsetY,game.canvasWidth,game.canvasHeight, 0,0,game.canvasWidth,game.canvasHeight);
-			game.refreshBackground = false;
-		}
+        // game.handlePanning();
+        
+        if (game.refreshBackground){
+            game.backgroundContext.drawImage(game.currentMapImage,game.offsetX,game.offsetY,game.canvasWidth,game.canvasHeight, 0,0,game.canvasWidth,game.canvasHeight);
+            game.refreshBackground = false;
+        }
 
-		// Clear foreground canvas
-		game.foregroundContext.clearRect(0, 0, game.canvasWidth, game.canvasHeight);
+        // Clear foreground canvas
+        game.foregroundContext.clearRect(0, 0, game.canvasWidth, game.canvasHeight);
 
         // Start drawing the foreground elements
         for (var i = game.sortedItems.length - 1; i >= 0; i--){
             game.sortedItems[i].draw();
         };
 
-		mouse.draw()
+        mouse.draw()
 
-		// Call the drawing loop for the next frame using request animation frame
-		if (game.running){
-			requestAnimationFrame(game.drawingLoop);	
-		}						
+        // Call the drawing loop for the next frame using request animation frame
+        if (game.running){
+            requestAnimationFrame(game.drawingLoop);    
+        }                       
     },
 
-	resetArrays:function(){
-	    game.counter = 0;
-	    game.items = [];
-	    game.sortedItems = [];
-	    game.staticUnits = [];
-	    game.dynamicUnits = [];
-	    game.movableUnits = [];
-	    game.terrain = [];
-	    game.triggeredEvents = [];
-	    game.selectedItems = [];
-	    game.sortedItems = [];
-	},
+    resetArrays:function(){
+        game.counter = 0;
+        game.items = [];
+        game.sortedItems = [];
+        game.staticUnits = [];
+        game.dynamicUnits = [];
+        game.movableUnits = [];
+        game.terrain = [];
+        game.triggeredEvents = [];
+        game.selectedItems = [];
+        game.sortedItems = [];
+    },
 
-	add:function(itemDetails) {
-	    if (!itemDetails.uid){
-	        itemDetails.uid = game.counter++;
-	    }
+    add:function(itemDetails) {
+        if (!itemDetails.uid){
+            itemDetails.uid = game.counter++;
+        }
 
-	    var item = window[itemDetails.type].add(itemDetails);
+        var item = window[itemDetails.type].add(itemDetails);
 
-	    // Add the item to the items array
-	    game.items.push(item);
-	    // Add the item to the type specific array
-	    game[item.type].push(item);
-	    return item;
-	},
+        // Add the item to the items array
+        game.items.push(item);
+        // Add the item to the type specific array
+        game[item.type].push(item);
+        return item;
+    },
 
-	remove:function(item){
+    remove:function(item){
         item.selected = false;
         for (var i = game.selectedItems.length - 1; i >= 0; i--){
             if(game.selectedItems[i].uid == item.uid){
@@ -142,5 +142,25 @@ var game = {
                 break;
             }
         };
-	},
+    },
+
+    // START SELECTION CODE
+    selectionBorderColor:"rgba(255,255,0,0.5)",
+    selectionFillColor:"rgba(255,215,0,0.2)",
+    healthBarBorderColor:"rgba(0,0,0,0.8)",
+    healthBarHealthyFillColor:"rgba(0,255,0,0.5)",
+    healthBarDamagedFillColor:"rgba(255,0,0,0.5)",
+    lifeBarHeight:5,
+    clearSelection:function(){
+        while(game.selectedItems.length>0){
+            game.selectedItems.pop().selected = false;
+        }
+    },
+
+    selectItem:function(item){
+        if (item.selectable && !item.selected){
+            item.selected = true;
+            game.selectedItems.push(item);
+        }
+    },
 }

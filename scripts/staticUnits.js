@@ -8,7 +8,7 @@ var staticUnits = {
             baseWidth:40,
             baseHeight:40,
             pixelOffsetX:0,
-            pixelOffsetY:20,
+            pixelOffsetY:10,
             // Properties for describing structure for pathfinding
             buildableGrid:[
                 [1,1],
@@ -43,6 +43,7 @@ var staticUnits = {
             }
 
             switch (this.action){
+                // add your action here if you want it animated
                 case "stand":
                     this.imageList = this.spriteArray[this.lifeCode];
                     this.imageOffset = this.imageList.offset + this.animationIndex;

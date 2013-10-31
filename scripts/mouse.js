@@ -17,7 +17,7 @@ var mouse = {
 
         mouseCanvas.mousemove(mouse.mouseMoveHandler);
         mouseCanvas.click(mouse.clickHandler);
-        mouseCanvas.mousedown(mouse.mouseDownHandler);
+        // mouseCanvas.mousedown(mouse.mouseDownHandler);
         mouseCanvas.mouseup(mouse.mouseUpHandler);
         mouseCanvas.mouseleave(mouse.mouseLeaveHandler);
         mouseCanvas.mouseenter(mouse.mouseEnterHandler);
@@ -29,26 +29,64 @@ var mouse = {
     },
 
     click:function(ev, rightClick){
+        console.log('inside click');
+        var clickedItem = this.itemUnderMouse();
+        console.log(clickedItem);
+
+        if (rightClick){
+            game.clearSelection();
+        } else {
+            if (clickedItem){
+                game.selectItem(clickedItem);
+            }
+        }
+    },
+
+    itemUnderMouse:function(){
+        for (var i = game.items.length - 1; i >= 0; i--){
+            var item = game.items[i];
+            if (item.type=="staticUnits"){
+                if(item.lifeCode != "dead" &&
+                   item.x <= mouse.gameX / game.squareSize &&
+                   item.x >= (mouse.gameX - item.baseWidth) / game.squareSize &&
+                   item.y <= mouse.gameY / game.squareSize &&
+                   item.y >= (mouse.gameY - item.baseHeight) / game.squareSize)
+                {
+                    return item;
+                }
+            } else if (item.type == "movableUnits"){
+                if (item.lifeCode != "dead" &&
+                    Math.pow(item.x - mouse.gameX / game.squareSize, 2) + Math.pow(item.y - (mouse.gameY + item.pixelShadowHeight) / game.squareSize, 2) < Math.pow((item.radius) / game.squareSize, 2)){
+                    return item;
+                }
+           } else {
+                if (item.lifeCode != "dead" && Math.pow(item.x - mouse.gameX / game.squareSize, 2) + Math.pow(item.y - mouse.gameY / game.squareSize, 2) < Math.pow((item.radius) / game.squareSize, 2)){
+                    return item;
+                }
+            }
+        }
     },
 
     draw:function(){
-        if(this.dragging){
-            var x = Math.min(this.mapX,this.dragX);
-            var y = Math.min(this.mapY,this.dragY);
-            var width = Math.abs(this.mapX-this.dragX)
-            var height = Math.abs(this.mapY-this.dragY)
-            game.foregroundContext.strokeStyle = 'white';
-            game.foregroundContext.strokeRect(x-game.offsetX,y-game.offsetY, width, height);
-        }
+        // No drag selection for now
+        //
+        // if(this.dragging){
+        //     var x = Math.min(this.mapX,this.dragX);
+        //     var y = Math.min(this.mapY,this.dragY);
+        //     var width = Math.abs(this.mapX-this.dragX)
+        //     var height = Math.abs(this.mapY-this.dragY)
+        //     game.foregroundContext.strokeStyle = 'white';
+        //     game.foregroundContext.strokeRect(x-game.offsetX,y-game.offsetY, width, height);
+        // }
     },
-	
-    calculateGameCoordinates:function(){
-		mouse.mapX = mouse.x + game.offsetX ;
-		mouse.mapY = mouse.y + game.offsetY;
 
-		mouse.gridX = Math.floor((mouse.mapX) / game.squareSize);
-		mouse.gridY = Math.floor((mouse.mapY) / game.squareSize);	
-	},
+    calculateGameCoordinates:function(){
+        mouse.mapX = mouse.x + game.offsetX ;
+        mouse.mapY = mouse.y + game.offsetY;
+
+        mouse.gridX = Math.floor((mouse.mapX) / game.squareSize);
+        mouse.gridY = Math.floor((mouse.mapY) / game.squareSize);
+    },
 
     // START HANDLER
     mouseMoveHandler:function(ev){
@@ -68,7 +106,6 @@ var mouse = {
     },
 
     mouseClickHandler:function(ev){
-        console.log('calling mouseclick');
         mouse.click(ev,false);
         mouse.dragging = false;
         return false;
