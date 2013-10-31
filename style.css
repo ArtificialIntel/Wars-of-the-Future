@@ -1,29 +1,31 @@
 #container {
-    width: 480px
+    width: 480px;
     height: 480px;
+    background:url(images/menu.gif);
 }
 
 .layer {
     width: 480px;
     height: 480px;
-    position: absolute;
-    display: none;
+    position:absolute;
+    display:none;
 }
 
 #menu {
-    text-align: center;
-    padding-top: 180px;
-    background: #404040;
+    height:280px;
+    padding-top:200px;
+    text-align:center;
 }
 
 #menu p {
     margin: 10px;
     font-size: 24px;
+    font-weight:bold;
 }
 
 #menu p:hover {
-    border: 1px solid black;
     cursor: default;
+    color:orange;
 }
 
 #loadingScreen {
