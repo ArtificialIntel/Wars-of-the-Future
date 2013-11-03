@@ -61,4 +61,9 @@ var singleplayer = {
         game.animationInterval = setInterval(game.animationLoop,game.animationTimeout);
         game.startGame();
     },
+
+    sendCommand:function(uid, details){
+        // TODO remove this later if not needed
+        game.processCommand(uid, details);
+    }
 };

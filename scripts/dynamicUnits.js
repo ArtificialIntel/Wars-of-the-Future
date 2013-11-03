@@ -19,6 +19,7 @@ var dynamicUnits = {
     },
     defaults:{
         type:"dynamicUnits",
+        movable:true,
         animationIndex:0,
         direction:0,
         action:"stand",
@@ -37,8 +38,9 @@ var dynamicUnits = {
 
             switch (this.action){
                 case "stand":
-                    var direction = this.direction;
-                    this.imageList = this.spriteArray["stand-"+direction];
+                    console.log("calling from dynamicUnits.js::animate");
+                    var direction = wrapDirection(Math.round(this.direction), this.directions);
+                    this.imageList = this.spriteArray["stand-" + direction];
                     this.imageOffset = this.imageList.offset + this.animationIndex;
                     this.animationIndex++;
 
@@ -49,6 +51,7 @@ var dynamicUnits = {
                 break;
             }
         },
+
         drawLifeBar:function(){
             var x = this.drawingX;
             var y = this.drawingY - 2 * game.lifeBarHeight;
@@ -58,8 +61,43 @@ var dynamicUnits = {
             game.foregroundContext.lineWidth = 1;
             game.foregroundContext.strokeRect(x, y, this.pixelWidth, game.lifeBarHeight)
         },
+
+        moveTo:function(destination){
+            // Find out where we need to turn to get to destination
+            var newDirection = findAngle(destination,this,this.directions);
+            // Calculate difference between new direction and current direction
+            var difference = angleDiff(this.direction,newDirection,this.directions);
+            // Calculate amount that aircraft can turn per animation cycle
+            var turnAmount = this.turnSpeed*game.turnSpeedAdjustmentFactor;
+            if (Math.abs(difference)>turnAmount){
+                console.log("calling from dynamicUnits.js::moveTo");
+                this.direction = wrapDirection(parseFloat(this.direction)+turnAmount*Math.abs(difference)/difference,this.directions);
+            } else {
+                var movement = this.speed*game.speedAdjustmentFactor;
+                var angleRadians = -(Math.round(this.direction)/this.directions)*2*Math.PI ;
+                this.lastMovementX = - (movement*Math.sin(angleRadians));
+                this.lastMovementY = - (movement*Math.cos(angleRadians));
+                this.x = (this.x +this.lastMovementX);
+                this.y = (this.y +this.lastMovementY);
+            }
+        },
+
+        processOrders:function(){
+            this.lastMovementX = 0;
+            this.lastMovementY = 0;
+            switch (this.orders.type){
+                case "move":
+                    // Move towards destination and stop when close by
+                    if ((Math.pow(this.orders.to.x - this.x, 2) + Math.pow(this.orders.to.y - this.y, 2)) < Math.pow(this.radius / game.squareSize, 2)) {
+                        this.orders = {type:"stand"};
+                       } else {
+                            this.moveTo(this.orders.to);
+                       }
+                    break;
+            }
+        },
+
         drawSelection:function(){
-            console.log('inside draw selection');
             var x = this.drawingX + this.pixelOffsetX;
             var y = this.drawingY + this.pixelOffsetY;
             game.foregroundContext.strokeStyle = game.selectionBorderColor;
@@ -70,6 +108,7 @@ var dynamicUnits = {
             game.foregroundContext.fill();
             game.foregroundContext.stroke();
         },
+
         draw:function(){
             var x = (this.x * game.squareSize) - game.offsetX - this.pixelOffsetX;
             var y = (this.y * game.squareSize) - game.offsetY - this.pixelOffsetY;
@@ -84,6 +123,7 @@ var dynamicUnits = {
             game.foregroundContext.drawImage(this.spriteSheet, this.imageOffset*this.pixelWidth,colorOffset, this.pixelWidth,this.pixelHeight,x,y,this.pixelWidth,this.pixelHeight);
         }
     },
+
     load:loadItem,
     add:addItem,
 }

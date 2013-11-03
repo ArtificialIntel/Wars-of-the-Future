@@ -48,8 +48,8 @@ var mouse = {
         mouse.mapX = mouse.x + game.offsetX ;
         mouse.mapY = mouse.y + game.offsetY;
 
-        mouse.gridX = Math.floor((mouse.mapX) / game.squareSize);
-        mouse.gridY = Math.floor((mouse.mapY) / game.squareSize);
+        mouse.gridX = Math.floor(mouse.mapX / game.squareSize);
+        mouse.gridY = Math.floor(mouse.mapY / game.squareSize);
     },
 
     // START HANDLER
@@ -61,15 +61,29 @@ var mouse = {
     },
 
     mouseDownHandler:function(ev){
-        if(ev.which == 1){
+        if(ev.which == 1){// Left click
             var clickedItem = mouse.itemUnderMouse();
-            console.log(clickedItem);
 
-            if (clickedItem){
-                game.clearSelection();
-                game.selectItem(clickedItem);
+            if (clickedItem){// Player clicked on sth
+                if(clickedItem.type != "terrain"){
+                    if(clickedItem.team == game.team){
+                        // Player clicked on friendly unit
+                        game.clearSelection();
+                        game.selectItem(clickedItem);
+                    } else {
+                        // TODO handle attack here
+                        // 1. move to square in range
+                        // 2. attack unit
+                    }
+                }
+            } else if (game.selectedItem &&
+                       game.selectedItem.team == game.team &&
+                       game.selectedItem.movable){
+                // Player has own unit selected and clicked
+                // somewhere on map
+                game.sendCommand(game.selectedItem.uid, {type:"move", to:{x:mouse.gridX, y:mouse.gridY}});
             }
-        } else if (ev.which == 3) {
+        } else if (ev.which == 3){// Right click
             game.clearSelection();
         }
 

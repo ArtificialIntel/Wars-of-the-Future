@@ -54,6 +54,13 @@ var game = {
 
     // Called every animationTimeout ms
     animationLoop:function(){
+        // Process orders for any item that handles it
+        for (var i = game.items.length - 1; i >= 0; i--){
+            if(game.items[i].processOrders){
+                game.items[i].processOrders();
+            }
+        };
+
         // Animate each of the elements within the game
         for (var i = game.items.length - 1; i >= 0; i--){
             game.items[i].animate();
@@ -98,7 +105,7 @@ var game = {
         game.movableUnits = [];
         game.terrain = [];
         game.triggeredEvents = [];
-        game.selectedItems = [];
+        game.selectedItem = undefined;
         game.sortedItems = [];
     },
 
@@ -118,12 +125,9 @@ var game = {
 
     remove:function(item){
         item.selected = false;
-        for (var i = game.selectedItems.length - 1; i >= 0; i--){
-            if(game.selectedItems[i].uid == item.uid){
-                game.selectedItems.splice(i,1);
-                break;
-            }
-        };
+        if(game.selectedItem.uid == item.uid){
+            game.selectedItem = undefined;
+        }
 
         // Remove item from the items array
         for (var i = game.items.length - 1; i >= 0; i--){
@@ -151,15 +155,55 @@ var game = {
     lifeBarHeight:5,
 
     clearSelection:function(){
-        while(game.selectedItems.length>0){
-            game.selectedItems.pop().selected = false;
-        }
+        if(!game.selectedItem) return;
+        game.selectedItem.selected = false;
+        game.selectedItem = undefined;
     },
 
     selectItem:function(item){
         if (item.selectable && !item.selected){
             item.selected = true;
-            game.selectedItems.push(item);
+            game.selectedItem = item;
+        }
+    },
+    // END SELCTION CODE
+
+    // START COMMANDS
+    sendCommand:function(uid, details){
+        switch (game.type){
+            case "singleplayer":
+                singleplayer.sendCommand(uid, details);
+                break;
+            case "multiplayer":
+                // multiplayer.sendCommand(uids,details);
+                break;
+        }
+    },
+
+    getItemByUid:function(uid){
+        for (var i = game.items.length - 1; i >= 0; i--){
+            if(game.items[i].uid == uid){
+                return game.items[i];
+            }
+        };
+    },
+
+    speedAdjustmentFactor:1/64,
+    turnSpeedAdjustmentFactor:1/8,
+    // Receive command from single player or multi player object and send it to units
+    processCommand:function(uid, details){
+        // In case the target "to" object is in terms of uid, fetch the target object
+        if (details.toUid){
+            details.to = game.getItemByUid(details.toUid);
+            if(!details.to || details.to.lifeCode=="dead"){
+                return;
+            }
+        }
+
+        var item = game.getItemByUid(uid);
+        //if uid is a valid item, set the order for the item
+        if(item){
+            item.orders = $.extend([],details);
         }
     },
 }
