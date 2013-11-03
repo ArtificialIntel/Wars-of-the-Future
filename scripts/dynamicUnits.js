@@ -38,7 +38,6 @@ var dynamicUnits = {
 
             switch (this.action){
                 case "stand":
-                    console.log("calling from dynamicUnits.js::animate");
                     var direction = wrapDirection(Math.round(this.direction), this.directions);
                     this.imageList = this.spriteArray["stand-" + direction];
                     this.imageOffset = this.imageList.offset + this.animationIndex;
@@ -70,7 +69,6 @@ var dynamicUnits = {
             // Calculate amount that aircraft can turn per animation cycle
             var turnAmount = this.turnSpeed*game.turnSpeedAdjustmentFactor;
             if (Math.abs(difference)>turnAmount){
-                console.log("calling from dynamicUnits.js::moveTo");
                 this.direction = wrapDirection(parseFloat(this.direction)+turnAmount*Math.abs(difference)/difference,this.directions);
             } else {
                 var movement = this.speed*game.speedAdjustmentFactor;

@@ -119,7 +119,6 @@ function findAngle(object, unit, directions){
      var dy = (object.y) - (unit.y);
      var dx = (object.x) - (unit.x);
     //Convert Arctan to value between (0 - 7)
-    console.log("calling from findAngle");
     var angle = wrapDirection(directions / 2 - (Math.atan2(dx,dy) *directions / (2*Math.PI)), directions);
     return angle;
  }
@@ -147,9 +146,6 @@ function angleDiff(angle1, angle2, directions) {
 }
 
 function wrapDirection(direction, directions){
-    console.log("In:");
-    console.log(direction);
-    console.log(directions);
     if(direction < 0){
         direction += directions;
     }
@@ -158,7 +154,5 @@ function wrapDirection(direction, directions){
         direction -= directions;
     }
 
-    console.log("Out:");
-    console.log(direction);
     return direction;
 }
