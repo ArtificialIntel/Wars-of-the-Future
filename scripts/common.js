@@ -174,8 +174,9 @@ function moveUnitTo(unit, destination) {
         unit.drawingX = (unit.drawingX + unit.lastMovementX * game.squareSize);
         unit.drawingY = (unit.drawingY + unit.lastMovementY * game.squareSize);
 
-        unit.x = Math.ceil((unit.drawingX - game.offsetX - unit.pixelOffsetX) / game.squareSize);
-        unit.y = Math.ceil((unit.drawingY - game.offsetY - unit.pixelOffsetY) / game.squareSize);
+        var centerOfUnit = getCenterOfUnit(unit);
+        unit.x = Math.floor(centerOfUnit.x / game.squareSize);
+        unit.y = Math.floor(centerOfUnit.y / game.squareSize);
     }
 }
 
@@ -185,8 +186,8 @@ function moveUnitToSquare(unit, x, y) {
     // Calculate coordinates in px of
     // the top left corner of the square
     var destination = {
-        x:x * game.squareSize - game.offsetX, //- game.squareSize / 2,
-        y:y * game.squareSize - game.offsetY // - game.squareSize / 2
+        x:x * game.squareSize - game.offsetX,
+        y:y * game.squareSize - game.offsetY
     };
 
     var destinationCenter = {
@@ -194,17 +195,26 @@ function moveUnitToSquare(unit, x, y) {
         y:destination.y + game.squareSize / 2,
     };
 
-    var centerOfUnit = {
-        x:unit.drawingX + unit.pixelWidth / 2,
-        y:unit.drawingY + unit.pixelHeight / 2
-    };
+    var centerOfUnit = getCenterOfUnit(unit);
+
+    if(unit.isFlying) {
+        // centerOfUnit.x += unit.pixelShadowHeight;
+        centerOfUnit.y += unit.pixelShadowHeight;
+    }
 
     // Stop when the center of the unit is within squareSize / 4 pixels
     // of the destination square's center
-    if (Math.abs(centerOfUnit.x - destinationCenter.x) < game.squareSize / 4 && Math.abs(centerOfUnit.y - destinationCenter.y) < game.squareSize / 4) {
+    if (Math.abs(centerOfUnit.x - destinationCenter.x) < game.squareSize / 4 + 1 && Math.abs(centerOfUnit.y - destinationCenter.y) < game.squareSize / 4 + 1) {
         return true;
     }
 
     moveUnitTo(unit, destination);
     return false;
+}
+
+function getCenterOfUnit(unit) {
+    return {
+        x:unit.drawingX + unit.pixelWidth / 2 + unit.pixelOffsetX + game.offsetX,
+        y:unit.drawingY + unit.pixelHeight / 2 + unit.pixelOffsetY + game.offsetY
+    };
 }

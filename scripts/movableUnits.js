@@ -5,16 +5,20 @@ var movableUnits = {
             cost:900,
             pixelWidth:40,
             pixelHeight:40,
-            pixelOffsetX:20,
-            pixelOffsetY:20,
+            // offset from actual position
+            // towards top left
+            pixelOffsetX:8,
+            pixelOffsetY:50,
             weaponType:"heatseeker",
             radius:18,
             sight:4,
+            isFlying:true,
             canAttack:true,
             canAttackLand:true,
             canAttackAir:true,
             hitPoints:50,
-            speed:25,
+            animationSpeed:15,
+            speed:5,
             turnSpeed:4,
             pixelShadowHeight:40,
             spriteImages:[
@@ -55,36 +59,15 @@ var movableUnits = {
             }
         },
 
-        moveTo:function(destination){
-            // Find out where we need to turn to get to destination
-            var newDirection = findAngle(destination, this, this.directions);
-            // Calculate difference between new direction and current direction
-            var difference = angleDiff(this.direction,newDirection,this.directions);
-            // Calculate amount that aircraft can turn per animation cycle
-            var turnAmount = this.turnSpeed*game.turnSpeedAdjustmentFactor;
-            if (Math.abs(difference)>turnAmount){
-                this.direction = wrapDirection(parseFloat(this.direction)+turnAmount*Math.abs(difference)/difference,this.directions);
-            } else {
-                var movement = this.speed*game.speedAdjustmentFactor;
-                var angleRadians = -(Math.round(this.direction)/this.directions)*2*Math.PI ;
-                this.lastMovementX = - (movement*Math.sin(angleRadians));
-                this.lastMovementY = - (movement*Math.cos(angleRadians));
-                this.x = (this.x +this.lastMovementX);
-                this.y = (this.y +this.lastMovementY);
-            }
-        },
-
         processOrders:function(){
             this.lastMovementX = 0;
             this.lastMovementY = 0;
             switch (this.orders.type){
                 case "move":
-                    // Move towards destination and stop when close by
-                    if ((Math.pow(this.orders.to.x - this.x, 2) + Math.pow(this.orders.to.y - this.y, 2)) < Math.pow(this.radius / game.squareSize, 2)) {
+                    var destinationReached = moveUnitToSquare(this, this.orders.to.x, this.orders.to.y);
+                    if (destinationReached) {
                         this.orders = {type:"stand"};
-                       } else {
-                            this.moveTo(this.orders.to);
-                       }
+                    }
                     break;
             }
         },
@@ -100,8 +83,8 @@ var movableUnits = {
         },
 
         drawSelection:function(){
-            var x = this.drawingX + this.pixelOffsetX;
-            var y = this.drawingY + this.pixelOffsetY;
+            var x = this.drawingX + this.pixelWidth / 2;
+            var y = this.drawingY + this.pixelHeight / 2;
             game.foregroundContext.strokeStyle = game.selectionBorderColor;
             game.foregroundContext.lineWidth = 2;
             game.foregroundContext.beginPath();
@@ -121,10 +104,13 @@ var movableUnits = {
         },
 
         draw:function(){
-            var x = (this.x * game.squareSize) - game.offsetX - this.pixelOffsetX;
-            var y = (this.y * game.squareSize) - game.offsetY - this.pixelOffsetY - this.pixelShadowHeight;
-            this.drawingX = x;
-            this.drawingY = y;
+            if (this.drawingX == undefined) {
+                this.drawingX = this.x * game.squareSize - game.offsetX - this.pixelOffsetX;
+            }
+            if (this.drawingY == undefined) {
+                this.drawingY = this.y * game.squareSize - game.offsetY - this.pixelOffsetY;
+            }
+
             if (this.selected){
                 this.drawSelection();
                 this.drawLifeBar();
@@ -133,12 +119,34 @@ var movableUnits = {
             var colorOffset = colorIndex * this.pixelHeight;
             var shadowOffset = this.pixelHeight * 2; // The aircraft shadow is on the second row of the sprite sheet
 
-            game.foregroundContext.drawImage(this.spriteSheet, this.imageOffset*this.pixelWidth, colorOffset, this.pixelWidth, this.pixelHeight, x, y, this.pixelWidth, this.pixelHeight);
-            game.foregroundContext.drawImage(this.spriteSheet, this.imageOffset*this.pixelWidth, shadowOffset, this.pixelWidth, this.pixelHeight, x, y+this.pixelShadowHeight, this.pixelWidth,this.pixelHeight);
+            game.foregroundContext.drawImage(this.spriteSheet, this.imageOffset * this.pixelWidth, colorOffset,
+                                             this.pixelWidth, this.pixelHeight, this.drawingX, this.drawingY,
+                                             this.pixelWidth, this.pixelHeight);
+            game.foregroundContext.drawImage(this.spriteSheet, this.imageOffset * this.pixelWidth, shadowOffset,
+                                             this.pixelWidth, this.pixelHeight, this.drawingX, this.drawingY + this.pixelShadowHeight,
+                                             this.pixelWidth,this.pixelHeight);
         },
 
         drawMovement:function() {
+            for(x = 0; x < game.gridLength; x++) {
+                for(y = 0; y < game.gridLength; y++) {
+                    if (this.x == x && this.y == y) {
+                        continue;
+                    }
 
+                    if (Math.abs(this.x - x) > this.speed || Math.abs(this.y - y) > this.speed) {
+                        // square is out of movement range
+                        game.foregroundContext.fillStyle = game.cannotMoveColor;
+                        game.foregroundContext.fillRect(x * game.squareSize, y * game.squareSize, game.squareSize, game.squareSize);
+                    } else {
+                        // square is in movement range
+                        game.foregroundContext.fillStyle = game.canMoveColor;
+                        game.foregroundContext.fillRect(x * game.squareSize, y * game.squareSize, game.squareSize, game.squareSize);
+                    }
+                }
+            }
+            game.foregroundContext.fillStyle = "#000";
+            game.foregroundContext.fillRect(this.x * game.squareSize, this.y * game.squareSize, game.squareSize, game.squareSize);
         }
     },
     load:loadItem,
