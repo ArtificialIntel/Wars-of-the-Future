@@ -5,8 +5,9 @@ $(window).load(function(){
 
 var game = {
     state:"intro",
-    // Size of one square in the grid
-    squareSize:16,
+    // Size of one grid square in px
+    squareSize:24,
+    gridLength:20,
     backgroundChanged:true,
     refreshBackground:true,
     offsetX:0,
@@ -161,6 +162,8 @@ var game = {
     healthBarBorderColor:"rgba(0,0,0,0.8)",
     healthBarHealthyFillColor:"rgba(0,255,0,0.5)",
     healthBarDamagedFillColor:"rgba(255,0,0,0.5)",
+    cannotMoveColor:"rgba(255,0,0,0.2)",
+    canMoveColor:"rgba(0,255,0,0.1)",
     lifeBarHeight:5,
 
     clearSelection:function(){
