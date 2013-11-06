@@ -1,8 +1,9 @@
 var maps = {
     "singleplayer":[
         {
-            "name":"Introduction",
-            "mapImage":"images/maps/20x20map.png",
+            "name":"Default",
+            "mapImage":"images/maps/terrainMap.png",
+            "gridImage":"images/maps/20x20grid.png",
             "startX":0,
             "startY":0,
 

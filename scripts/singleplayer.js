@@ -20,6 +20,7 @@ var singleplayer = {
 
 	    // Load all the assets for the level
 	    game.currentMapImage = loader.loadImage(level.mapImage);
+        game.currentGridImage = loader.loadImage(level.gridImage);
 	    game.currentLevel = level;
 
 	    game.offsetX = level.startX * game.squareSize;

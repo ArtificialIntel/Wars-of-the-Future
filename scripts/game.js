@@ -4,7 +4,7 @@ $(window).load(function(){
 
 
 var game = {
-    mode:"intro",
+    state:"intro",
     // Size of one square in the grid
     squareSize:16,
     backgroundChanged:true,
@@ -78,12 +78,20 @@ var game = {
         // game.handlePanning();
 
         if (game.refreshBackground){
-            game.backgroundContext.drawImage(game.currentMapImage,game.offsetX,game.offsetY,game.canvasWidth,game.canvasHeight, 0,0,game.canvasWidth,game.canvasHeight);
+            game.backgroundContext.drawImage(game.currentMapImage, game.offsetX, game.offsetY, game.canvasWidth, game.canvasHeight, 0, 0, game.canvasWidth, game.canvasHeight);
             game.refreshBackground = false;
         }
 
         // Clear foreground canvas
         game.foregroundContext.clearRect(0, 0, game.canvasWidth, game.canvasHeight);
+
+        // Draw the grid if unit is selected
+        if (game.state == "unitSelected") {
+            game.foregroundContext.drawImage(game.currentGridImage, game.offsetX,game.offsetY, game.canvasWidth, game.canvasHeight, 0, 0, game.canvasWidth, game.canvasHeight);
+            if (game.selectedItem.movable) {
+                game.selectedItem.drawMovement();
+            }
+        }
 
         // Start drawing the foreground elements
         for (var i = game.sortedItems.length - 1; i >= 0; i--){
@@ -125,6 +133,7 @@ var game = {
 
     remove:function(item){
         item.selected = false;
+        game.state = "intro";
         if(game.selectedItem.uid == item.uid){
             game.selectedItem = undefined;
         }
@@ -158,12 +167,14 @@ var game = {
         if(!game.selectedItem) return;
         game.selectedItem.selected = false;
         game.selectedItem = undefined;
+        game.state = "intro";
     },
 
     selectItem:function(item){
         if (item.selectable && !item.selected){
             item.selected = true;
             game.selectedItem = item;
+            game.state = "unitSelected";
         }
     },
     // END SELCTION CODE
