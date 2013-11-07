@@ -83,23 +83,29 @@ var movableUnits = {
         },
 
         drawSelection:function(){
-            var x = this.drawingX + this.pixelWidth / 2;
-            var y = this.drawingY + this.pixelHeight / 2;
+            var center = getCenterOfUnit(this);
+            if (this.isFlying) {
+                // center of flying units is lower,
+                // subtract the offset
+                center.y -= this.pixelShadowHeight;
+            }
             game.foregroundContext.strokeStyle = game.selectionBorderColor;
             game.foregroundContext.lineWidth = 2;
             game.foregroundContext.beginPath();
-            game.foregroundContext.arc(x,y,this.radius,0,Math.PI*2,false);
+            game.foregroundContext.arc(center.x, center.y, this.radius,
+                                       0, Math.PI * 2, false);
             game.foregroundContext.stroke();
             game.foregroundContext.fillStyle = game.selectionFillColor;
             game.foregroundContext.fill();
 
             game.foregroundContext.beginPath();
-            game.foregroundContext.arc(x,y + this.pixelShadowHeight, 4, 0, Math.PI*2, false);
+            game.foregroundContext.arc(center.x, center.y + this.pixelShadowHeight, 4,
+                                       0, Math.PI*2, false);
             game.foregroundContext.stroke();
 
             game.foregroundContext.beginPath();
-            game.foregroundContext.moveTo(x,y);
-            game.foregroundContext.lineTo(x, y + this.pixelShadowHeight);
+            game.foregroundContext.moveTo(center.x,center.y);
+            game.foregroundContext.lineTo(center.x, center.y + this.pixelShadowHeight);
             game.foregroundContext.stroke();
         },
 
@@ -147,6 +153,8 @@ var movableUnits = {
             }
             game.foregroundContext.fillStyle = "#000";
             game.foregroundContext.fillRect(this.x * game.squareSize, this.y * game.squareSize, game.squareSize, game.squareSize);
+            game.foregroundContext.fillStyle = "#FFF";
+            game.foregroundContext.fillRect(this.drawingX, this.drawingY, 4, 4);
         }
     },
     load:loadItem,

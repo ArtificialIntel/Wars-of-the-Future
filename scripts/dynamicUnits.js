@@ -79,16 +79,15 @@ var dynamicUnits = {
         },
 
         drawSelection:function(){
-            var x = this.drawingX + this.pixelWidth / 2;
-            var y = this.drawingY + this.pixelHeight / 2;
-
+            var center = getCenterOfUnit(this);
             game.foregroundContext.strokeStyle = game.selectionBorderColor;
             game.foregroundContext.lineWidth = 1;
             game.foregroundContext.beginPath();
-            game.foregroundContext.arc(x, y, this.radius, 0, Math.PI*2, false);
+            game.foregroundContext.arc(center.x, center.y, this.radius,
+                                       0, Math.PI * 2, false);
+            game.foregroundContext.stroke();
             game.foregroundContext.fillStyle = game.selectionFillColor;
             game.foregroundContext.fill();
-            game.foregroundContext.stroke();
         },
 
         draw:function(){
@@ -108,6 +107,9 @@ var dynamicUnits = {
             game.foregroundContext.drawImage(this.spriteSheet, this.imageOffset * this.pixelWidth, colorOffset,
                                              this.pixelWidth, this.pixelHeight, this.drawingX, this.drawingY,
                                              this.pixelWidth,this.pixelHeight);
+            game.foregroundContext.fillStyle = "#FFF";
+            var unitCenter = getCenterOfUnit(this);
+            game.foregroundContext.fillRect(unitCenter.x, unitCenter.y, 4, 4);
         },
 
         drawMovement:function() {
