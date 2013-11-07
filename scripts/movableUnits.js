@@ -151,10 +151,10 @@ var movableUnits = {
                     }
                 }
             }
-            game.foregroundContext.fillStyle = "#000";
-            game.foregroundContext.fillRect(this.x * game.squareSize, this.y * game.squareSize, game.squareSize, game.squareSize);
-            game.foregroundContext.fillStyle = "#FFF";
-            game.foregroundContext.fillRect(this.drawingX, this.drawingY, 4, 4);
+            // game.foregroundContext.fillStyle = "#000";
+            // game.foregroundContext.fillRect(this.x * game.squareSize, this.y * game.squareSize, game.squareSize, game.squareSize);
+            // game.foregroundContext.fillStyle = "#FFF";
+            // game.foregroundContext.fillRect(this.drawingX, this.drawingY, 4, 4);
         }
     },
     load:loadItem,

@@ -44,7 +44,7 @@ var mouse = {
         }
     },
 
-    calculateGameCoordinates:function(){
+    calculateGameCoordinates:function() {
         mouse.mapX = mouse.x + game.offsetX ;
         mouse.mapY = mouse.y + game.offsetY;
 
@@ -53,20 +53,20 @@ var mouse = {
     },
 
     // START HANDLER
-    mouseMoveHandler:function(ev){
+    mouseMoveHandler:function(ev) {
         mouse.x = ev.clientX;
         mouse.y = ev.clientY;
 
         mouse.calculateGameCoordinates();
     },
 
-    mouseDownHandler:function(ev){
+    mouseDownHandler:function(ev) {
         if(ev.which == 1){// Left click
             var clickedItem = mouse.itemUnderMouse();
 
             if (clickedItem){// Player clicked on sth
-                if(clickedItem.type != "terrain"){
-                    if(clickedItem.team == game.team){
+                if (clickedItem.type != "terrain") {
+                    if (clickedItem.team == game.team) {
                         // Player clicked on friendly unit
                         game.clearSelection();
                         game.selectItem(clickedItem);
@@ -78,12 +78,12 @@ var mouse = {
                 }
             } else if (game.selectedItem &&
                        game.selectedItem.team == game.team &&
-                       game.selectedItem.movable){
+                       game.selectedItem.movable) {
                 // Player has own unit selected and clicked
                 // somewhere on map
                 game.sendCommand(game.selectedItem.uid, {type:"move", to:{x:mouse.gridX, y:mouse.gridY}});
             }
-        } else if (ev.which == 3){// Right click
+        } else if (ev.which == 3) {// Right click
             game.clearSelection();
         }
 

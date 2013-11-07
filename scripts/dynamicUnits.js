@@ -107,9 +107,6 @@ var dynamicUnits = {
             game.foregroundContext.drawImage(this.spriteSheet, this.imageOffset * this.pixelWidth, colorOffset,
                                              this.pixelWidth, this.pixelHeight, this.drawingX, this.drawingY,
                                              this.pixelWidth,this.pixelHeight);
-            game.foregroundContext.fillStyle = "#FFF";
-            var unitCenter = getCenterOfUnit(this);
-            game.foregroundContext.fillRect(unitCenter.x, unitCenter.y, 4, 4);
         },
 
         drawMovement:function() {
@@ -130,8 +127,8 @@ var dynamicUnits = {
                     }
                 }
             }
-            game.foregroundContext.fillStyle = "#000";
-            game.foregroundContext.fillRect(this.x * game.squareSize, this.y * game.squareSize, game.squareSize, game.squareSize);
+            // game.foregroundContext.fillStyle = "#000";
+            // game.foregroundContext.fillRect(this.x * game.squareSize, this.y * game.squareSize, game.squareSize, game.squareSize);
         }
     },
 
