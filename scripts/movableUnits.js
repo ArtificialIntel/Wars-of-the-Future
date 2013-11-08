@@ -65,8 +65,14 @@ var movableUnits = {
             this.lastMovementY = 0;
             switch (this.orders.type){
                 case "move":
+                    if (this.hasMoved) {
+                        game.displayMessage("Unit has already been moved", 2500, "error");
+                        this.orders = {type:"stand"};
+                        break;
+                    }
                     var destinationReached = moveUnitToSquare(this, this.orders.to.x, this.orders.to.y);
                     if (destinationReached) {
+                        this.hasMoved = true;
                         this.orders = {type:"stand"};
                     }
                     break;
