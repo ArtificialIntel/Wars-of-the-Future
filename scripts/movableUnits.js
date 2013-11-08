@@ -30,6 +30,7 @@ var movableUnits = {
     defaults:{
         type:"movableUnits",
         movable:true,
+        hasMoved:false,
         animationIndex:0,
         direction:0,
         directions:8,

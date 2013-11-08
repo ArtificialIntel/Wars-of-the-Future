@@ -37,6 +37,16 @@
             <div id="gameScreen" class="layer">
                 <canvas id="foregroundCanvas" width="480" height="480"></canvas>
                 <canvas id="backgroundCanvas" width="480" height="480"></canvas>
+                <div id="statusbar">
+                    <ul id="statuslist">
+                        <li>
+                            <p id="turndisplay" class="statusbar-text">Turn: 0</p>
+                        </li>
+                        <li>
+                            <a id="end-turn" onclick="game.nextTurn();">End Turn</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
             <div id="endscreen" class="layer">

@@ -1,40 +1,40 @@
-function findAngle(object, unit, directions){
+function findAngle(object, unit, directions) {
     var centerOfUnit = getCenterOfUnit(unit);
     var dx = (object.x) - (centerOfUnit.x);
     var dy = (object.y) - (centerOfUnit.y);
     //Convert Arctan to value between (0 - 7)
     var angle = wrapDirection(directions / 2 - (Math.atan2(dx,dy) *directions / (2*Math.PI)), directions);
     return angle;
- }
+}
 
 function angleDiff(angle1, angle2, directions) {
-    if(angle1 >= directions / 2){
+    if(angle1 >= directions / 2) {
         angle1 = angle1 - directions;
     }
 
-    if(angle2 >= directions / 2){
+    if(angle2 >= directions / 2) {
         angle2 = angle2 - directions;
     }
 
     diff = angle2 - angle1;
 
-    if(diff < -directions / 2){
+    if(diff < -directions / 2) {
         diff += directions;
     }
 
-    if(diff > directions / 2){
+    if(diff > directions / 2) {
         diff -= directions;
     }
 
     return diff;
 }
 
-function wrapDirection(direction, directions){
-    if(direction < 0){
+function wrapDirection(direction, directions) {
+    if(direction < 0) {
         direction += directions;
     }
 
-    if(direction >= directions){
+    if(direction >= directions) {
         direction -= directions;
     }
 
@@ -83,7 +83,7 @@ function moveUnitToSquare(unit, x, y) {
 
     // Stop when the center of the unit is within squareSize / 4 pixels
     // of the destination square's center
-    if (Math.abs(centerOfUnit.x - destinationCenter.x) < game.squareSize / 5 && Math.abs(centerOfUnit.y - destinationCenter.y) < game.squareSize / 5) {
+    if (Math.abs(centerOfUnit.x - destinationCenter.x) < game.squareSize / 5 && Math.abs(centerOfUnit.y - destinationCenter.y) < game.squareSize / 6) {
         return true;
     }
 

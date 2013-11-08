@@ -8,6 +8,7 @@ var game = {
     // Size of one grid square in px
     squareSize:24,
     gridLength:20,
+    turn:0,
     backgroundChanged:true,
     refreshBackground:true,
     offsetX:0,
@@ -78,7 +79,7 @@ var game = {
     drawingLoop:function(){
         // game.handlePanning();
 
-        if (game.refreshBackground){
+        if (game.refreshBackground) {
             game.backgroundContext.drawImage(game.currentMapImage, game.offsetX, game.offsetY, game.canvasWidth, game.canvasHeight, 0, 0, game.canvasWidth, game.canvasHeight);
             game.refreshBackground = false;
         }
@@ -95,17 +96,17 @@ var game = {
         }
 
         // Start drawing the foreground elements
-        for (var i = game.sortedItems.length - 1; i >= 0; i--){
+        for (var i = game.sortedItems.length - 1; i >= 0; i--) {
             game.sortedItems[i].draw();
         };
 
         // Call the drawing loop for the next frame using request animation frame
-        if (game.running){
+        if (game.running) {
             requestAnimationFrame(game.drawingLoop);
         }
     },
 
-    resetArrays:function(){
+    resetArrays:function() {
         game.counter = 0;
         game.items = [];
         game.sortedItems = [];
@@ -119,7 +120,7 @@ var game = {
     },
 
     add:function(itemDetails) {
-        if (!itemDetails.uid){
+        if (!itemDetails.uid) {
             itemDetails.uid = game.counter++;
         }
 
@@ -132,24 +133,24 @@ var game = {
         return item;
     },
 
-    remove:function(item){
+    remove:function(item) {
         item.selected = false;
         game.state = "intro";
-        if(game.selectedItem.uid == item.uid){
+        if(game.selectedItem.uid == item.uid) {
             game.selectedItem = undefined;
         }
 
         // Remove item from the items array
-        for (var i = game.items.length - 1; i >= 0; i--){
-            if(game.items[i].uid == item.uid){
+        for (var i = game.items.length - 1; i >= 0; i--) {
+            if(game.items[i].uid == item.uid) {
                 game.items.splice(i,1);
                 break;
             }
         };
 
         // Remove items from the type specific array
-        for (var i = game[item.type].length - 1; i >= 0; i--){
-            if(game[item.type][i].uid == item.uid){
+        for (var i = game[item.type].length - 1; i >= 0; i--) {
+            if(game[item.type][i].uid == item.uid) {
                 game[item.type].splice(i,1);
                 break;
             }
@@ -166,15 +167,15 @@ var game = {
     canMoveColor:"rgba(0,255,0,0.1)",
     lifeBarHeight:5,
 
-    clearSelection:function(){
+    clearSelection:function() {
         if(!game.selectedItem) return;
         game.selectedItem.selected = false;
         game.selectedItem = undefined;
         game.state = "intro";
     },
 
-    selectItem:function(item){
-        if (item.selectable && !item.selected){
+    selectItem:function(item) {
+        if (item.selectable && !item.selected) {
             item.selected = true;
             game.selectedItem = item;
             game.state = "unitSelected";
@@ -183,7 +184,7 @@ var game = {
     // END SELCTION CODE
 
     // START COMMANDS
-    sendCommand:function(uid, details){
+    sendCommand:function(uid, details) {
         switch (game.type){
             case "singleplayer":
                 singleplayer.sendCommand(uid, details);
@@ -205,19 +206,30 @@ var game = {
     speedAdjustmentFactor:1/64,
     turnSpeedAdjustmentFactor:1/8,
     // Receive command from single player or multi player object and send it to units
-    processCommand:function(uid, details){
+    processCommand:function(uid, details) {
         // In case the target "to" object is in terms of uid, fetch the target object
-        if (details.toUid){
+        if (details.toUid) {
             details.to = game.getItemByUid(details.toUid);
-            if(!details.to || details.to.lifeCode=="dead"){
+            if (!details.to || details.to.lifeCode=="dead") {
                 return;
             }
         }
 
         var item = game.getItemByUid(uid);
         //if uid is a valid item, set the order for the item
-        if(item){
+        if (item) {
             item.orders = $.extend([],details);
         }
     },
+
+    nextTurn:function() {
+        this.turn++;
+        document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
+
+        for (var i = game.items.length - 1; i >= 0; i--) {
+            if(game.items[i].movable) {
+                game.items[i].hasMoved = false;
+            }
+        }
+    }
 }

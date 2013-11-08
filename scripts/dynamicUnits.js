@@ -22,6 +22,7 @@ var dynamicUnits = {
     defaults:{
         type:"dynamicUnits",
         movable:true,
+        hasMoved:false,
         animationIndex:0,
         direction:0,
         action:"stand",

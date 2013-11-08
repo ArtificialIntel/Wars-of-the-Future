@@ -10,7 +10,7 @@ var mouse = {
     gridY:0,
     insideCanvas:false,
 
-    init:function(){
+    init:function() {
         var mouseCanvas = $('#foregroundCanvas');
 
         mouseCanvas=document.getElementById('foregroundCanvas');
@@ -20,9 +20,9 @@ var mouse = {
     },
 
     itemUnderMouse:function(){
-        for (var i = game.items.length - 1; i >= 0; i--){
+        for (var i = game.items.length - 1; i >= 0; i--) {
             var item = game.items[i];
-            if (item.type=="staticUnits"){
+            if (item.type=="staticUnits") {
                 if(item.lifeCode != "dead" &&
                    item.x <= mouse.mapX / game.squareSize &&
                    item.x >= (mouse.mapX - item.baseWidth) / game.squareSize &&
@@ -31,13 +31,20 @@ var mouse = {
                 {
                     return item;
                 }
-            } else if (item.type == "movableUnits"){
+            } else if (item.type == "movableUnits") {
                 if (item.lifeCode != "dead" &&
-                    Math.pow(item.x - mouse.mapX / game.squareSize, 2) + Math.pow(item.y - (mouse.mapY + item.pixelShadowHeight) / game.squareSize, 2) < Math.pow((item.radius) / game.squareSize, 2)){
+                    Math.pow(item.x - mouse.mapX / game.squareSize, 2) +
+                    Math.pow(item.y - (mouse.mapY + item.pixelShadowHeight) / game.squareSize, 2) <
+                    Math.pow((item.radius) / game.squareSize, 2))
+                {
                     return item;
                 }
            } else {
-                if (item.lifeCode != "dead" && Math.pow(item.x - mouse.mapX / game.squareSize, 2) + Math.pow(item.y - mouse.mapY / game.squareSize, 2) < Math.pow((item.radius) / game.squareSize, 2)){
+                if (item.lifeCode != "dead" &&
+                    Math.pow(item.x - mouse.mapX / game.squareSize, 2) +
+                    Math.pow(item.y - mouse.mapY / game.squareSize, 2) <
+                    Math.pow((item.radius) / game.squareSize, 2))
+                {
                     return item;
                 }
             }
