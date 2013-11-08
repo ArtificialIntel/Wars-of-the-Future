@@ -77,8 +77,6 @@ var game = {
 
     // Called by browser
     drawingLoop:function(){
-        // game.handlePanning();
-
         if (game.refreshBackground) {
             game.backgroundContext.drawImage(game.currentMapImage, game.offsetX, game.offsetY, game.canvasWidth, game.canvasHeight, 0, 0, game.canvasWidth, game.canvasHeight);
             game.refreshBackground = false;
@@ -231,5 +229,20 @@ var game = {
                 game.items[i].hasMoved = false;
             }
         }
+    },
+
+    // Displays a message for 'time' in milliseconds
+    displayMessage:function(message, time, type) {
+        messagePlaceholder = document.getElementById('message');
+        if (type == "error") {
+            messagePlaceholder.style.color = "red";
+        } else {
+            messagePlaceholder.style.color = "white";
+        }
+
+        messagePlaceholder.innerHTML = message;
+        messagePlaceholder.style.display = "block";
+
+        window.setTimeout("document.getElementById('message').style.display='none'", time);
     }
 }
