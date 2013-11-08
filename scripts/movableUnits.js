@@ -60,7 +60,7 @@ var movableUnits = {
             }
         },
 
-        processOrders:function(){
+        processOrders:function() {
             this.lastMovementX = 0;
             this.lastMovementY = 0;
             switch (this.orders.type){
@@ -68,8 +68,15 @@ var movableUnits = {
                     if (this.hasMoved) {
                         game.displayMessage("Unit has already been moved", 2500, "error");
                         this.orders = {type:"stand"};
-                        break;
+                        return;
                     }
+
+                    if (!isSquareInMovementRange(this, this.orders.to.x, this.orders.to.y)) {
+                        game.displayMessage("Can not move this far", 2500, "error");
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
                     var destinationReached = moveUnitToSquare(this, this.orders.to.x, this.orders.to.y);
                     if (destinationReached) {
                         this.hasMoved = true;
@@ -79,7 +86,7 @@ var movableUnits = {
             }
         },
 
-        drawLifeBar:function(){
+        drawLifeBar:function() {
             var x = this.drawingX;
             var y = this.drawingY - 2 * game.lifeBarHeight;
             game.foregroundContext.fillStyle = (this.lifeCode == "alive") ? game.healthBarHealthyFillColor : game.healthBarDamagedFillColor;
@@ -89,7 +96,7 @@ var movableUnits = {
             game.foregroundContext.strokeRect(x, y, this.pixelWidth, game.lifeBarHeight)
         },
 
-        drawSelection:function(){
+        drawSelection:function() {
             var center = getCenterOfUnit(this);
             if (this.isFlying) {
                 // center of flying units is lower,
@@ -116,7 +123,7 @@ var movableUnits = {
             game.foregroundContext.stroke();
         },
 
-        draw:function(){
+        draw:function() {
             if (this.drawingX == undefined) {
                 this.drawingX = this.x * game.squareSize - game.offsetX - this.pixelOffsetX;
             }
@@ -124,7 +131,7 @@ var movableUnits = {
                 this.drawingY = this.y * game.squareSize - game.offsetY - this.pixelOffsetY;
             }
 
-            if (this.selected){
+            if (this.selected) {
                 this.drawSelection();
                 this.drawLifeBar();
             }
@@ -147,21 +154,15 @@ var movableUnits = {
                         continue;
                     }
 
-                    if (Math.abs(this.x - x) > this.speed || Math.abs(this.y - y) > this.speed) {
-                        // square is out of movement range
-                        game.foregroundContext.fillStyle = game.cannotMoveColor;
+                    if (isSquareInMovementRange(this, x, y)) {
+                        game.foregroundContext.fillStyle = game.canMoveColor;
                         game.foregroundContext.fillRect(x * game.squareSize, y * game.squareSize, game.squareSize, game.squareSize);
                     } else {
-                        // square is in movement range
-                        game.foregroundContext.fillStyle = game.canMoveColor;
+                        game.foregroundContext.fillStyle = game.cannotMoveColor;
                         game.foregroundContext.fillRect(x * game.squareSize, y * game.squareSize, game.squareSize, game.squareSize);
                     }
                 }
             }
-            // game.foregroundContext.fillStyle = "#000";
-            // game.foregroundContext.fillRect(this.x * game.squareSize, this.y * game.squareSize, game.squareSize, game.squareSize);
-            // game.foregroundContext.fillStyle = "#FFF";
-            // game.foregroundContext.fillRect(this.drawingX, this.drawingY, 4, 4);
         }
     },
     load:loadItem,

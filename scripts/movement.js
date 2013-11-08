@@ -101,3 +101,11 @@ function getCenterOfUnit(unit) {
         y:unit.drawingY + unit.pixelHeight / 2 + flightHeight
     };
 }
+
+function isSquareInMovementRange(unit, x, y) {
+    if (Math.abs(unit.x - x) > unit.speed || Math.abs(unit.y - y) > unit.speed) {
+        return false;
+    }
+
+    return true;
+}

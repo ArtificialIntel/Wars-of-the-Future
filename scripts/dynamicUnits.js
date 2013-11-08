@@ -74,8 +74,15 @@ var dynamicUnits = {
                     if (this.hasMoved) {
                         game.displayMessage("Unit has already been moved", 2500, "error");
                         this.orders = {type:"stand"};
-                        break;
+                        return;
                     }
+
+                    if (!isSquareInMovementRange(this, this.orders.to.x, this.orders.to.y)) {
+                        game.displayMessage("Can not move this far", 2500, "error");
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
                     var destinationReached = moveUnitToSquare(this, this.orders.to.x, this.orders.to.y);
                     if (destinationReached) {
                         this.hasMoved = true;
@@ -123,13 +130,11 @@ var dynamicUnits = {
                         continue;
                     }
 
-                    if (Math.abs(this.x - x) > this.speed || Math.abs(this.y - y) > this.speed) {
-                        // square is out of movement range
-                        game.foregroundContext.fillStyle = game.cannotMoveColor;
+                    if (isSquareInMovementRange(this, x, y)) {
+                        game.foregroundContext.fillStyle = game.canMoveColor;
                         game.foregroundContext.fillRect(x * game.squareSize, y * game.squareSize, game.squareSize, game.squareSize);
                     } else {
-                        // square is in movement range
-                        game.foregroundContext.fillStyle = game.canMoveColor;
+                        game.foregroundContext.fillStyle = game.cannotMoveColor;
                         game.foregroundContext.fillRect(x * game.squareSize, y * game.squareSize, game.squareSize, game.squareSize);
                     }
                 }
