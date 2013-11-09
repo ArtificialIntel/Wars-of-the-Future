@@ -30,8 +30,9 @@ var dynamicUnits = {
         selected:false,
         selectable:true,
         directions:8,
-        animate:function(){
-            if (this.life > 0){
+
+        animate:function() {
+            if (this.life > 0) {
                 this.lifeCode = "alive";
             } else {
                 this.lifeCode = "dead";
@@ -39,14 +40,14 @@ var dynamicUnits = {
                 return;
             }
 
-            switch (this.action){
+            switch (this.action) {
                 case "stand":
                     var direction = wrapDirection(Math.round(this.direction), this.directions);
                     this.imageList = this.spriteArray["stand-" + direction];
                     this.imageOffset = this.imageList.offset + this.animationIndex;
                     this.animationIndex++;
 
-                    if (this.animationIndex>=this.imageList.count){
+                    if (this.animationIndex>=this.imageList.count) {
                         this.animationIndex = 0;
                     }
 
@@ -54,7 +55,7 @@ var dynamicUnits = {
             }
         },
 
-        drawLifeBar:function(){
+        drawLifeBar:function() {
             var x = this.drawingX;
             var y = this.drawingY - 2 * game.lifeBarHeight;
             game.foregroundContext.fillStyle = (this.lifeCode == "healthy")
@@ -66,19 +67,35 @@ var dynamicUnits = {
             game.foregroundContext.strokeRect(x, y, this.pixelWidth, game.lifeBarHeight)
         },
 
-        processOrders:function(){
-            this.lastMovementX = 0;
-            this.lastMovementY = 0;
-            switch (this.orders.type){
+        processOrders:function() {
+            switch (this.orders.type) {
                 case "move":
+                    this.lastMovementX = 0;
+                    this.lastMovementY = 0;
+
                     if (this.hasMoved) {
-                        game.displayMessage("Unit has already been moved", 2500, "error");
+                        game.displayMessage("Sorry, I've moved already this turn.", 2500, "error");
                         this.orders = {type:"stand"};
                         return;
                     }
 
                     if (!isSquareInMovementRange(this, this.orders.to.x, this.orders.to.y)) {
-                        game.displayMessage("Can not move this far", 2500, "error");
+                        game.displayMessage("I can not move this far.", 2500, "error");
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
+                    if (this.orders.to.x == this.positionBeforeMove.x &&
+                        this.orders.to.y == this.positionBeforeMove.y)
+                    {
+                        game.displayMessage("I'm already here!", 2500);
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
+                    var unit = game.getItemOnSquare(this.orders.to);
+                    if (unit && unit.uid != this.uid) {
+                        game.displayMessage("That square is occupied.", 2500, "error");
                         this.orders = {type:"stand"};
                         return;
                     }
@@ -92,7 +109,7 @@ var dynamicUnits = {
             }
         },
 
-        drawSelection:function(){
+        drawSelection:function() {
             var center = getCenterOfUnit(this);
             game.foregroundContext.strokeStyle = game.selectionBorderColor;
             game.foregroundContext.lineWidth = 1;

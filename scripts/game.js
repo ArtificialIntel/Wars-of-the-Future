@@ -1,4 +1,4 @@
-$(window).load(function(){
+$(window).load(function() {
             game.init();
     });
 
@@ -34,17 +34,17 @@ var game = {
         game.canvasHeight = game.backgroundCanvas.height;
     },
 
-    load:function(){
+    load:function() {
         game.backgroundImage = loader.loadImage("images/background.png");
 
-        if(loader.loaded){
+        if(loader.loaded) {
             game.startGame();
         } else {
             loader.onload = game.startGame();
         }
     },
 
-    startGame:function(){
+    startGame:function() {
         $('.layer').hide();
         $('#gameScreen').show();
 
@@ -55,16 +55,16 @@ var game = {
     },
 
     // Called every animationTimeout ms
-    animationLoop:function(){
+    animationLoop:function() {
         // Process orders for any item that handles it
-        for (var i = game.items.length - 1; i >= 0; i--){
-            if(game.items[i].processOrders){
+        for (var i = game.items.length - 1; i >= 0; i--) {
+            if (game.items[i].processOrders) {
                 game.items[i].processOrders();
             }
         };
 
         // Animate each of the elements within the game
-        for (var i = game.items.length - 1; i >= 0; i--){
+        for (var i = game.items.length - 1; i >= 0; i--) {
             game.items[i].animate();
         };
 
@@ -76,7 +76,7 @@ var game = {
     },
 
     // Called by browser
-    drawingLoop:function(){
+    drawingLoop:function() {
         if (game.refreshBackground) {
             game.backgroundContext.drawImage(game.currentMapImage, game.offsetX, game.offsetY, game.canvasWidth, game.canvasHeight, 0, 0, game.canvasWidth, game.canvasHeight);
             game.refreshBackground = false;
@@ -193,7 +193,7 @@ var game = {
         }
     },
 
-    getItemByUid:function(uid){
+    getItemByUid:function(uid) {
         for (var i = game.items.length - 1; i >= 0; i--){
             if(game.items[i].uid == uid){
                 return game.items[i];
@@ -217,6 +217,10 @@ var game = {
         //if uid is a valid item, set the order for the item
         if (item) {
             item.orders = $.extend([],details);
+            if (item.orders.type == "move") {
+                // save position before the move
+                item.positionBeforeMove = {x:item.x,y:item.y};
+            }
         }
     },
 
@@ -244,5 +248,15 @@ var game = {
         messagePlaceholder.style.display = "block";
 
         window.setTimeout("document.getElementById('message').style.display='none'", time);
+    },
+
+    getItemOnSquare:function(square) {
+        for (var i = game.items.length - 1; i >= 0; i--) {
+            if (game.items[i].x == square.x && game.items[i].y == square.y) {
+                return game.items[i];
+            }
+        }
+
+        return false;
     }
 }

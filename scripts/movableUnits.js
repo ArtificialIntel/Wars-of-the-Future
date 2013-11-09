@@ -61,10 +61,11 @@ var movableUnits = {
         },
 
         processOrders:function() {
-            this.lastMovementX = 0;
-            this.lastMovementY = 0;
             switch (this.orders.type){
                 case "move":
+                    this.lastMovementX = 0;
+                    this.lastMovementY = 0;
+
                     if (this.hasMoved) {
                         game.displayMessage("Unit has already been moved", 2500, "error");
                         this.orders = {type:"stand"};
@@ -73,6 +74,21 @@ var movableUnits = {
 
                     if (!isSquareInMovementRange(this, this.orders.to.x, this.orders.to.y)) {
                         game.displayMessage("Can not move this far", 2500, "error");
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
+                    if (this.orders.to.x == this.positionBeforeMove.x &&
+                        this.orders.to.y == this.positionBeforeMove.y)
+                    {
+                        game.displayMessage("I'm already here!", 2500);
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
+                    var unit = game.getItemOnSquare(this.orders.to);
+                    if (unit && unit.uid != this.uid) {
+                        game.displayMessage("That square is occupied.", 2500, "error");
                         this.orders = {type:"stand"};
                         return;
                     }
