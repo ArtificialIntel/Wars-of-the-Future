@@ -10,7 +10,7 @@
         <script src="scripts/movement.js"></script>
         <script src="scripts/maps.js"></script>
         <script src="scripts/singleplayer.js"></script>
-
+        <script src="scripts/selection.js"></script>
         <script src="scripts/staticUnits.js"></script>
         <script src="scripts/dynamicUnits.js"></script>
         <script src="scripts/movableUnits.js"></script>
@@ -22,21 +22,57 @@
     <body oncontextmenu="return false;">
         <div id="container">
             <div id="menu" class="layer">
-                <p onclick='singleplayer.start();'>Singleplayer</p>
+                <p onclick='singleplayer.start();'>singleplayer</p>
                 <p>Multiplayer(coming soon)</p>
             </div>
-
-            <div id="setupScreen" class="layer">
-                <input type="button" id="startGame" onclick="singleplayer.play();" value="Play"/>
+            
+            <div id="setupScreen" class="layer" align=center>
+                <marquee  behavior="scroll" direction="up" scrollamount="1">Long time ago...</marquee>
+                <FORM id="selectionForm">
+                <TABLE BORDER="1" CellSpacing="5" CellPadding="6" align="center">
+					<TR>
+					  <TD><div align="center">Movable Unit:</div></TD>
+					  <TD><INPUT TYPE="radio" NAME="moveableUnit" VALUE="Horseman"  label= "Horseman" onClick="">Horseman</TD>
+					  <TD><INPUT TYPE="radio" NAME="moveableUnit" VALUE="Sniper"  onClick="" CHECKED>Sniper</TD>
+					  <TD><INPUT TYPE="radio" NAME="moveableUnit" VALUE="Troll"  onClick="">Troll</TD>
+					</TR>
+					<TR>
+					  <TD><div align="center">Dynamic Unit:</div></TD>
+					  <TD><INPUT TYPE="radio" NAME="dynamicUnit" VALUE="Dragon"  onClick="" CHECKED>Dragon</TD>
+					  <TD><INPUT TYPE="radio" NAME="dynamicUnit" VALUE="Hamster"  onClick="">Hamster</TD>
+					  <TD><INPUT TYPE="radio" NAME="dynamicUnit" VALUE="Turtle"  onClick="">Turtle</TD>
+					</TR>
+					<TR>
+					  <TD><div align="center">Static Unit:</div></TD>
+					  <TD><INPUT TYPE="radio" NAME="staticUnit" VALUE="Gym"  onClick="">Gym</TD>
+					  <TD><INPUT TYPE="radio" NAME="staticUnit" VALUE="Armoury"  onClick="">Armoury</TD>
+					  <TD><INPUT TYPE="radio" NAME="staticUnit" VALUE="Tower"  onClick=""CHECKED>Tower</TD>
+					</TR>
+					</TABLE>
+				<input TYPE="button" value="Submit Selection" onClick="singleplayer.selectUnits()">
+                </FORM>
             </div>
-
             <div id="loadingScreen" class="layer">
                 <div id="loadingMessage">Loading</div>
             </div>
 
             <div id="gameScreen" class="layer">
+                
                 <canvas id="foregroundCanvas" width="480" height="480"></canvas>
                 <canvas id="backgroundCanvas" width="480" height="480"></canvas>
+                <div id="menubar">
+                	<ul id="menubarlist">
+                        <li>
+                            <p id="1" class="statusbar-text">Turn: 0</p>
+                        </li>
+                        <li>
+                            <p id="2" class="statusbar-text"></p>
+                        <li>
+                            <a id="end-3" onclick="game.nextTurn();">End Turn</a>
+                        </li>
+                    </ul>
+                	<input TYPE="button" id="menu" onclick="singleplayer.exit();" value="Exit"/>
+                </div>
                 <div id="statusbar">
                     <ul id="statuslist">
                         <li>

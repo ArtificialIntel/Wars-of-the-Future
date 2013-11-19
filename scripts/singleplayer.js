@@ -57,7 +57,7 @@ var singleplayer = {
 	    $("#setupScreen").show();
 	},
 
-    play:function(){
+    play:function(m,d,s){
         game.animationLoop();
         game.animationInterval = setInterval(game.animationLoop,game.animationTimeout);
         game.startGame();
@@ -66,5 +66,33 @@ var singleplayer = {
     sendCommand:function(uid, details){
         // TODO remove this later if not needed
         game.processCommand(uid, details);
-    }
+    },
+    selectUnits:function(){
+		var form = document.getElementById("selectionForm");
+	    var message="Here:\n";
+		form.action = "index.html";
+
+	    for (var i = 0; i < form.moveableUnit.length; i++){
+	      if (form.moveableUnit[i].checked){
+	         message = message + "\n"+i+": " + form.moveableUnit[i].value;
+	         mUnit = i;
+	      }
+	   }
+	   for (var i = 0; i < form.dynamicUnit.length; i++){
+	      if (form.dynamicUnit[i].checked){
+	         message = message + "\n" +i+": " + form.dynamicUnit[i].value;
+	         dUnit = i;
+	
+	      }
+	   }
+	   for (var i = 0; i < form.staticUnit.length; i++){
+	      if (form.staticUnit[i].checked){
+	         message = message + "\n" +i+": " + form.staticUnit[i].value;
+		     sUnit = i;
+	
+	      }
+	   }
+	   alert(message);
+	   this.play(mUnit,dUnit,sUnit);
+	}
 };
