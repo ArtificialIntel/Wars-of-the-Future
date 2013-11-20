@@ -17,7 +17,7 @@ var dynamicUnits = {
             spriteImages:[
                 {name:"stand",count:1,directions:8}
             ],
-        }        
+        }
     },
     defaults:{
         type:"dynamicUnits",
@@ -131,9 +131,8 @@ var dynamicUnits = {
 
             if (this.selected){
                 this.drawSelection();
+                this.drawLifeBar();
             }
-
-            this.drawLifeBar();
             var colorIndex = (this.team == "A") ? 0 : 1;
             var colorOffset = colorIndex * this.pixelHeight;
             game.foregroundContext.drawImage(this.spriteSheet, this.imageOffset * this.pixelWidth, colorOffset,

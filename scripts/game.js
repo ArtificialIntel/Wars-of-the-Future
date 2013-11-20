@@ -2,7 +2,6 @@ $(window).load(function() {
             game.init();
     });
 
-
 var game = {
     state:"intro",
     // Size of one grid square in px
@@ -14,8 +13,8 @@ var game = {
     offsetX:0,
     offsetY:0,
     // Time in ms until animationloop is called
+    
     animationTimeout:100,
-
     init:function() {
         loader.init();
         mouse.init();
@@ -46,7 +45,7 @@ var game = {
 
     startGame:function() {
         $('.layer').hide();
-        $('#gameScreen').show();
+        $('#gameScreen').show('slow');
 
         game.running = true;
         game.refreshBackground = true;
@@ -281,4 +280,5 @@ var game = {
 
         return false;
     }
+    
 }
