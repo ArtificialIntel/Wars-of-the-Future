@@ -82,6 +82,21 @@ var game = {
             game.refreshBackground = false;
         }
 
+        // Check the time since the game was animated and calculate a linear interpolation factor (-1 to 0)
+        // since drawing will happen more often than animation
+        // -1 means draw unit at previous location
+        // 0 means draw unit at next location
+        game.lastDrawTime = (new Date()).getTime();
+           if (game.lastAnimationTime) {
+               game.drawingInterpolationFactor = (game.lastDrawTime - game.lastAnimationTime) / game.animationTimeout - 1;
+               if (game.drawingInterpolationFactor > 0) {
+                   game.drawingInterpolationFactor = 0;
+               }
+           } else {
+            game.drawingInterpolationFactor = -1;
+
+        }
+
         // Clear foreground canvas
         game.foregroundContext.clearRect(0, 0, game.canvasWidth, game.canvasHeight);
 
@@ -94,8 +109,12 @@ var game = {
         }
 
         // Start drawing the foreground elements
-        for (var i = game.sortedItems.length - 1; i >= 0; i--) {
+        for (var i = 0; i < game.sortedItems.length; i++) {
             game.sortedItems[i].draw();
+        };
+
+        for (var i = 0; i < game.attacks.length; i++) {
+            game.attacks[i].draw();
         };
 
         // Call the drawing loop for the next frame using request animation frame
@@ -115,6 +134,7 @@ var game = {
         game.triggeredEvents = [];
         game.selectedItem = undefined;
         game.sortedItems = [];
+        game.attacks = [];
     },
 
     add:function(itemDetails) {
@@ -133,9 +153,9 @@ var game = {
 
     remove:function(item) {
         item.selected = false;
-        game.state = "intro";
         if(game.selectedItem.uid == item.uid) {
             game.selectedItem = undefined;
+            game.state = "intro";
         }
 
         // Remove item from the items array
@@ -233,6 +253,8 @@ var game = {
                 game.items[i].hasMoved = false;
             }
         }
+
+        this.clearSelection();
     },
 
     // Displays a message for 'time' in milliseconds

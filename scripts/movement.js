@@ -81,7 +81,7 @@ function moveUnitToSquare(unit, x, y) {
 
     var centerOfUnit = getCenterOfUnit(unit);
 
-    // Stop when the center of the unit is within squareSize / 4 pixels
+    // Stop when the center of the unit is within squareSize / 5 pixels
     // of the destination square's center
     if (Math.abs(centerOfUnit.x - destinationCenter.x) < game.squareSize / 5 && Math.abs(centerOfUnit.y - destinationCenter.y) < game.squareSize / 6) {
         return true;

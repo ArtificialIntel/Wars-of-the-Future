@@ -69,7 +69,7 @@ var loader = {
 // Loads an item(unit) including sprites
 function loadItem(name){
     var item = this.units[name];
-    if(item.spriteArray){
+    if (item.spriteArray) {
         // item was already loaded
         return;
     }
@@ -77,10 +77,10 @@ function loadItem(name){
     item.spriteArray = [];
     item.spriteCount = 0;
 
-    for (var i=0; i < item.spriteImages.length; i++){
+    for (var i=0; i < item.spriteImages.length; i++) {
         var constructImageCount = item.spriteImages[i].count;
         var constructDirectionCount = item.spriteImages[i].directions;
-        if (constructDirectionCount){
+        if (constructDirectionCount) {
             for (var j=0; j < constructDirectionCount; j++) {
                 var constructImageName = item.spriteImages[i].name +"-"+j;
                 item.spriteArray[constructImageName] = {
@@ -99,18 +99,19 @@ function loadItem(name){
             };
             item.spriteCount += constructImageCount;
         }
-
     }
+
+    if(item.attack) attacks.load(item.attack);
 }
 
 function addItem(details){
     var item = {};
     var name = details.name;
     // Apply defaults for entity type
-    $.extend(item,this.defaults);
+    $.extend(item, this.defaults);
     // Add the properties specific for the unit
-    $.extend(item,this.units[name]);
+    $.extend(item, this.units[name]);
     item.life = item.hitPoints;
-    $.extend(item,details);
+    $.extend(item, details);
     return item;
 }
