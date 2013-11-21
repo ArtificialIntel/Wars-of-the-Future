@@ -9,7 +9,7 @@ var movableUnits = {
             // towards top left
             pixelOffsetX:8,
             pixelOffsetY:50,
-            weaponType:"heatseeker",
+            attack:"fireball",
             radius:18,
             sight:4,
             isFlying:true,
@@ -31,6 +31,7 @@ var movableUnits = {
         type:"movableUnits",
         movable:true,
         hasMoved:false,
+        hasAttacked:false,
         animationIndex:0,
         direction:0,
         directions:8,
@@ -50,10 +51,10 @@ var movableUnits = {
             switch (this.action){
                 case "stand":
                     var direction = wrapDirection(Math.round(this.direction), this.directions);
-                    this.imageList = this.spriteArray["fly-"+ direction];
+                    this.imageList = this.spriteArray["fly-" + direction];
                     this.imageOffset = this.imageList.offset + this.animationIndex;
                     this.animationIndex++;
-                    if (this.animationIndex>=this.imageList.count){
+                    if (this.animationIndex >= this.imageList.count){
                          this.animationIndex = 0;
                     }
                 break;
@@ -67,13 +68,13 @@ var movableUnits = {
                     this.lastMovementY = 0;
 
                     if (this.hasMoved) {
-                        game.displayMessage("Unit has already been moved", 2500, "error");
+                        game.displayMessage("Sorry, I've moved already this turn.", 2500, "error");
                         this.orders = {type:"stand"};
                         return;
                     }
 
                     if (!isSquareInMovementRange(this, this.orders.to.x, this.orders.to.y)) {
-                        game.displayMessage("Can not move this far", 2500, "error");
+                        game.displayMessage("I can not move this far", 2500, "error");
                         this.orders = {type:"stand"};
                         return;
                     }
@@ -98,6 +99,34 @@ var movableUnits = {
                         this.hasMoved = true;
                         this.orders = {type:"stand"};
                     }
+                    break;
+                case "attack":
+                    if (this.orders.to.lifeCode == "dead") {
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
+                    if (this.hasAttacked) {
+                        game.displayMessage("I've already attacked this turn.", 2500, "error");
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
+                    var newDirection = findFiringAngle(this.orders.to, this, this.directions);
+                    var angleRadians = -(Math.round(this.direction) / this.directions) * 2 * Math.PI;
+                    var bulletX = this.x - (this.radius * Math.sin(angleRadians) / game.squareSize);
+                    var bulletY = this.y - (this.radius * Math.cos(angleRadians) / game.squareSize) - this.pixelShadowHeight / game.squareSize;
+                    var bullet = game.add(
+                                    {
+                                        name:this.attack,
+                                        type:"attacks",
+                                        x:bulletX,
+                                        y:bulletY,
+                                        direction:newDirection,
+                                        target:this.orders.to
+                                    });
+                    this.orders = {type:"stand"};
+                    this.hasAttacked = true;
                     break;
             }
         },
@@ -149,8 +178,9 @@ var movableUnits = {
 
             if (this.selected) {
                 this.drawSelection();
-                this.drawLifeBar();
             }
+
+            this.drawLifeBar();
             var colorIndex = (this.team == "A") ? 0 : 1;
             var colorOffset = colorIndex * this.pixelHeight;
             var shadowOffset = this.pixelHeight * 2; // The aircraft shadow is on the second row of the sprite sheet

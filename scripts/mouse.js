@@ -68,10 +68,10 @@ var mouse = {
     },
 
     mouseDownHandler:function(ev) {
-        if(ev.which == 1){// Left click
+        if (ev.which == 1) {// Left click
             var clickedItem = mouse.itemUnderMouse();
 
-            if (clickedItem){// Player clicked on sth
+            if (clickedItem) {// Player clicked on sth
                 if (clickedItem.type != "terrain") {
                     if (clickedItem.team == game.team) {
                         // Player clicked on friendly unit
@@ -81,6 +81,7 @@ var mouse = {
                         // TODO handle attack here
                         // 1. move to square in range
                         // 2. attack unit
+                        game.sendCommand(game.selectedItem.uid, {type:"attack", to:clickedItem});
                     }
                 }
             } else if (game.selectedItem &&
