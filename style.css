@@ -54,37 +54,7 @@
 #gameScreen #backgroundCanvas {
     z-index:0;
 }
-#meunbar {
-    width:480px;
-    background: none repeat scroll 0% 0% #404040;
-    position:absolute;
-    top:480px;
-    z-index:9999;
-}
 
-#meunlist {
-    list-style-type:none;
-    margin:0px;
-    padding:0px;
-}
-
-#meunlist li {
-    display:inline-block;
-    color:white;
-    vertical-align:middle;
-    text-decoration:none;
-}
-
-#meunlist li:last-child {
-    float:right;
-    padding-right:5px;
-}
-
-.meunbar-text {
-    display:block;
-    margin:0;
-    padding: 0px 15px;
-}
 #statusbar {
     width:480px;
     background: none repeat scroll 0% 0% #404040;

@@ -67,7 +67,6 @@ var singleplayer = {
         // TODO remove this later if not needed
         game.processCommand(uid, details);
     },
-    
     selectUnits:function(){
 		var form = document.getElementById("selectionForm");
 	    var message="Here:\n";
@@ -93,7 +92,7 @@ var singleplayer = {
 	
 	      }
 	   }
-	   //(message);
+	   alert(message);
 	   this.play(mUnit,dUnit,sUnit);
 	}
 };

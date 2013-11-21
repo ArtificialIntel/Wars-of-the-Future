@@ -1,7 +1,7 @@
 var dynamicUnits = {
     units:{
-        "transport1":{
-            name:"transport1",
+        "transport":{
+            name:"transport",
             pixelWidth:31,
             pixelHeight:30,
             // offset from actual position
@@ -17,47 +17,7 @@ var dynamicUnits = {
             spriteImages:[
                 {name:"stand",count:1,directions:8}
             ],
-<<<<<<< HEAD
-        }, 
-        "transport2":{
-            name:"transport2",
-            pixelWidth:31,
-            pixelHeight:30,
-            // offset from actual position
-            // towards top left
-            pixelOffsetX:3,
-            pixelOffsetY:3,
-            radius:15,
-            animationSpeed:15,
-            speed:3,
-            cost:400,
-            hitPoints:100,
-            turnSpeed:2,
-            spriteImages:[
-                {name:"stand",count:1,directions:8}
-            ],
-        },  
-        "transport3":{
-            name:"transport3",
-            pixelWidth:31,
-            pixelHeight:30,
-            // offset from actual position
-            // towards top left
-            pixelOffsetX:3,
-            pixelOffsetY:3,
-            radius:15,
-            animationSpeed:15,
-            speed:3,
-            cost:400,
-            hitPoints:100,
-            turnSpeed:2,
-            spriteImages:[
-                {name:"stand",count:1,directions:8}
-            ],
-        }         
-=======
         }
->>>>>>> 6b112cebc249f74648a8866a6c60365c13122c90
     },
     defaults:{
         type:"dynamicUnits",
