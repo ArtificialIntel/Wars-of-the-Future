@@ -17,6 +17,7 @@ var dynamicUnits = {
             spriteImages:[
                 {name:"stand",count:1,directions:8}
             ],
+<<<<<<< HEAD
         }, 
         "transport2":{
             name:"transport2",
@@ -54,11 +55,15 @@ var dynamicUnits = {
                 {name:"stand",count:1,directions:8}
             ],
         }         
+=======
+        }
+>>>>>>> 6b112cebc249f74648a8866a6c60365c13122c90
     },
     defaults:{
         type:"dynamicUnits",
         movable:true,
         hasMoved:false,
+        hasAttacked:false,
         animationIndex:0,
         direction:0,
         action:"stand",
@@ -167,8 +172,9 @@ var dynamicUnits = {
 
             if (this.selected){
                 this.drawSelection();
-                this.drawLifeBar();
             }
+
+            this.drawLifeBar();
             var colorIndex = (this.team == "A") ? 0 : 1;
             var colorOffset = colorIndex * this.pixelHeight;
             game.foregroundContext.drawImage(this.spriteSheet, this.imageOffset * this.pixelWidth, colorOffset,
