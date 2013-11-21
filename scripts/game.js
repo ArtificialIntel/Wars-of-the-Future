@@ -13,8 +13,8 @@ var game = {
     offsetX:0,
     offsetY:0,
     // Time in ms until animationloop is called
-    
     animationTimeout:100,
+
     init:function() {
         loader.init();
         mouse.init();
@@ -72,6 +72,8 @@ var game = {
         game.sortedItems.sort(function(a,b){
             return b.y-a.y + ((b.y==a.y)?(a.x-b.x):0);
           });
+
+        game.lastAnimationTime = (new Date()).getTime();
     },
 
     // Called by browser
@@ -83,17 +85,17 @@ var game = {
 
         // Check the time since the game was animated and calculate a linear interpolation factor (-1 to 0)
         // since drawing will happen more often than animation
-        // -1 means draw unit at previous location
-        // 0 means draw unit at next location
+        // 0 means draw unit at previous location
+        // 1 means draw unit at next location
+        // TODO actually use this
         game.lastDrawTime = (new Date()).getTime();
-           if (game.lastAnimationTime) {
-               game.drawingInterpolationFactor = (game.lastDrawTime - game.lastAnimationTime) / game.animationTimeout - 1;
-               if (game.drawingInterpolationFactor > 0) {
-                   game.drawingInterpolationFactor = 0;
-               }
-           } else {
-            game.drawingInterpolationFactor = -1;
-
+        if (game.lastAnimationTime) {
+            game.interpolationFactor = (game.lastDrawTime - game.lastAnimationTime) / game.animationTimeout;
+            if (game.interpolationFactor > 1) {
+                game.interpolationFactor = 1;
+            }
+        } else {
+            game.interpolationFactor = 0;
         }
 
         // Clear foreground canvas
@@ -281,5 +283,4 @@ var game = {
 
         return false;
     }
-    
 }

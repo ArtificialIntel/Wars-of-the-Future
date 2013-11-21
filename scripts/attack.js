@@ -2,7 +2,7 @@ var attacks = {
     units:{
         "fireball":{
             name:"fireball",
-            speed:60,
+            speed:20,
             range:8,
             damage:10,
             spriteImages:[
@@ -13,7 +13,6 @@ var attacks = {
     },
     defaults:{
         type:"attacks",
-        distanceTravelled:0,
         animationIndex:0,
         direction:0,
         directions:8,
@@ -26,34 +25,29 @@ var attacks = {
         selected:false,
         selectable:false,
         orders:{type:"fire"},
-        moveTo:function(destination) {
+        moveTo:function(target) {
+            var centerOfUnit = getCenterOfUnit(target);
+            var dx = centerOfUnit.x / game.squareSize - this.x;
+            var dy = centerOfUnit.y / game.squareSize - this.y;
             var movement = this.speed * game.speedAdjustmentFactor;
-            this.distanceTravelled += movement;
 
-            var angleRadians = -((this.direction) / this.directions) * 2 * Math.PI;
-
-            this.lastMovementX = - (movement * Math.sin(angleRadians));
-            this.lastMovementY = - (movement * Math.cos(angleRadians));
-            this.x = (this.x + this.lastMovementX);
-            this.y = (this.y + this.lastMovementY);
+            this.x = this.x + dx * movement;
+            this.y = this.y + dy * movement;
         },
 
         reachedTarget:function() {
-            var item = this.target;
-            if (item.type == "staticUnits") {
-                return (item.x <= this.x && item.x >= this.x - item.baseWidth
-                        / game.squareSize && item.y<= this.y && item.y >= this.y - item.baseHeight / game.squareSize);
-            } else if (item.isFlying == true) {
-                return (Math.pow(item.x - this.x, 2) + Math.pow(item.y - (this.y + item.pixelShadowHeight / game.squareSize), 2)
-                       < Math.pow((item.radius) / game.squareSize, 2));
-           } else {
-                return (Math.pow(item.x - this.x, 2) + Math.pow(item.y - this.y, 2) < Math.pow((item.radius) / game.squareSize, 2));
-           }
+            var centerOfBullet = getCenterOfUnit(this);
+            var centerOfTarget = getCenterOfUnit(this.target);
+            if (Math.abs(centerOfBullet.x - centerOfTarget.x) < game.squareSize / 3 &&
+                Math.abs(centerOfBullet.y - centerOfTarget.y) < game.squareSize / 3)
+            {
+                    return true;
+            }
+
+            return false;
         },
 
         processOrders:function() {
-            this.lastMovementX = 0;
-            this.lastMovementY = 0;
             switch (this.orders.type) {
                 case "fire":
                     // Move towards destination and stop when close by or if travelled past range
@@ -89,11 +83,15 @@ var attacks = {
         },
 
         draw:function() {
-            var x = (this.x * game.squareSize) - game.offsetX - this.pixelOffsetX
-                    + this.lastMovementX * game.drawingInterpolationFactor * game.squareSize;
-            var y = (this.y * game.squareSize) - game.offsetY - this.pixelOffsetY + this.lastMovementY * game.drawingInterpolationFactor * game.squareSize;
+            var x = this.x * game.squareSize - this.pixelOffsetX;
+            var y = this.y * game.squareSize - this.pixelOffsetY;
             var colorOffset = 0;
-            game.foregroundContext.drawImage(this.spriteSheet, this.imageOffset * this.pixelWidth, colorOffset, this.pixelWidth, this.pixelHeight, x, y, this.pixelWidth, this.pixelHeight);
+            game.foregroundContext.drawImage(this.spriteSheet, this.imageOffset * this.pixelWidth,
+                                             colorOffset, this.pixelWidth, this.pixelHeight,
+                                             x, y, this.pixelWidth, this.pixelHeight);
+
+            this.drawingX = this.x * game.squareSize;
+            this.drawingY = this.y * game.squareSize;
         }
     },
     load:loadItem,

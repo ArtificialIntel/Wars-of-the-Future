@@ -3,7 +3,7 @@ function findAngle(object, unit, directions) {
     var dx = (object.x) - (centerOfUnit.x);
     var dy = (object.y) - (centerOfUnit.y);
     //Convert Arctan to value between (0 - 7)
-    var angle = wrapDirection(directions / 2 - (Math.atan2(dx,dy) *directions / (2*Math.PI)), directions);
+    var angle = wrapDirection(directions / 2 - (Math.atan2(dx, dy) * directions / (2 * Math.PI)), directions);
     return angle;
 }
 
@@ -81,9 +81,11 @@ function moveUnitToSquare(unit, x, y) {
 
     var centerOfUnit = getCenterOfUnit(unit);
 
-    // Stop when the center of the unit is within squareSize / 5 pixels
+    // Stop when the center of the unit is within squareSize / 6 pixels
     // of the destination square's center
-    if (Math.abs(centerOfUnit.x - destinationCenter.x) < game.squareSize / 5 && Math.abs(centerOfUnit.y - destinationCenter.y) < game.squareSize / 6) {
+    if (Math.abs(centerOfUnit.x - destinationCenter.x) < game.squareSize / 6 &&
+        Math.abs(centerOfUnit.y - destinationCenter.y) < game.squareSize / 6) 
+    {
         return true;
     }
 
@@ -91,6 +93,8 @@ function moveUnitToSquare(unit, x, y) {
     return false;
 }
 
+// Returns the center of given unit
+// in absolute pixels NOT in terms of squareSize
 function getCenterOfUnit(unit) {
     var flightHeight = 0;
     if(unit.isFlying) {
