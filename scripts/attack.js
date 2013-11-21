@@ -40,7 +40,7 @@ var attacks = {
 
         reachedTarget:function() {
             var item = this.target;
-            if (item.type == "buildings") {
+            if (item.type == "staticUnits") {
                 return (item.x <= this.x && item.x >= this.x - item.baseWidth
                         / game.squareSize && item.y<= this.y && item.y >= this.y - item.baseHeight / game.squareSize);
             } else if (item.isFlying == true) {

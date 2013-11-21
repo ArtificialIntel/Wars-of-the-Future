@@ -28,6 +28,7 @@ var staticUnits = {
     defaults:{
         type:"staticUnits",
         movable:false,
+        hasAttacked:false,
         animationIndex:0,
         direction:0,
         orders:{ type:"stand" },

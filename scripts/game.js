@@ -251,6 +251,7 @@ var game = {
             if(game.items[i].movable) {
                 game.items[i].hasMoved = false;
             }
+            game.items[i].hasAttacked = false;
         }
 
         this.clearSelection();

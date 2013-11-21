@@ -31,6 +31,7 @@ var movableUnits = {
         type:"movableUnits",
         movable:true,
         hasMoved:false,
+        hasAttacked:false,
         animationIndex:0,
         direction:0,
         directions:8,
@@ -105,6 +106,12 @@ var movableUnits = {
                         return;
                     }
 
+                    if (this.hasAttacked) {
+                        game.displayMessage("I've already attacked this turn.", 2500, "error");
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
                     var newDirection = findFiringAngle(this.orders.to, this, this.directions);
                     var angleRadians = -(Math.round(this.direction) / this.directions) * 2 * Math.PI;
                     var bulletX = this.x - (this.radius * Math.sin(angleRadians) / game.squareSize);
@@ -119,6 +126,7 @@ var movableUnits = {
                                         target:this.orders.to
                                     });
                     this.orders = {type:"stand"};
+                    this.hasAttacked = true;
                     break;
             }
         },
