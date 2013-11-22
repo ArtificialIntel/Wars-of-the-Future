@@ -7,7 +7,7 @@ dynamicUnit.y = Math.floor(Math.random()*(18-dynamicUnit.x));
 movableUnit.x = Math.floor(Math.random()*18);
 movableUnit.y = Math.floor(Math.random()*(18-movableUnit.x));
 
-//Static unit:
+//Static unit
 
 if (staticUnit.alive)
 {
@@ -44,7 +44,7 @@ if (staticUnit.alive)
 	}
 }
 
-//Movable Unit:
+//Movable Unit
 
 if (movableUnit.alive)
 {
@@ -52,7 +52,7 @@ if (movableUnit.alive)
 	distances=[Math.abs(this.x-myStaticUnit.x)+Math.abs(this.y-myStaticUnit.y), Math.abs(this.x-myDynamicUnit.x)+Math.abs(this.y-myDynamicUnit.y), Math.abs(this.x-enemyStaticUnit.x)+Math.abs(this.y-enemyStaticUnit.y), Math.abs(this.x-enemyDynamicUnit.x)+Math.abs(this.y-enemyDynamicUnit.y), Math.abs(this.x-enemyMovableUnit.x)+Math.abs(this.y-enemyMovableUnit.y)];
 	
 	var priority = new Array();
-	priority.push([4/distances[0],"defendSU"]); //add modifier
+	priority.push([5/distances[0],"defendSU"]); //add modifier
 	priority.push([4/distances[1],"defendDU"]); //add modifier
 	priority.push([3/distances[2],"attackSU"]); //add modifier
 	priority.push([2/distances[3],"attackDU"]); //add modifier
@@ -79,7 +79,7 @@ if (movableUnit.alive)
 				continue;
 			}
 		}
-		if (currentTask == "defendDU" && dynamicUnit.state = "inactive")
+		if (currentTask == "defendDU" && dynamicUnit.state == "inactive")
 		{
 			if (dynamicUnit.underAttack)
 			{
