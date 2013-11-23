@@ -92,7 +92,7 @@ var singleplayer = {
 	
 	      }
 	   }
-	   alert(message);
-	   this.play(mUnit,dUnit,sUnit);
+	   //alert(message);
+	   singleplayer.play(mUnit,dUnit,sUnit);
 	}
 };

@@ -246,6 +246,7 @@ var game = {
     },
 
     nextTurn:function() {
+    	game.dUnitAi();
         this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
 
@@ -257,6 +258,38 @@ var game = {
         }
 
         this.clearSelection();
+    },
+    dUnitAi:function(){
+	    var unit = game.getDyanmicUnit();
+	    //supportive role
+	    //go to moveable unit
+	    var mUnit = game.getMovableUnit();
+	    game.displayMessage(Math.min(3,mUnit.x-unit.x), 2500, "error");
+
+	    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x+Math.min(3,mUnit.x-unit.x), y:unit.y+Math.min(3,mUnit.y-unit.y+1)}});
+
+    },
+    getDyanmicUnit:function(){
+	    for (var i = game.items.length - 1; i >= 0; i--) {
+            var item = game.items[i];
+		    if (item.type=="dynamicUnits") {
+	                if(item.lifeCode != "dead")
+	                {
+	                    return item;
+	                }
+	            }
+	    }
+    },
+    getMovableUnit: function(){
+	    for (var i = game.items.length - 1; i >= 0; i--) {
+            var item = game.items[i];
+		    if (item.type=="movableUnits") {
+                if(item.lifeCode != "dead")
+                {
+                    return item;
+                }
+            }
+	    }
     },
     
 
