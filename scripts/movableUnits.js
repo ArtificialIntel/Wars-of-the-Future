@@ -10,8 +10,8 @@ var movableUnits = {
             pixelOffsetX:8,
             pixelOffsetY:50,
             attack:"fireball",
+            range:5,
             radius:18,
-            sight:4,
             isFlying:true,
             canAttack:true,
             canAttackLand:true,
@@ -108,8 +108,15 @@ var movableUnits = {
                         return;
                     }
 
+
                     if (this.hasAttacked) {
                         game.displayMessage("I've already attacked this turn.", 2500, "error");
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
+                    if (!isSquareInRange(this, this.orders.to.x, this.orders.to.y)) {
+                        game.displayMessage("That unit is out of range", 2500, "error");
                         this.orders = {type:"stand"};
                         return;
                     }

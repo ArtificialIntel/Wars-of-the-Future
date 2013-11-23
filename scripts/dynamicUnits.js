@@ -12,6 +12,7 @@ var dynamicUnits = {
             radius:15,
             animationSpeed:15,
             speed:3,
+            range:3,
             cost:400,
             hitPoints:100,
             turnSpeed:2,
@@ -22,7 +23,7 @@ var dynamicUnits = {
     },
     defaults:{
         type:"dynamicUnits",
-        movable:true,
+        movable:false,
         hasMoved:false,
         hasAttacked:false,
         animationIndex:0,
@@ -117,6 +118,12 @@ var dynamicUnits = {
 
                     if (this.hasAttacked) {
                         game.displayMessage("I've already attacked this turn.", 2500, "error");
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
+                    if (!isSquareInRange(this, this.orders.to.x, this.orders.to.y)) {
+                        game.displayMessage("That unit is out of range", 2500, "error");
                         this.orders = {type:"stand"};
                         return;
                     }

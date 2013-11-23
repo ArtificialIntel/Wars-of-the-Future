@@ -129,3 +129,11 @@ function getCenterOfUnitDrawing(unit) {
         y:unit.drawingY + unit.pixelHeight / 2
     };
 }
+
+function isSquareInRange(unit, x, y) {
+    if (Math.abs(unit.x - x) > unit.range || Math.abs(unit.y - y) > unit.range) {
+        return false;
+    }
+
+    return true;
+}
