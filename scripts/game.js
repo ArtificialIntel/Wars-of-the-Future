@@ -341,7 +341,7 @@ var game = {
             }
 	    }
     },
-    
+
 
     // Displays a message for 'time' in milliseconds
     displayMessage:function(message, time, type) {

@@ -39,6 +39,7 @@ var movableUnits = {
         selected:false,
         selectable:true,
         orders:{type:"stand"},
+
         animate:function(){
             if (this.life > 20) {
                 this.lifeCode = "healthy";

@@ -26,7 +26,7 @@ var attacks = {
         selectable:false,
         orders:{type:"fire"},
         moveTo:function(target) {
-            var centerOfUnit = getCenterOfUnit(target);
+            var centerOfUnit = getCenterOfUnitDrawing(target);
             var dx = centerOfUnit.x / game.squareSize - this.x;
             var dy = centerOfUnit.y / game.squareSize - this.y;
             var movement = this.speed * game.speedAdjustmentFactor;
@@ -36,8 +36,8 @@ var attacks = {
         },
 
         reachedTarget:function() {
-            var centerOfBullet = getCenterOfUnit(this);
-            var centerOfTarget = getCenterOfUnit(this.target);
+            var centerOfBullet = getCenterOfUnitDrawing(this);
+            var centerOfTarget = getCenterOfUnitDrawing(this.target);
             if (Math.abs(centerOfBullet.x - centerOfTarget.x) < game.squareSize / 3 &&
                 Math.abs(centerOfBullet.y - centerOfTarget.y) < game.squareSize / 3)
             {
@@ -52,7 +52,7 @@ var attacks = {
                 case "fire":
                     // Move towards destination and stop when close by or if travelled past range
                     var reachedTarget = this.reachedTarget();
-                    if(reachedTarget) {
+                    if (reachedTarget) {
                         this.target.life -= this.damage;
                         this.orders = {type:"explode"};
                         this.action = "explode";
@@ -119,4 +119,13 @@ function findFiringAngle(target, source, directions) {
     //Convert Arctan to value between (0 - 7)
     var angle = wrapDirection(directions / 2 - (Math.atan2(dx, dy) * directions / (2 * Math.PI)), directions);
     return angle;
+}
+
+// Returns the center of given unit's drawing
+// in absolute pixels NOT in terms of squareSize
+function getCenterOfUnitDrawing(unit) {
+    return {
+        x:unit.drawingX + unit.pixelWidth / 2,
+        y:unit.drawingY + unit.pixelHeight / 2
+    };
 }
