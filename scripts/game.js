@@ -261,7 +261,7 @@ var game = {
     },
     dUnitAi:function(){
     	if(game.isNearEnemy()==true){
-	    	alert("detected")
+/* 	    	alert("detected") */
     	}else{
 	    	game.moveDUnitAi();
 	    }
@@ -271,18 +271,24 @@ var game = {
        	var unit = game.getDyanmicUnit("A");
 	    var eUnit = game.getMovableUnit("B");
 	    if(game.isInRange(unit, eUnit)){
+	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
+	        	    	alert("detected m unit")
+
 		    return true;
 	    }
 	    eUnit = game.getDyanmicUnit("B");
 	    if(game.isInRange(unit, eUnit)){
+	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
+	        	    	alert("detected d unit")
+
 		    return true;
 	    }
 	    
 	    
     },
     isInRange:function(unit,eUnit){
-	    if(eUnit.x>=unit.x-1&&eUnit.x<=unit.x+3){
-		    if(eUnit.y>=unit.y-1&&eUnit.y<=unit.y+3){
+	    if(eUnit.x>=unit.x-3&&eUnit.x<=unit.x+3){
+		    if(eUnit.y>=unit.y-3&&eUnit.y<=unit.y+3){
 		    	return true;
 		    }
 	    }
@@ -300,7 +306,7 @@ var game = {
 		if(mUnit.x==unit.x || mUnit.y==unit.y){
 			    if(mUnit.x==unit.x){
 				    if (mUnit.y<unit.y){
-						moveY = Math.min(3,unit.y-mUnit.y+1);
+						moveY = Math.min(3,unit.y-mUnit.y-1);
 						game.sendCommand(unit.uid, {type:"move", to:{x:unit.x, y:unit.y-moveY}});
 
 				    }

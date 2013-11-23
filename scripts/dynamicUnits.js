@@ -9,6 +9,11 @@ var dynamicUnits = {
             pixelOffsetX:3,
             pixelOffsetY:3,
             radius:15,
+            attack:"fireball",
+            range:3,
+            canAttack:true,
+            canAttackLand:true,
+            canAttackAir:true,
             animationSpeed:15,
             speed:3,
             cost:400,
@@ -106,6 +111,41 @@ var dynamicUnits = {
                         this.hasMoved = true;
                         this.orders = {type:"stand"};
                     }
+                    break;
+              case "attack":
+                    if (this.orders.to.lifeCode == "dead") {
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
+
+                    if (this.hasAttacked) {
+                        game.displayMessage("I've already attacked this turn.", 2500, "error");
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
+                    if (!isSquareInRange(this, this.orders.to.x, this.orders.to.y)) {
+                        game.displayMessage("That unit is out of range", 2500, "error");
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
+                    var newDirection = findFiringAngle(this.orders.to, this, this.directions);
+                    var angleRadians = -(Math.round(this.direction) / this.directions) * 2 * Math.PI;
+                    var bulletX = this.x - (this.radius * Math.sin(angleRadians) / game.squareSize);
+                    var bulletY = this.y - (this.radius * Math.cos(angleRadians) / game.squareSize) - this.pixelShadowHeight / game.squareSize;
+                    var bullet = game.add(
+                                    {
+                                        name:this.attack,
+                                        type:"attacks",
+                                        x:bulletX,
+                                        y:bulletY,
+                                        direction:newDirection,
+                                        target:this.orders.to
+                                    });
+                    this.orders = {type:"stand"};
+                    this.hasAttacked = true;
                     break;
             }
         },

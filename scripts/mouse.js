@@ -66,17 +66,19 @@ var mouse = {
 
             if (clickedItem) {// Player clicked on sth
                 if (clickedItem.type != "terrain") {
+                game.displayMessage(clickedItem.type+" selected("+clickedItem.x+","+clickedItem.y+")", 2500, "error");
+
                     if (clickedItem.team == game.team) {
                         // Player clicked on friendly unit
                         game.clearSelection();
                         game.selectItem(clickedItem);
-                        game.displayMessage(clickedItem.type+" selected("+clickedItem.x+","+clickedItem.y+")", 2500, "error");
 
                     } else {
                         // TODO handle attack here
                         // 1. move to square in range
                         // 2. attack unit
                         game.sendCommand(game.selectedItem.uid, {type:"attack", to:clickedItem});
+
                     }
                 }
             } else if (game.selectedItem &&
