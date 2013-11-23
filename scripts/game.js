@@ -325,13 +325,13 @@ var game = {
 		}		//if mUnit is in upper left quadrant relative to dUnit
 		else if(mUnit.x<unit.x && mUnit.y<unit.y){
 			    moveX = Math.min(3,unit.x-mUnit.x);
-			    moveY = Math.min(3,unit.y-mUnit.y+1);
+			    moveY = Math.min(3,unit.y-mUnit.y-1);
 			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x-moveX, y:unit.y-moveY}});
 		}
 		//if mUnit is in upper right quadrant relative to dUnit
 		else if(mUnit.x>unit.x && mUnit.y<unit.y){
 			    moveX = Math.min(3,-unit.x+mUnit.x);
-			    moveY = Math.min(3,unit.y-mUnit.y+1);
+			    moveY = Math.min(3,unit.y-mUnit.y-1);
 			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x+moveX, y:unit.y-moveY}});
 		}
 		//if mUnit is in lower left quadrant relative to dUnit

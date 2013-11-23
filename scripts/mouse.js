@@ -70,6 +70,8 @@ var mouse = {
                         // Player clicked on friendly unit
                         game.clearSelection();
                         game.selectItem(clickedItem);
+                        game.displayMessage(clickedItem.type+" selected("+clickedItem.x+","+clickedItem.y+")", 2500, "error");
+
                     } else {
                         // TODO handle attack here
                         // 1. move to square in range
