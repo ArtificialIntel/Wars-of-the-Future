@@ -250,7 +250,7 @@ var game = {
 		if (game.getMovableUnit("B").lifeCode=="dead"){
 			var MUnit = game.getMovableUnit("B");
 			if (MUnit.counter==0) {
-				MUnit.life = 21;
+				MUnit.life = 50;
 				MUnit.x=SUnit.x+2;
 				MUnit.y=SUnit.y+2;
 			}
