@@ -40,10 +40,11 @@ var movableUnits = {
         selectable:true,
         orders:{type:"stand"},
         animate:function(){
-            if (this.life > 0){
+            if (this.life > 20) {
+                this.lifeCode = "healthy";
+            } else if (this.life > 0) {
                 this.lifeCode = "alive";
             } else {
-                this.lifeCode = "dead";
                 game.remove(this);
                 return;
             }
@@ -134,7 +135,7 @@ var movableUnits = {
         drawLifeBar:function() {
             var x = this.drawingX;
             var y = this.drawingY - 2 * game.lifeBarHeight;
-            game.foregroundContext.fillStyle = (this.lifeCode == "alive") ? game.healthBarHealthyFillColor : game.healthBarDamagedFillColor;
+            game.foregroundContext.fillStyle = (this.lifeCode == "healthy") ? game.healthBarHealthyFillColor : game.healthBarDamagedFillColor;
             game.foregroundContext.fillRect(x, y, this.pixelWidth * this.life / this.hitPoints, game.lifeBarHeight)
             game.foregroundContext.strokeStyle = game.healthBarBorderColor;
             game.foregroundContext.lineWidth = 1;

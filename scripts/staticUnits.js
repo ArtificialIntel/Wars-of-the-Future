@@ -21,7 +21,8 @@ var staticUnits = {
             sight:3,
             hitPoints:500,
             spriteImages:[
-                {name:"alive",count:4}
+                {name:"healthy",count:4},
+				{name:"alive",count:1}
             ],
         }
     },
@@ -36,10 +37,11 @@ var staticUnits = {
         selected:false,
         selectable:true,
         animate:function(){
-            if (this.life > 0){
+            if (this.life > 20) {
+                this.lifeCode = "healthy";
+            } else if (this.life > 0) {
                 this.lifeCode = "alive";
             } else {
-                this.lifeCode = "dead";
                 game.remove(this);
                 return;
             }
@@ -59,14 +61,16 @@ var staticUnits = {
 
         drawLifeBar:function(){
             var x = this.drawingX + this.pixelOffsetX;
-            var y = this.drawingY - 2*game.lifeBarHeight;
+            var y = this.drawingY - 2 * game.lifeBarHeight;
 
-            game.foregroundContext.fillStyle = (this.lifeCode == "healthy")?game.healthBarHealthyFillColor:game.healthBarDamagedFillColor;
-            game.foregroundContext.fillRect(x,y,this.baseWidth*this.life/this.hitPoints,game.lifeBarHeight)
+            game.foregroundContext.fillStyle = this.lifeCode == "healthy"
+                                               ? game.healthBarHealthyFillColor
+                                               :game.healthBarDamagedFillColor;
+            game.foregroundContext.fillRect(x, y, this.baseWidth * this.life / this.hitPoints, game.lifeBarHeight)
 
             game.foregroundContext.strokeStyle = game.healthBarBorderColor;
             game.foregroundContext.lineWidth = 1;
-            game.foregroundContext.strokeRect(x,y,this.baseWidth,game.lifeBarHeight)
+            game.foregroundContext.strokeRect(x, y, this.baseWidth, game.lifeBarHeight)
         },
         drawSelection:function(){
             var x = this.drawingX + this.pixelOffsetX;
