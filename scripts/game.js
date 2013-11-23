@@ -260,15 +260,65 @@ var game = {
         this.clearSelection();
     },
     dUnitAi:function(){
-	    var unit = game.getDyanmicUnit();
-	    //supportive role
-	    //go to moveable unit
-	    var mUnit = game.getMovableUnit();
-	    game.displayMessage(Math.min(3,mUnit.x-unit.x), 2500, "error");
-
-	    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x+Math.min(3,mUnit.x-unit.x), y:unit.y+Math.min(3,mUnit.y-unit.y+1)}});
-
+	    game.moveDUnitAi();
     },
+    moveDUnitAi:function(){
+    	var unit = game.getDyanmicUnit();
+	    var mUnit = game.getMovableUnit();
+	    var moveX =0;
+	    var moveY = 0;
+	    //if mUnit is on the same axisrelative to dUnit
+
+		if(mUnit.x==unit.x || mUnit.y==unit.y){
+			    if(mUnit.x==unit.x){
+				    if (mUnit.y<unit.y){
+						moveY = Math.min(3,unit.y-mUnit.y+1);
+						game.sendCommand(unit.uid, {type:"move", to:{x:unit.x, y:unit.y-moveY}});
+
+				    }
+				    else if(mUnit.y>unit.y) {
+					    moveY = Math.min(3,-unit.y+mUnit.y+1);
+						game.sendCommand(unit.uid, {type:"move", to:{x:unit.x, y:unit.y+moveY}});
+				    }
+				    	
+			    }
+			    else if(mUnit.y==unit.y){
+				    if (mUnit.x<unit.x){
+						moveY = Math.min(3,unit.x-mUnit.x);
+						game.sendCommand(unit.uid, {type:"move", to:{x:unit.x-moveX, y:unit.y+1}});
+
+				    }
+				    else if(mUnit.x>unit.x) {
+					    moveX = Math.min(3,-unit.x+mUnit.x);
+						game.sendCommand(unit.uid, {type:"move", to:{x:unit.x+moveX, y:unit.y+1}});
+				    }
+				    	
+			    }
+		}		//if mUnit is in upper left quadrant relative to dUnit
+		else if(mUnit.x<unit.x && mUnit.y<unit.y){
+			    moveX = Math.min(3,unit.x-mUnit.x);
+			    moveY = Math.min(3,unit.y-mUnit.y+1);
+			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x-moveX, y:unit.y-moveY}});
+		}
+		//if mUnit is in upper right quadrant relative to dUnit
+		else if(mUnit.x>unit.x && mUnit.y<unit.y){
+			    moveX = Math.min(3,-unit.x+mUnit.x);
+			    moveY = Math.min(3,unit.y-mUnit.y+1);
+			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x+moveX, y:unit.y-moveY}});
+		}
+		//if mUnit is in lower left quadrant relative to dUnit
+		else if(mUnit.x<unit.x && mUnit.y>unit.y){
+			    moveX = Math.min(3,unit.x-mUnit.x);
+			    moveY = Math.min(3,-unit.y+mUnit.y+1);
+			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x-moveX, y:unit.y+moveY}});
+		}
+		//if mUnit is in lower right quadrant relative to dUnit
+		else if(mUnit.x>unit.x && mUnit.y>unit.y){
+			    moveX = Math.min(3,-unit.x+mUnit.x);
+			    moveY = Math.min(3,-unit.y+mUnit.y+1);
+			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x-moveX, y:unit.y+moveY}});
+		}
+	},
     getDyanmicUnit:function(){
 	    for (var i = game.items.length - 1; i >= 0; i--) {
             var item = game.items[i];
