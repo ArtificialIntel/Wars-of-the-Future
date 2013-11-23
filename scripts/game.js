@@ -260,11 +260,39 @@ var game = {
         this.clearSelection();
     },
     dUnitAi:function(){
-	    game.moveDUnitAi();
+    	if(game.isNearEnemy()==true){
+	    	alert("detected")
+    	}else{
+	    	game.moveDUnitAi();
+	    }
+
+    },
+    isNearEnemy:function(){
+       	var unit = game.getDyanmicUnit("A");
+	    var eUnit = game.getMovableUnit("B");
+	    if(game.isInRange(unit, eUnit)){
+		    return true;
+	    }
+	    eUnit = game.getDyanmicUnit("B");
+	    if(game.isInRange(unit, eUnit)){
+		    return true;
+	    }
+	    
+	    
+    },
+    isInRange:function(unit,eUnit){
+	    if(eUnit.x>=unit.x-1&&eUnit.x<=unit.x+3){
+		    if(eUnit.y>=unit.y-1&&eUnit.y<=unit.y+3){
+		    	return true;
+		    }
+	    }
+	    
+	    else 
+	    	return false;
     },
     moveDUnitAi:function(){
-    	var unit = game.getDyanmicUnit();
-	    var mUnit = game.getMovableUnit();
+    	var unit = game.getDyanmicUnit("A");
+	    var mUnit = game.getMovableUnit("A");
 	    var moveX =0;
 	    var moveY = 0;
 	    //if mUnit is on the same axisrelative to dUnit
@@ -319,22 +347,23 @@ var game = {
 			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x-moveX, y:unit.y+moveY}});
 		}
 	},
-    getDyanmicUnit:function(){
+    getDyanmicUnit:function(label){
 	    for (var i = game.items.length - 1; i >= 0; i--) {
             var item = game.items[i];
 		    if (item.type=="dynamicUnits") {
-	                if(item.lifeCode != "dead")
+	                if(item.lifeCode != "dead"&& item.team==label)
 	                {
 	                    return item;
 	                }
 	            }
 	    }
     },
-    getMovableUnit: function(){
+
+    getMovableUnit: function(label){
 	    for (var i = game.items.length - 1; i >= 0; i--) {
             var item = game.items[i];
 		    if (item.type=="movableUnits") {
-                if(item.lifeCode != "dead")
+                if(item.lifeCode != "dead" && item.team==label)
                 {
                     return item;
                 }

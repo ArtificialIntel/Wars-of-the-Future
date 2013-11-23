@@ -4,7 +4,6 @@ var dynamicUnits = {
             name:"transport",
             pixelWidth:31,
             pixelHeight:30,
-            attack:"fireball",
             // offset from actual position
             // towards top left
             pixelOffsetX:3,
@@ -12,7 +11,6 @@ var dynamicUnits = {
             radius:15,
             animationSpeed:15,
             speed:3,
-            range:3,
             cost:400,
             hitPoints:100,
             turnSpeed:2,
@@ -35,11 +33,10 @@ var dynamicUnits = {
         directions:8,
 
         animate:function() {
-            if (this.life > 20) {
-                this.lifeCode = "healthy";
-            } else if (this.life > 0) {
+            if (this.life > 0) {
                 this.lifeCode = "alive";
             } else {
+                this.lifeCode = "dead";
                 game.remove(this);
                 return;
             }
@@ -109,40 +106,6 @@ var dynamicUnits = {
                         this.hasMoved = true;
                         this.orders = {type:"stand"};
                     }
-                    break;
-                case "attack":
-                    if (this.orders.to.lifeCode == "dead") {
-                        this.orders = {type:"stand"};
-                        return;
-                    }
-
-                    if (this.hasAttacked) {
-                        game.displayMessage("I've already attacked this turn.", 2500, "error");
-                        this.orders = {type:"stand"};
-                        return;
-                    }
-
-                    if (!isSquareInRange(this, this.orders.to.x, this.orders.to.y)) {
-                        game.displayMessage("That unit is out of range", 2500, "error");
-                        this.orders = {type:"stand"};
-                        return;
-                    }
-
-                    var newDirection = findFiringAngle(this.orders.to, this, this.directions);
-                    var angleRadians = -(Math.round(this.direction) / this.directions) * 2 * Math.PI;
-                    var bulletX = this.x - this.radius * Math.sin(angleRadians) / game.squareSize;
-                    var bulletY = this.y - this.radius * Math.cos(angleRadians) / game.squareSize;
-                    var bullet = game.add(
-                                    {
-                                        name:this.attack,
-                                        type:"attacks",
-                                        x:bulletX,
-                                        y:bulletY,
-                                        direction:newDirection,
-                                        target:this.orders.to
-                                    });
-                    this.orders = {type:"stand"};
-                    this.hasAttacked = true;
                     break;
             }
         },
