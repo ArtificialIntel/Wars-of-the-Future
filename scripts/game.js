@@ -246,21 +246,47 @@ var game = {
     },
 	
 	AIStaticUnit:function() {
-		var SUnit = getStaticUnit("B");
+		var SUnit = game.getStaticUnit("B");
+		
 		if (game.getMovableUnit("B").lifeCode=="dead"){
 			var MUnit = game.getMovableUnit("B");
 			if (MUnit.counter==0) {
-				MUnit.life = 50;
+				MUnit.life = MUnit.hitpoints;
 				MUnit.x=SUnit.x+2;
 				MUnit.y=SUnit.y+2;
 			}
 			else
 				MUnit.counter--;
 		}
+		
+		var enemies=new Array();
+		for (var x=SUnit.x-3; x<=SUnit.x+3; x++)
+			for (var y=SUnit.y-3; y<=SUnit.y+3; y++)
+			{
+				var square={"x":x,"y":y};
+				var item = game.getItemOnSquare(square);
+				if (item!=false && item.team!=SUnit.team)
+					enemies.push(item);
+			}
+		enemies.sort(function(a,b)
+		{
+			if (game.isInRange(SUnit,a)&&!game.isInRange(SUnit,b))
+				return -1;
+			if (!game.isInRange(SUnit,a)&&game.isInRange(SUnit,b))
+				return 1;
+			return a.life-b.life;
+		});
+		if (enemies!=null)
+		{
+			alert("enemy near static unit");
+			var currentEnemy = enemies.pop();
+			game.sendCommand(SUnit.uid, {type:"attack", to:currentEnemy});;
+		}
 	},
 
     nextTurn:function() {
     	game.dUnitAi();
+		game.AIStaticUnit();
         this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
 
