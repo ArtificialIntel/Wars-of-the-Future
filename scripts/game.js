@@ -244,6 +244,20 @@ var game = {
             }
         }
     },
+	
+	AIStaticUnit:function() {
+		var SUnit = getStaticUnit("B");
+		if (game.getMovableUnit("B").lifeCode=="dead"){
+			var MUnit = game.getMovableUnit("B");
+			if (MUnit.counter==0) {
+				MUnit.life = 21;
+				MUnit.x=SUnit.x+2;
+				MUnit.y=SUnit.y+2;
+			}
+			else
+				MUnit.counter--;
+		}
+	},
 
     nextTurn:function() {
     	game.dUnitAi();
@@ -353,11 +367,12 @@ var game = {
 			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x-moveX, y:unit.y+moveY}});
 		}
 	},
+	
     getDyanmicUnit:function(label){
 	    for (var i = game.items.length - 1; i >= 0; i--) {
             var item = game.items[i];
 		    if (item.type=="dynamicUnits") {
-	                if(item.lifeCode != "dead"&& item.team==label)
+	                if(item.team==label)
 	                {
 	                    return item;
 	                }
@@ -369,7 +384,7 @@ var game = {
 	    for (var i = game.items.length - 1; i >= 0; i--) {
             var item = game.items[i];
 		    if (item.type=="movableUnits") {
-                if(item.lifeCode != "dead" && item.team==label)
+                if(item.team==label)
                 {
                     return item;
                 }
@@ -377,7 +392,17 @@ var game = {
 	    }
     },
 
-
+	getStaticUnit: function(label){
+	    for (var i = game.items.length - 1; i >= 0; i--) {
+            var item = game.items[i];
+		    if (item.type=="staticUnits") {
+                if(item.team==label)
+                {
+                    return item;
+                }
+            }
+	    }
+    },
     // Displays a message for 'time' in milliseconds
     displayMessage:function(message, time, type) {
         messagePlaceholder = document.getElementById('message');
