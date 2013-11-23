@@ -31,7 +31,7 @@ var dynamicUnits = {
         action:"stand",
         orders:{type:"stand"},
         selected:false,
-        selectable:true,
+        selectable:false,
         directions:8,
 
         animate:function() {
