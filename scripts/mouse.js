@@ -22,28 +22,21 @@ var mouse = {
     itemUnderMouse:function(){
         for (var i = game.items.length - 1; i >= 0; i--) {
             var item = game.items[i];
+            var center = getCenterOfUnitDrawing(item);
             if (item.type=="staticUnits") {
                 if(item.lifeCode != "dead" &&
-                   item.x <= mouse.mapX / game.squareSize &&
-                   item.x >= (mouse.mapX - item.baseWidth) / game.squareSize &&
-                   item.y <= mouse.mapY / game.squareSize &&
-                   item.y >= (mouse.mapY - item.baseHeight) / game.squareSize)
-                {
-                    return item;
-                }
-            } else if (item.type == "movableUnits") {
-                if (item.lifeCode != "dead" &&
-                    Math.pow(item.x - mouse.mapX / game.squareSize, 2) +
-                    Math.pow(item.y - (mouse.mapY + item.pixelShadowHeight) / game.squareSize, 2) <
-                    Math.pow((item.radius) / game.squareSize, 2))
+                   item.drawingX <= mouse.mapX &&
+                   item.drawingX >= mouse.mapX - item.baseWidth &&
+                   item.drawingY <= mouse.mapY &&
+                   item.drawingY >= mouse.mapY - item.baseHeight)
                 {
                     return item;
                 }
            } else {
                 if (item.lifeCode != "dead" &&
-                    Math.pow(item.x - mouse.mapX / game.squareSize, 2) +
-                    Math.pow(item.y - mouse.mapY / game.squareSize, 2) <
-                    Math.pow((item.radius) / game.squareSize, 2))
+                    Math.pow(center.x - mouse.mapX, 2) +
+                    Math.pow(center.y - mouse.mapY, 2) <
+                    Math.pow(item.radius * 1.3, 2))
                 {
                     return item;
                 }
