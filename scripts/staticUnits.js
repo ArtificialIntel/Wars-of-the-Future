@@ -1,7 +1,7 @@
 var staticUnits = {
     units:{
-        "base":{
-            name:"base",
+        "gym":{
+            name:"gym",
             // Properties for drawing the object
             pixelWidth:60,
             pixelHeight:60,
@@ -18,7 +18,54 @@ var staticUnits = {
                 [1,1],
                 [1,1]
             ],
-            sight:3,
+            hitPoints:500,
+            spriteImages:[
+                {name:"healthy",count:4},
+				{name:"alive",count:1}
+            ],
+        },
+        "armory":{
+            name:"armory",
+            // Properties for drawing the object
+            pixelWidth:60,
+            pixelHeight:60,
+            baseWidth:40,
+            baseHeight:40,
+            pixelOffsetX:0,
+            pixelOffsetY:10,
+            // Properties for describing structure for pathfinding
+            buildableGrid:[
+                [1,1],
+                [1,1]
+            ],
+            passableGrid:[
+                [1,1],
+                [1,1]
+            ],
+            hitPoints:500,
+            spriteImages:[
+                {name:"healthy",count:4},
+				{name:"alive",count:1}
+            ],
+        },
+        "tower":{
+            name:"tower",
+            // Properties for drawing the object
+            pixelWidth:60,
+            pixelHeight:60,
+            baseWidth:40,
+            baseHeight:40,
+            pixelOffsetX:0,
+            pixelOffsetY:10,
+            // Properties for describing structure for pathfinding
+            buildableGrid:[
+                [1,1],
+                [1,1]
+            ],
+            passableGrid:[
+                [1,1],
+                [1,1]
+            ],
             hitPoints:500,
             spriteImages:[
                 {name:"healthy",count:4},
