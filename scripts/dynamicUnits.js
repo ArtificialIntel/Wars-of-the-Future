@@ -38,10 +38,11 @@ var dynamicUnits = {
         directions:8,
 
         animate:function() {
-            if (this.life > 0) {
+            if (this.life > 20) {
+                this.lifeCode = "healthy";
+            } else if (this.life > 0) {
                 this.lifeCode = "alive";
             } else {
-                this.lifeCode = "dead";
                 game.remove(this);
                 return;
             }
