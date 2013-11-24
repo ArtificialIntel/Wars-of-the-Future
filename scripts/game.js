@@ -346,50 +346,50 @@ var game = {
 		if(mUnit.x==unit.x || mUnit.y==unit.y){
 			    if(mUnit.x==unit.x){
 				    if (mUnit.y<unit.y){
-						moveY = Math.min(3,unit.y-mUnit.y-1);
+						moveY = Math.min(unit.speed,unit.y-mUnit.y-1);
 						game.sendCommand(unit.uid, {type:"move", to:{x:unit.x, y:unit.y-moveY}});
 
 				    }
 				    else if(mUnit.y>unit.y) {
-					    moveY = Math.min(3,-unit.y+mUnit.y+1);
+					    moveY = Math.min(unit.speed,-unit.y+mUnit.y+1);
 						game.sendCommand(unit.uid, {type:"move", to:{x:unit.x, y:unit.y+moveY}});
 				    }
 				    	
 			    }
 			    else if(mUnit.y==unit.y){
 				    if (mUnit.x<unit.x){
-						moveY = Math.min(3,unit.x-mUnit.x);
+						moveY = Math.min(unit.speed,unit.x-mUnit.x);
 						game.sendCommand(unit.uid, {type:"move", to:{x:unit.x-moveX, y:unit.y+1}});
 
 				    }
 				    else if(mUnit.x>unit.x) {
-					    moveX = Math.min(3,-unit.x+mUnit.x);
+					    moveX = Math.min(unit.speed,-unit.x+mUnit.x);
 						game.sendCommand(unit.uid, {type:"move", to:{x:unit.x+moveX, y:unit.y+1}});
 				    }
 				    	
 			    }
 		}		//if mUnit is in upper left quadrant relative to dUnit
 		else if(mUnit.x<unit.x && mUnit.y<unit.y){
-			    moveX = Math.min(3,unit.x-mUnit.x);
-			    moveY = Math.min(3,unit.y-mUnit.y-1);
+			    moveX = Math.min(unit.speed,unit.x-mUnit.x);
+			    moveY = Math.min(unit.speed,unit.y-mUnit.y-1);
 			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x-moveX, y:unit.y-moveY}});
 		}
 		//if mUnit is in upper right quadrant relative to dUnit
 		else if(mUnit.x>unit.x && mUnit.y<unit.y){
-			    moveX = Math.min(3,-unit.x+mUnit.x);
-			    moveY = Math.min(3,unit.y-mUnit.y-1);
+			    moveX = Math.min(unit.speed,-unit.x+mUnit.x);
+			    moveY = Math.min(unit.speed,unit.y-mUnit.y-1);
 			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x+moveX, y:unit.y-moveY}});
 		}
 		//if mUnit is in lower left quadrant relative to dUnit
 		else if(mUnit.x<unit.x && mUnit.y>unit.y){
-			    moveX = Math.min(3,unit.x-mUnit.x);
-			    moveY = Math.min(3,-unit.y+mUnit.y+1);
+			    moveX = Math.min(unit.speed,unit.x-mUnit.x);
+			    moveY = Math.min(unit.speed,-unit.y+mUnit.y+1);
 			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x-moveX, y:unit.y+moveY}});
 		}
 		//if mUnit is in lower right quadrant relative to dUnit
 		else if(mUnit.x>unit.x && mUnit.y>unit.y){
-			    moveX = Math.min(3,-unit.x+mUnit.x);
-			    moveY = Math.min(3,-unit.y+mUnit.y+1);
+			    moveX = Math.min(unit.speed,-unit.x+mUnit.x);
+			    moveY = Math.min(unit.speed,-unit.y+mUnit.y+1);
 			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x-moveX, y:unit.y+moveY}});
 		}
 	},
