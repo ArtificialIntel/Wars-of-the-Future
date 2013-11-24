@@ -78,6 +78,7 @@ var singleplayer = {
         var movableUnits = ["horseman","sniper","troll"];
         var dynamicUnits = ["dragon","hamster","turtle"];
         var staticUnits = ["gym","armory","tower"];
+        var buffs = ["movement","damage","range"];
 
         for (var i = 0; i < form.moveableUnit.length; i++){
           if (form.moveableUnit[i].checked){
@@ -94,6 +95,7 @@ var singleplayer = {
         for (var i = 0; i < form.staticUnit.length; i++){
           if (form.staticUnit[i].checked){
              this.staticUnit = staticUnits[i];
+             this.buff = buffs[i];
              break;
           }
         }
@@ -102,6 +104,7 @@ var singleplayer = {
         game.add({"type":"dynamicUnits","name":this.dynamicUnit,"x":13,"y":17,"team":"A","direction":"0"});
         game.add({"type":"movableUnits","name":this.movableUnit,"x":12,"y":17,"team":"A","direction":"2","counter":5});
 
+        game.buffIcon = "images/buffs/" + this.buff + ".png";
         singleplayer.play();
     }
 };

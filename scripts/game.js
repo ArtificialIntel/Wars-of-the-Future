@@ -45,6 +45,16 @@ var game = {
         $('.layer').hide();
         $('#gameScreen').show('slow');
 
+        var buffIcon = document.getElementById('buff-icon');
+        buffIcon.setAttribute("src", game.buffIcon);
+        if (singleplayer.buff == "movement") {
+            buffIcon.setAttribute("title","Gym: Your units are extra fit and move faster.");
+        } else if (singleplayer.buff == "damage") {
+            buffIcon.setAttribute("title","Armory: Your units have kick-ass weapons and do more damage.");
+        } else if (singleplayer.buff == "range") {
+            buffIcon.setAttribute("title","Tower: The tower increases your units' range. Don't ask. It's magic.");
+        }
+
         game.running = true;
         game.refreshBackground = true;
         game.turn = 0;
@@ -301,6 +311,7 @@ var game = {
 
         this.clearSelection();
     },
+
     dUnitAi:function(){
     	if(game.isNearEnemy()==true){
 /* 	    	alert("detected") */
@@ -427,6 +438,7 @@ var game = {
             }
 	    }
     },
+
     // Displays a message for 'time' in milliseconds
     displayMessage:function(message, time, type) {
         messagePlaceholder = document.getElementById('message');

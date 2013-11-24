@@ -65,6 +65,7 @@
 
 #statuslist {
     list-style-type:none;
+    line-height:20px;
     margin:0px;
     padding:0px;
 }
@@ -93,6 +94,7 @@
 
 #end-turn {
     cursor:pointer;
+    display:block;
 }
 
 #setupScreen {
@@ -119,4 +121,10 @@
 
 #setupScreen table td, table th {
     padding:5px;
+}
+
+#buff-icon {
+    vertical-align:middle;
+    width:20px;
+    height:20px;
 }
