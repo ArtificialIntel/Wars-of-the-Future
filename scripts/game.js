@@ -278,7 +278,7 @@ var game = {
 		});
 		if (enemies!=null)
 		{
-			alert("enemy near static unit");
+/* 			alert("enemy near static unit"); */
 			var currentEnemy = enemies.pop();
 			game.sendCommand(SUnit.uid, {type:"attack", to:currentEnemy});;
 		}
@@ -312,7 +312,7 @@ var game = {
 	    var eUnit = game.getMovableUnit("B");
 	    if(game.isInRange(unit, eUnit)){
 	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
-	        	    	alert("detected m unit")
+	        	    	alert("detected m unit "+unit.uid)
 
 		    return true;
 	    }
