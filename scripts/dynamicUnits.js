@@ -1,7 +1,7 @@
 var dynamicUnits = {
     units:{
-        "transport":{
-            name:"transport",
+        "dragon":{
+            name:"dragon",
             pixelWidth:31,
             pixelHeight:30,
             // offset from actual position
@@ -15,14 +15,57 @@ var dynamicUnits = {
             canAttackLand:true,
             canAttackAir:true,
             animationSpeed:15,
-            speed:3,
-            cost:400,
+            speed:5,
             hitPoints:100,
             turnSpeed:2,
             spriteImages:[
                 {name:"stand",count:1,directions:8}
             ],
-        }
+        },
+        "hamster":{
+            name:"hamster",
+            pixelWidth:31,
+            pixelHeight:30,
+            // offset from actual position
+            // towards top left
+            pixelOffsetX:3,
+            pixelOffsetY:3,
+            radius:15,
+            attack:"lance",
+            range:5,
+            canAttack:true,
+            canAttackLand:true,
+            canAttackAir:true,
+            animationSpeed:15,
+            speed:5,
+            hitPoints:100,
+            turnSpeed:2,
+            spriteImages:[
+                {name:"stand",count:1,directions:8}
+            ],
+        },
+        "turtle":{
+            name:"turtle",
+            pixelWidth:31,
+            pixelHeight:30,
+            // offset from actual position
+            // towards top left
+            pixelOffsetX:3,
+            pixelOffsetY:3,
+            radius:15,
+            attack:"shoot",
+            range:5,
+            canAttack:true,
+            canAttackLand:true,
+            canAttackAir:true,
+            animationSpeed:15,
+            speed:3,
+            hitPoints:100,
+            turnSpeed:2,
+            spriteImages:[
+                {name:"stand",count:1,directions:8}
+            ],
+        },
     },
     defaults:{
         type:"dynamicUnits",

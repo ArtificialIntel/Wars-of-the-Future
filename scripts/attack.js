@@ -3,7 +3,6 @@ var attacks = {
         "shoot":{
             name:"shoot",
             speed:20,
-            range:8,
             damage:15,
             spriteImages:[
                 {name:"fly",count:1,directions:8},
@@ -13,7 +12,6 @@ var attacks = {
         "lance":{
             name:"lance",
             speed:20,
-            range:8,
             damage:10,
             spriteImages:[
                 {name:"fly",count:1,directions:8},
@@ -23,7 +21,6 @@ var attacks = {
         "hit":{
             name:"hit",
             speed:20,
-            range:8,
             damage:20,
             spriteImages:[
                 {name:"fly",count:1,directions:8},
