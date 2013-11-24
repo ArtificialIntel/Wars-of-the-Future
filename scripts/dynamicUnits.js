@@ -46,12 +46,12 @@ var dynamicUnits = {
         },
         "turtle":{
             name:"turtle",
-            pixelWidth:31,
-            pixelHeight:30,
+            pixelWidth:20,
+            pixelHeight:20,
             // offset from actual position
             // towards top left
-            pixelOffsetX:3,
-            pixelOffsetY:3,
+            pixelOffsetX:-2,
+            pixelOffsetY:-2,
             radius:15,
             attack:"shoot",
             range:5,
