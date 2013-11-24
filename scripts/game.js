@@ -314,18 +314,14 @@ var game = {
 	    var eUnit = game.getMovableUnit("B");
 	    if(game.isInRange(unit, eUnit)){
 	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
-	        	    	alert("detected m unit "+unit.uid)
-
 		    return true;
 	    }
 	    eUnit = game.getDyanmicUnit("B");
 	    if(game.isInRange(unit, eUnit)){
 	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
-	        	    	alert("detected d unit")
-
 		    return true;
 	    }
-	    
+	    return false;
 	    
     },
     isInRange:function(unit,eUnit){
