@@ -75,6 +75,7 @@ var staticUnits = {
     },
     defaults:{
         type:"staticUnits",
+		underAttack:false,
         movable:false,
         hasAttacked:false,
         animationIndex:0,

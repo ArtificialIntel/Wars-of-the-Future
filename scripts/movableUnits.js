@@ -79,6 +79,7 @@ var movableUnits = {
         movable:true,
         hasMoved:false,
         hasAttacked:false,
+		underAttack:false,
         animationIndex:0,
         direction:0,
         directions:8,

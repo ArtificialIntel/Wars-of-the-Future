@@ -257,6 +257,114 @@ var game = {
         }
     },
 	
+	AIMovableUnit:function() {
+		var distances = new Array();
+		var MUnit = game.getMovableUnit("B");
+		var myStaticUnit = game.getStaticUnit("B");
+		var myDynamicUnit = game.getDynamicUnit("B");
+		var enemyMovableUnit = game.getMovableUnit("A");
+		var enemyStaticUnit = game.getStaticUnit("A");
+		var enemyDynamicUnit = game.getDynamicUnit("A");
+		
+		distances=[Math.abs(MUnit.x-myStaticUnit.x)+Math.abs(MUnit.y-myStaticUnit.y), Math.abs(MUnit.x-myDynamicUnit.x)+Math.abs(MUnit.y-myDynamicUnit.y), Math.abs(MUnit.x-enemyStaticUnit.x)+Math.abs(MUnit.y-enemyStaticUnit.y), Math.abs(MUnit.x-enemyDynamicUnit.x)+Math.abs(MUnit.y-enemyDynamicUnit.y), Math.abs(MUnit.x-enemyMovableUnit.x)+Math.abs(MUnit.y-enemyMovableUnit.y)];
+		
+		var priority = new Array();
+		priority.push([5/distances[0],"defendSU"]); //add modifier
+		priority.push([4/distances[1],"defendDU"]); //add modifier
+		priority.push([3/distances[2],"attackSU"]); //add modifier
+		priority.push([2/distances[3],"attackDU"]); //add modifier
+		priority.push([2/distances[4],"attackMU"]); //add modifier
+		priority.push([1/distances[1],"repair"]); //add modifier
+		priority.sort(function(a,b)
+					{
+						return b[0]-a[0];
+					});
+		
+		var currentTask = priority.pop()[1];
+		while (true)
+		{
+			if (currentTask == "defendSU")
+			{
+				if (myStaticUnit.underAttack)
+				{
+					game.sendCommand(MUnit.uid, {type:"move", to:{x:myStaticUnit.x, y:myStaticUnit.y}});
+					break;
+				}
+				else
+				{
+					currentTask = proiority.pop()[1];
+					continue;
+				}
+			}
+			if (currentTask == "defendDU")
+			{
+				if (myDynamicUnit.name=="hamster" && myDynamicUnit.state == "inactive" && myDynamicUnit.underAttack)
+				{
+					game.sendCommand(MUnit.uid, {type:"move", to:{x:myDynamicUnit.x, y:myDynamicUnit.y}});
+					break;
+				}
+				else
+				{
+					currentTask = proiority.pop()[1];
+					continue;
+				}
+			}
+			if (currentTask == "repair")
+			{
+				if (myDynamicUnit.name=="turtle" && MUnit.life != MUnit.hitPoints)
+				{
+					game.sendCommand(MUnit.uid, {type:"move", to:{x:myDynamicUnit.x, y:myDynamicUnit.y}});
+					break;
+				}
+				else
+				{
+					currentTask = proiority.pop()[1];
+					continue;
+				}
+			}
+			if (currentTask == "attackSU")
+			{
+				game.sendCommand(MUnit.uid, {type:"move", to:{x:enemyStaticUnit.x, y:enemyStaticUnit.y}});
+				break;
+			}
+			if (currentTask == "attackDU")
+			{
+				game.sendCommand(MUnit.uid, {type:"move", to:{x:enemyDynamicUnit.x, y:enemyDynamicUnit.y}});
+				break;
+			}
+			if (currentTask == "attackMU")
+			{
+				game.sendCommand(MUnit.uid, {type:"move", to:{x:enemyMovableUnit.x, y:enemyMovableUnit.y}});
+				break;
+			}
+		}
+		
+		var enemies=new Array();
+		for (var x=MUnit.x-3; x<=MUnit.x+3; x++)
+			for (var y=MUnit.y-3; y<=MUnit.y+3; y++)
+			{
+				var square={"x":x,"y":y};
+				var item = game.getItemOnSquare(square);
+				if (item!=false && item.team!=MUnit.team)
+					enemies.push(item);
+			}
+		enemies.sort(function(a,b)
+		{
+			if (game.isInRange(MUnit,a)&&!game.isInRange(MUnit,b))
+				return -1;
+			if (!game.isInRange(MUnit,a)&&game.isInRange(MUnit,b))
+				return 1;
+			return a.life-b.life;
+		});
+		if (enemies!=null)
+		{
+/* 			alert("enemy near movable unit"); */
+			var currentEnemy = enemies.pop();
+			game.sendCommand(MUnit.uid, {type:"attack", to:currentEnemy});
+			currentEnemy.underAttack = true;
+		}
+	},
+	
 	AIStaticUnit:function() {
 		var SUnit = game.getStaticUnit("B");
 		
@@ -292,13 +400,13 @@ var game = {
 		{
 /* 			alert("enemy near static unit"); */
 			var currentEnemy = enemies.pop();
-			game.sendCommand(SUnit.uid, {type:"attack", to:currentEnemy});;
+			game.sendCommand(SUnit.uid, {type:"attack", to:currentEnemy});
+			currentEnemy.underAttack = true;
 		}
 	},
 
     nextTurn:function() {
     	game.dUnitAi();
-		game.AIStaticUnit();
         this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
 

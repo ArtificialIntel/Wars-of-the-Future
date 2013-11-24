@@ -72,6 +72,8 @@ var dynamicUnits = {
         movable:true,
         hasMoved:false,
         hasAttacked:false,
+		underAttack:false,
+		state:"active",
         animationIndex:0,
         direction:0,
         action:"stand",
