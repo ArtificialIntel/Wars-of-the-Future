@@ -1,24 +1,71 @@
 var movableUnits = {
     units:{
-        "chopper":{
-            name:"chopper",
-            cost:900,
+        "sniper":{
+            name:"sniper",
             pixelWidth:40,
             pixelHeight:40,
             // offset from actual position
             // towards top left
             pixelOffsetX:8,
             pixelOffsetY:50,
-            attack:"fireball",
-            range:5,
             radius:18,
+            hitPoints:50,
+            attack:"shoot",
+            range:10,
+            speed:3,
             isFlying:true,
             canAttack:true,
             canAttackLand:true,
             canAttackAir:true,
-            hitPoints:50,
             animationSpeed:15,
+            turnSpeed:4,
+            pixelShadowHeight:40,
+            spriteImages:[
+                {name:"fly",count:4,directions:8}
+            ],
+        },
+        "horseman":{
+            name:"horseman",
+            pixelWidth:40,
+            pixelHeight:40,
+            // offset from actual position
+            // towards top left
+            pixelOffsetX:8,
+            pixelOffsetY:50,
+            radius:18,
+            hitPoints:50,
+            attack:"lance",
+            range:5,
+            speed:10,
+            isFlying:true,
+            canAttack:true,
+            canAttackLand:true,
+            canAttackAir:true,
+            animationSpeed:15,
+            turnSpeed:4,
+            pixelShadowHeight:40,
+            spriteImages:[
+                {name:"fly",count:4,directions:8}
+            ],
+        },
+        "troll":{
+            name:"troll",
+            pixelWidth:40,
+            pixelHeight:40,
+            // offset from actual position
+            // towards top left
+            pixelOffsetX:8,
+            pixelOffsetY:50,
+            radius:18,
+            hitPoints:50,
+            attack:"hit",
+            range:3,
             speed:5,
+            isFlying:true,
+            canAttack:true,
+            canAttackLand:true,
+            canAttackAir:true,
+            animationSpeed:15,
             turnSpeed:4,
             pixelShadowHeight:40,
             spriteImages:[

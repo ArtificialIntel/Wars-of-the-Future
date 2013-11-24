@@ -9,7 +9,7 @@ var dynamicUnits = {
             pixelOffsetX:3,
             pixelOffsetY:3,
             radius:15,
-            attack:"fireball",
+            attack:"shoot",
             range:3,
             canAttack:true,
             canAttackLand:true,
