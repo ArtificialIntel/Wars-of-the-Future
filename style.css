@@ -1,7 +1,6 @@
 #container {
     width: 480px;
     height: 480px;
-    background:url(images/menu.gif);
 }
 
 .layer {
@@ -15,6 +14,7 @@
     height:280px;
     padding-top:200px;
     text-align:center;
+    background:url(images/menu.gif);
 }
 
 #menu p {
@@ -93,4 +93,30 @@
 
 #end-turn {
     cursor:pointer;
+}
+
+#setupScreen {
+    background:url(images/menu.gif);
+}
+
+#setupScreen table {
+    color:white;
+    border-collapse:collapse;
+    background-color:rgba(30,30,30,0.7);
+    margin-right:auto;
+    margin-left:auto;
+    margin-top:230px;
+}
+
+#setupScreen #startGame {
+    padding:10px;
+    border: 1px solid black;
+    color:white;
+    background-color:rgba(30,30,30,0.7);
+    display:block;
+    margin:10px auto;
+}
+
+#setupScreen table td, table th {
+    padding:5px;
 }

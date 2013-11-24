@@ -34,8 +34,6 @@ var game = {
     },
 
     load:function() {
-        game.backgroundImage = loader.loadImage("images/background.png");
-
         if(loader.loaded) {
             game.startGame();
         } else {
@@ -49,6 +47,7 @@ var game = {
 
         game.running = true;
         game.refreshBackground = true;
+        game.turn = 0;
 
         game.drawingLoop();
     },
@@ -71,7 +70,7 @@ var game = {
         game.sortedItems = $.extend([],game.items);
         game.sortedItems.sort(function(a,b){
             return b.y-a.y + ((b.y==a.y)?(a.x-b.x):0);
-          });
+        });
 
         game.lastAnimationTime = (new Date()).getTime();
     },
@@ -100,6 +99,7 @@ var game = {
 
         // Clear foreground canvas
         game.foregroundContext.clearRect(0, 0, game.canvasWidth, game.canvasHeight);
+
 
         // Draw the grid if unit is selected
         if (game.state == "unitSelected") {
@@ -154,7 +154,9 @@ var game = {
 
     remove:function(item) {
         item.selected = false;
-        if(game.selectedItem.uid == item.uid) {
+        if(game.selectedItem &&
+           game.selectedItem.uid == item.uid)
+        {
             game.selectedItem = undefined;
             game.state = "intro";
         }

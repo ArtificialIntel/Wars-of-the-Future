@@ -74,11 +74,7 @@ var mouse = {
                         game.selectItem(clickedItem);
 
                     } else {
-                        // TODO handle attack here
-                        // 1. move to square in range
-                        // 2. attack unit
                         game.sendCommand(game.selectedItem.uid, {type:"attack", to:clickedItem});
-
                     }
                 }
             } else if (game.selectedItem &&

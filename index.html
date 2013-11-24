@@ -26,31 +26,30 @@
                 <p>Multiplayer(coming soon)</p>
             </div>
 
-            <div id="setupScreen" class="layer" align=center>
-                <marquee  behavior="scroll" direction="up" scrollamount="1">Long time ago...</marquee>
-                <FORM id="selectionForm">
-                <TABLE BORDER="1" CellSpacing="5" CellPadding="6" align="center">
-					<TR>
-					  <TD><div align="center">Movable Unit:</div></TD>
-					  <TD><INPUT TYPE="radio" NAME="moveableUnit" VALUE="Horseman"  label= "Horseman" onClick="">Horseman</TD>
-					  <TD><INPUT TYPE="radio" NAME="moveableUnit" VALUE="Sniper"  onClick="" CHECKED>Sniper</TD>
-					  <TD><INPUT TYPE="radio" NAME="moveableUnit" VALUE="Troll"  onClick="">Troll</TD>
-					</TR>
-					<TR>
-					  <TD><div align="center">Dynamic Unit:</div></TD>
-					  <TD><INPUT TYPE="radio" NAME="dynamicUnit" VALUE="Dragon"  onClick="" CHECKED>Dragon</TD>
-					  <TD><INPUT TYPE="radio" NAME="dynamicUnit" VALUE="Hamster"  onClick="">Hamster</TD>
-					  <TD><INPUT TYPE="radio" NAME="dynamicUnit" VALUE="Turtle"  onClick="">Turtle</TD>
-					</TR>
-					<TR>
-					  <TD><div align="center">Static Unit:</div></TD>
-					  <TD><INPUT TYPE="radio" NAME="staticUnit" VALUE="Gym"  onClick="">Gym</TD>
-					  <TD><INPUT TYPE="radio" NAME="staticUnit" VALUE="Armoury"  onClick="">Armoury</TD>
-					  <TD><INPUT TYPE="radio" NAME="staticUnit" VALUE="Tower"  onClick=""CHECKED>Tower</TD>
-					</TR>
-					</TABLE>
-				<input TYPE="button" value="Submit Selection" onClick="singleplayer.selectUnits()">
-                </FORM>
+            <div id="setupScreen" class="layer">
+                <form id="selectionForm">
+                    <table>
+                        <tr>
+                          <td><div>Movable Unit:</div></td>
+                          <td><input type="radio" name="moveableUnit" value="Horseman">Horseman</td>
+                          <td><input type="radio" name="moveableUnit" value="Sniper" checked>Sniper</td>
+                          <td><input type="radio" name="moveableUnit" value="troll">Troll</td>
+                        </tr>
+                        <tr>
+                          <td><div>Dynamic Unit:</div></td>
+                          <td><input type="radio" name="dynamicUnit" value="Dragon" checked>Dragon</td>
+                          <td><input type="radio" name="dynamicUnit" value="Hamster">Hamster</td>
+                          <td><input type="radio" name="dynamicUnit" value="Turtle">Turtle</td>
+                        </tr>
+                        <tr>
+                          <td><div>Static Unit:</div></td>
+                          <td><input type="radio" name="staticUnit" value="Gym">Gym</td>
+                          <td><input type="radio" name="staticUnit" value="Armory">Armory</td>
+                          <td><input type="radio" name="staticUnit" value="Tower" checked>Tower</td>
+                        </tr>
+                    </table>
+                    <input id="startGame" type="button" value="Submit Selection" onClick="singleplayer.selectUnits()">
+                </form>
             </div>
             <div id="loadingScreen" class="layer">
                 <div id="loadingMessage">Loading</div>
@@ -59,19 +58,6 @@
             <div id="gameScreen" class="layer">
                 <canvas id="foregroundCanvas" width="480" height="480"></canvas>
                 <canvas id="backgroundCanvas" width="480" height="480"></canvas>
-                <div id="menubar">
-                	<ul id="menubarlist">
-                        <li>
-                            <p id="1" class="statusbar-text">Turn: 0</p>
-                        </li>
-                        <li>
-                            <p id="2" class="statusbar-text"></p>
-                        <li>
-                            <a id="end-3" onclick="game.nextTurn();">End Turn</a>
-                        </li>
-                    </ul>
-                	<input TYPE="button" id="menu" onclick="singleplayer.exit();" value="Exit"/>
-                </div>
                 <div id="statusbar">
                     <ul id="statuslist">
                         <li>
