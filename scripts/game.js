@@ -327,8 +327,8 @@ var game = {
 	    
     },
     isInRange:function(unit,eUnit){
-	    if(eUnit.x>=unit.x-3&&eUnit.x<=unit.x+3){
-		    if(eUnit.y>=unit.y-3&&eUnit.y<=unit.y+3){
+	    if(eUnit.x>=unit.x-unit.range&&eUnit.x<=unit.x+unit.range){
+		    if(eUnit.y>=unit.y-unit.range&&eUnit.y<=unit.y+unit.range){
 		    	return true;
 		    }
 	    }
