@@ -64,12 +64,15 @@
                             <p id="turndisplay" class="statusbar-text">Turn: 0</p>
                         </li>
                         <li>
-                            <img id="buff-icon"></img>
+                            <img id="buff-icon" class="icon"></img>
+                        </li>
+                        <li>
+                            <img id="special-icon" class="icon" onclick="game.selectTarget()"></img>
                         </li>
                         <li>
                             <p id="message" class="statusbar-text"></p>
                         <li>
-                            <a id="end-turn" onclick="game.nextTurn();">End Turn</a>
+                            <p id="end-turn" class="statusbar-text" onclick="game.nextTurn();">End Turn</p>
                         </li>
                     </ul>
                 </div>

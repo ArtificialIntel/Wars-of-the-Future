@@ -80,6 +80,7 @@
 #statuslist li:last-child {
     float:right;
     padding-right:5px;
+    margin-top:3px;
 }
 
 .statusbar-text {
@@ -94,7 +95,7 @@
 
 #end-turn {
     cursor:pointer;
-    display:block;
+    padding-right:0px;
 }
 
 #setupScreen {
@@ -123,10 +124,12 @@
     padding:5px;
 }
 
-#buff-icon {
+.icon {
     vertical-align:middle;
-    width:20px;
-    height:20px;
+    width:25px;
+    height:25px;
+    display:none;
+    margin-right:2px;
 }
 
 #endscreen {

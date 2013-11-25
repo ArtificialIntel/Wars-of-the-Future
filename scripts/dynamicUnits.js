@@ -21,6 +21,20 @@ var dynamicUnits = {
             spriteImages:[
                 {name:"stand",count:1,directions:8}
             ],
+            specialAttackName:"Firebomb",
+            specialAttackTooltip:"Set an area on fire, damaging enemy units inside",
+            specialAttack:function(x, y) {
+                game.fire = [];
+
+                for(i = x - 2; i <= x + 2; i++) {
+                    for(j = y - 2; j <= y + 2; j++) {
+                        game.fire.push({x:i, y:j});
+                    }
+                }
+
+                this.restCounter = 5;
+            },
+            restCounter:-1
         },
         "hamster":{
             name:"hamster",
@@ -43,6 +57,22 @@ var dynamicUnits = {
             spriteImages:[
                 {name:"stand",count:1,directions:8}
             ],
+            specialAttackName:"Omnomnomnom",
+            specialAttackTooltip:"Eat a movable enemy unit, killing it instantly",
+            specialAttack:function(x, y) {
+                var unit = game.getItemOnSquare({x:x, y:y});
+
+                if(unit) {
+                    if(unit.type == "movableUnits") {
+                        game.respawnBuffer.push({unit:unit, turns:5});
+                    }
+                    game.remove(unit);
+                    unit.lifeCode = "dead";
+
+                    this.restCounter = 5;
+                }
+            },
+            restCounter:-1
         },
         "turtle":{
             name:"turtle",
@@ -65,6 +95,21 @@ var dynamicUnits = {
             spriteImages:[
                 {name:"stand",count:1,directions:8}
             ],
+            specialAttackName:"Heal",
+            specialAttackTooltip:"Heal a friendly unit or youself",
+            specialAttack:function(x , y) {
+                var unit = game.getItemOnSquare({x:x, y:y});
+
+                if(unit && unit.life > 0) {
+                    unit.life += 30;
+                    if(unit.life > unit.hitPoints) {
+                        unit.life = unit.hitPoints;
+                    }
+
+                    this.restCounter = 5;
+                }
+            },
+            restCounter:-1
         },
     },
     defaults:{
@@ -79,7 +124,7 @@ var dynamicUnits = {
         action:"stand",
         orders:{type:"stand"},
         selected:false,
-        selectable:false,
+        selectable:true,
         directions:8,
 
         animate:function() {
@@ -87,11 +132,9 @@ var dynamicUnits = {
                 this.lifeCode = "healthy";
             } else if (this.life > 0) {
                 this.lifeCode = "alive";
-            } else {            				
+            } else {
                 game.remove(this);
-				/*this.x=40;
-				this.y=40; 
-				this.lifeCode = "dead";*/
+				this.lifeCode = "dead";
                 return;
             }
 
@@ -196,6 +239,15 @@ var dynamicUnits = {
                                     });
                     this.orders = {type:"stand"};
                     this.hasAttacked = true;
+                    break;
+              case "special":
+                    if(this.restCounter > 0) {
+                        game.displayMessage("Ability is on cooldown(" + this.restCounter + ")", 2500, "error");
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+                    this.specialAttack(this.orders.x, this.orders.y);
+                    this.orders = {type:"stand"};
                     break;
             }
         },
