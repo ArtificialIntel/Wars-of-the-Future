@@ -139,8 +139,8 @@ var staticUnits = {
 
             if (this.selected){
                 this.drawSelection();
-                this.drawLifeBar();
             }
+            this.drawLifeBar();
             var colorIndex = (this.team == "A") ? 0 : 1;
             var colorOffset = colorIndex * this.pixelHeight;
             game.foregroundContext.drawImage(this.spriteSheet, this.imageOffset * this.pixelWidth, colorOffset, this.pixelWidth, this.pixelHeight, x, y, this.pixelWidth, this.pixelHeight);
