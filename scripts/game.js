@@ -296,7 +296,7 @@ var game = {
 			{
 				if (myStaticUnit.underAttack)
 				{
-					game.sendCommand(MUnit.uid, {type:"move", to:{x:myStaticUnit.x, y:myStaticUnit.y}});
+					game.sendCommand(MUnit.uid, {type:"move", to:{x:myStaticUnit.x+1, y:myStaticUnit.y+1}});
 					break;
 				}
 				else
@@ -309,7 +309,7 @@ var game = {
 			{
 				if (myDynamicUnit.name=="hamster" && myDynamicUnit.state == "inactive" && myDynamicUnit.underAttack)
 				{
-					game.sendCommand(MUnit.uid, {type:"move", to:{x:myDynamicUnit.x, y:myDynamicUnit.y}});
+					game.sendCommand(MUnit.uid, {type:"move", to:{x:myDynamicUnit.x+1, y:myDynamicUnit.y-1}});
 					break;
 				}
 				else
@@ -322,7 +322,7 @@ var game = {
 			{
 				if (myDynamicUnit.name=="turtle" && MUnit.life != MUnit.hitPoints)
 				{
-					game.sendCommand(MUnit.uid, {type:"move", to:{x:myDynamicUnit.x, y:myDynamicUnit.y}});
+					game.sendCommand(MUnit.uid, {type:"move", to:{x:myDynamicUnit.x+1, y:myDynamicUnit.y+1}});
 					break;
 				}
 				else
@@ -333,18 +333,18 @@ var game = {
 			}
 			if (currentTask == "attackSU")
 			{
-				game.sendCommand(MUnit.uid, {type:"move", to:{x:enemyStaticUnit.x, y:enemyStaticUnit.y}});
+				game.sendCommand(MUnit.uid, {type:"move", to:{x:enemyStaticUnit.x-1, y:enemyStaticUnit.y-1}});
 				break;
 			}
 			if (currentTask == "attackDU")
 			{
 				game.sendCommand(MUnit.uid, {type:"move", to:{x:enemyDynamicUnit.x, y:enemyDynamicUnit.y}});
-				console.log(enemyDynamicUnit.x,enemyDynamicUnit.y)
+				console.log(enemyDynamicUnit.x-1,enemyDynamicUnit.y-1)
 				break;
 			}
 			if (currentTask == "attackMU")
 			{
-				game.sendCommand(MUnit.uid, {type:"move", to:{x:enemyMovableUnit.x, y:enemyMovableUnit.y}});
+				game.sendCommand(MUnit.uid, {type:"move", to:{x:enemyMovableUnit.x-1, y:enemyMovableUnit.y-1}});
 				break;
 			}
 		}
