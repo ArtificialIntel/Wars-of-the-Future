@@ -85,7 +85,7 @@ var movableUnits = {
         directions:8,
         action:"stand",
         selected:false,
-        selectable:true,
+        selectable:false,
         orders:{type:"stand"},
 
         animate:function(){

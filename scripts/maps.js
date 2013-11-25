@@ -18,7 +18,7 @@ var maps = {
             "items":[
                 // x and y are specified in # of squares on grid
 			    {"type":"staticUnits","name":"gym","x":2,"y":3,"team":"B"},
-			    {"type":"dynamicUnits","name":"dragon","x":10,"y":7,"team":"B","direction":"0"},
+			    {"type":"dynamicUnits","name":"dragon","x":5,"y":5,"team":"B","direction":"0"},
 			    {"type":"movableUnits","name":"horseman","x":5,"y":12,"team":"B","direction":"2","counter":5},
 			    {"type":"terrain","name":"bigrocks","x":18,"y":15}
             ]

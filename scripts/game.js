@@ -549,13 +549,13 @@ var game = {
     },
 
     isNearEnemy:function(teamA,teamB){
-       	var unit = game.getDynamicUnit(teamA);
-	    var eUnit = game.getMovableUnit(teamB);
+       	var unit = game.getMovableUnit(teamA);
+	    var eUnit = game.getDynamicUnit(teamB);
 	    if(game.isInRange(unit, eUnit)){
 	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
 		    return true;
 	    }
-	    eUnit = game.getDynamicUnit(teamB);
+	    eUnit = game.getMovableUnit(teamB);
 	    if(game.isInRange(unit, eUnit)){
 	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
 		    return true;
@@ -599,18 +599,18 @@ var game = {
 
 		}
 		else if(teamA!=teamB){
-			unit= game.getMovableUnit(teamB);
+			unit= game.getDynamicUnit(teamB);
 			if (unit.lifeCode == "dead"){
 				unit = game.getStaticUnit(teamB);
 				if (unit.lifeCode=="dead"){
-					unit=game.getDynamicUnit(teamB);
+					unit=game.getMoveableUnit(teamB);
 				}
 			}
 		}
 		return unit;		
 	},
     moveDUnitAi:function(teamA,teamB){
-    	var unit = game.getDynamicUnit(teamA);
+    	var unit = game.getMovableUnit(teamA);
 	    var mUnit = game.getAliveUnit(teamA,teamB);
 	    var moveX =0;
 	    var moveY = 0;
