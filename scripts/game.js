@@ -420,8 +420,8 @@ var game = {
         this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
 		
-		//game.AIStaticUnit();
-		//game.AIMovableUnit();
+		game.AIStaticUnit();
+		game.AIMovableUnit();
 		
         for (var i = game.items.length - 1; i >= 0; i--) {
             if(game.items[i].movable) {
@@ -511,11 +511,26 @@ var game = {
 	    
     },
 	getAliveUnit:function(teamA,teamB){
+		var unit;
+		if (teamA==teamB){
+			teamB="B";
+			unit =game.getMovableUnit(teamA);
+			if (unit.lifeCode=="dead")
+				unit = game.getStaticUnit(teamB);
+		}
+		else if(teamA!=teamB){
+			unit= game.getMovableUnit(teamB);
+			if (unit.lifeCode == "dead"){
+				unit=game.getDynamicUnit(teamB);
+				if (unit.lifeCode=="dead")
+					unit = game.getStaticUnit(teamB);
+			}
+		}
 		var unit=game.getMovableUnit(teamB);
 		if (unit.lifeCode == "dead"){
 			unit=game.getDynamicUnit(teamB);
 			if (unit.lifeCode == "dead"||teamA==teamB){
-				unit=game.getStaticUnit(teamB);
+				unit=game.getStaticUnit(teamA);
 			}	
 		}
 		return unit;		
