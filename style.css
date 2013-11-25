@@ -128,3 +128,16 @@
     width:20px;
     height:20px;
 }
+
+#endscreen {
+    text-align:center;
+}
+
+#endscreen #gameOverMessage {
+    display:block;
+    margin: 100px auto;
+}
+
+#endscreen #returnMenu {
+    cursor:pointer;
+}
