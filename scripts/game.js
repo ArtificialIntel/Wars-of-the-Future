@@ -375,18 +375,6 @@ var game = {
 	
 	AIStaticUnit:function() {
 		var SUnit = game.getStaticUnit("B");
-		var MUnit = game.getMovableUnit("B");
-		
-		if (MUnit.lifeCode=="dead"){
-			if (MUnit.counter==0) {
-				MUnit.life = MUnit.hitpoints;
-				MUnit.x=SUnit.x+2;
-				MUnit.y=SUnit.y+2;
-			}
-			else
-				MUnit.counter--;
-		}
-		
 		var enemies=new Array();
 		for (var x=SUnit.x-3; x<=SUnit.x+3; x++)
 			for (var y=SUnit.y-3; y<=SUnit.y+3; y++)
@@ -443,7 +431,7 @@ var game = {
         this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
 		
-		//game.AIStaticUnit();
+		game.AIStaticUnit();
 		//game.AIMovableUnit();
 		
         for (var i = game.items.length - 1; i >= 0; i--) {

@@ -83,6 +83,7 @@ var staticUnits = {
         hasAttacked:false,
         animationIndex:0,
         direction:0,
+        directions:8,
         orders:{ type:"stand" },
         action:"stand",
         selected:false,
@@ -96,8 +97,7 @@ var staticUnits = {
                 game.remove(this);
 				/*this.x=40;
 				this.y=40;
-				this.lifeCode = "dead";
-*/
+				this.lifeCode = "dead";*/
                 return;
             }
 
