@@ -94,9 +94,10 @@ var movableUnits = {
             } else if (this.life > 0) {
                 this.lifeCode = "alive";
             } else {
-				this.x=50;
+				game.remove(this);
+				/*this.x=50;
 				this.y=50;
-				this.lifeCode = "dead";
+				this.lifeCode = "dead";*/
                 return;
             }
 
