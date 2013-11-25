@@ -514,24 +514,17 @@ var game = {
 		var unit;
 		if (teamA==teamB){
 			teamB="B";
-			unit =game.getMovableUnit(teamA);
-			if (unit.lifeCode=="dead")
-				unit = game.getStaticUnit(teamB);
+			unit = game.getStaticUnit(teamB);
+
 		}
 		else if(teamA!=teamB){
 			unit= game.getMovableUnit(teamB);
 			if (unit.lifeCode == "dead"){
-				unit=game.getDynamicUnit(teamB);
-				if (unit.lifeCode=="dead")
-					unit = game.getStaticUnit(teamB);
+				unit = game.getStaticUnit(teamB);
+				if (unit.lifeCode=="dead"){
+					unit=game.getDynamicUnit(teamB);
+				}
 			}
-		}
-		var unit=game.getMovableUnit(teamB);
-		if (unit.lifeCode == "dead"){
-			unit=game.getDynamicUnit(teamB);
-			if (unit.lifeCode == "dead"||teamA==teamB){
-				unit=game.getStaticUnit(teamA);
-			}	
 		}
 		return unit;		
 	},
