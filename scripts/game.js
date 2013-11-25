@@ -338,7 +338,7 @@ var game = {
 			}
 			if (currentTask == "attackDU")
 			{
-				game.sendCommand(MUnit.uid, {type:"move", to:{x:enemyDynamicUnit.x, y:enemyDynamicUnit.y}});
+				game.sendCommand(MUnit.uid, {type:"move", to:{x:enemyDynamicUnit.x-1, y:enemyDynamicUnit.y-1}});
 				console.log(enemyDynamicUnit.x-1,enemyDynamicUnit.y-1)
 				break;
 			}
