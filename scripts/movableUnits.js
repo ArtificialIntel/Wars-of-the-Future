@@ -95,6 +95,7 @@ var movableUnits = {
                 this.lifeCode = "alive";
             } else {
                 game.remove(this);
+                game.respawnBuffer.push({unit:this, turns:5});
                 return;
             }
 

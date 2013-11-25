@@ -153,6 +153,7 @@ var game = {
         game.selectedItem = undefined;
         game.sortedItems = [];
         game.attacks = [];
+        game.respawnBuffer = [];
     },
 
     add:function(itemDetails) {
@@ -179,7 +180,7 @@ var game = {
         }
 
         // Remove item from the items array
-        for (var i = game.items.length - 1; i >= 0; i--) {
+       for (var i = game.items.length - 1; i >= 0; i--) {
             if(game.items[i].uid == item.uid) {
                 game.items.splice(i,1);
                 break;
@@ -414,8 +415,30 @@ var game = {
 
     nextTurn:function() {
         game.checkForWinner();
+
+        for(i = 0; i < game.respawnBuffer.length; i++) {
+            var item = game.respawnBuffer[i];
+            item.turns--;
+
+            if(item.turns == -1) {
+                // Unit has been respawned -> remove it
+                game.respawnBuffer.splice(i,1);
+                continue;
+            }
+
+            if(item.turns == 0) {
+                var staticUnit = game.getStaticUnit(item.unit.team);
+                item.unit.x = staticUnit.x + 2;
+                item.unit.y = staticUnit.y + 2;
+                item.unit.lifeCode = "alive";
+                item.unit.life = item.unit.hitPoints;
+                // TODO fix drawing, call .draw manually?
+                game.add(item.unit);
+            }
+        }
+
     	game.dUnitAi();
-        // this.turn++;
+        this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
 		
 		game.AIStaticUnit();
