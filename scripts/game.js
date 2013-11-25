@@ -246,6 +246,10 @@ var game = {
         if(game.selectedItem.type == "dynamicUnits") {
             if(game.selectedItem.specialAttackName == "Heal") {
                 game.state = "selectFriendlyUnit";
+            } else if(game.selectedItem.specialAttackName == "Firebomb") {
+                game.state = "selectSquare";
+            } else if(game.selectedItem.specialAttackName == "Omnomnomnom") {
+                game.state = "selectEnemyUnit";
             }
         }
     },
@@ -254,10 +258,7 @@ var game = {
         if(!target) {
             return;
         }
-
-        if(game.state == "selectFriendlyUnit") {
-            game.sendCommand(game.selectedItem.uid, {type:"special", x:target.x, y:target.y});
-        }
+        game.sendCommand(game.selectedItem.uid, {type:"special", x:target.x, y:target.y});
 
         game.state = "unitSelected";
     },

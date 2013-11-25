@@ -24,7 +24,7 @@ var dynamicUnits = {
             specialAttackName:"Firebomb",
             specialAttackTooltip:"Set an area on fire, damaging enemy units inside",
             specialAttack:function(x, y) {
-
+                console.log("fire");
             },
             restCounter:-1
         },
@@ -52,6 +52,17 @@ var dynamicUnits = {
             specialAttackName:"Omnomnomnom",
             specialAttackTooltip:"Eat a movable enemy unit, killing it instantly",
             specialAttack:function(x, y) {
+                var unit = game.getItemOnSquare({x:x, y:y});
+
+                if(unit) {
+                    if(unit.type == "movableUnits") {
+                        game.respawnBuffer.push({unit:unit, turns:5});
+                    }
+                    game.remove(unit);
+                    unit.lifeCode = "dead";
+
+                    this.restCounter = 5;
+                }
             },
             restCounter:-1
         },

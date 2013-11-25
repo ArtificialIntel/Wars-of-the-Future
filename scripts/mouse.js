@@ -78,7 +78,13 @@ var mouse = {
                             game.selectItem(clickedItem);
                         }
                     } else {
-                        game.sendCommand(game.selectedItem.uid, {type:"attack", to:clickedItem});
+                        // Player clicked on enemy unit
+
+                        if(game.state == "selectEnemyUnit") {
+                            game.targetSelected(clickedItem);
+                        } else {
+                            game.sendCommand(game.selectedItem.uid, {type:"attack", to:clickedItem});
+                        }
                     }
                 }
             } else if (game.selectedItem &&
@@ -86,7 +92,11 @@ var mouse = {
                        game.selectedItem.movable) {
                 // Player has own unit selected and clicked
                 // somewhere on map
-                game.sendCommand(game.selectedItem.uid, {type:"move", to:{x:mouse.gridX, y:mouse.gridY}});
+                if(game.state == "selectSquare") {
+                    game.targetSelected({x:mouse.gridX, y:mouse.gridY});
+                } else {
+                    game.sendCommand(game.selectedItem.uid, {type:"move", to:{x:mouse.gridX, y:mouse.gridY}});
+                }
             }
         } else if (ev.which == 3) {// Right click
             game.clearSelection();
