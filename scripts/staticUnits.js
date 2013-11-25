@@ -19,6 +19,7 @@ var staticUnits = {
                 [1,1]
             ],
             hitPoints:500,
+			attack:"hit",
             spriteImages:[
                 {name:"healthy",count:4},
 				{name:"alive",count:1}
@@ -43,6 +44,7 @@ var staticUnits = {
                 [1,1]
             ],
             hitPoints:500,
+			attack:"hit",
             spriteImages:[
                 {name:"healthy",count:4},
 				{name:"alive",count:1}
@@ -67,6 +69,7 @@ var staticUnits = {
                 [1,1]
             ],
             hitPoints:500,
+			attack:"hit",
             spriteImages:[
                 {name:"healthy",count:4},
 				{name:"alive",count:1}
@@ -120,6 +123,47 @@ var staticUnits = {
             game.foregroundContext.lineWidth = 1;
             game.foregroundContext.strokeRect(x, y, this.baseWidth, game.lifeBarHeight)
         },
+		
+		 processOrders:function() {
+            switch (this.orders.type) {
+				case "attack":
+                    if (this.orders.to.lifeCode == "dead") {
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
+
+                    if (this.hasAttacked) {
+                        game.displayMessage("I've already attacked this turn.", 2500, "error");
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
+                    if (!isSquareInRange(this, this.orders.to.x, this.orders.to.y)) {
+                        game.displayMessage("That unit is out of range", 2500, "error");
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
+                    var newDirection = findFiringAngle(this.orders.to, this, this.directions);
+                    var angleRadians = -(Math.round(this.direction) / this.directions) * 2 * Math.PI;
+                    var bulletX = this.x - (this.radius * Math.sin(angleRadians) / game.squareSize);
+                    var bulletY = this.y - (this.radius * Math.cos(angleRadians) / game.squareSize) - this.pixelShadowHeight / game.squareSize;
+                    var bullet = game.add(
+                                    {
+                                        name:this.attack,
+                                        type:"attacks",
+                                        x:bulletX,
+                                        y:bulletY,
+                                        direction:newDirection,
+                                        target:this.orders.to
+                                    });
+                    this.orders = {type:"stand"};
+                    this.hasAttacked = true;
+                    break;
+			}
+		},
+		
         drawSelection:function(){
             var x = this.drawingX + this.pixelOffsetX;
             var y = this.drawingY + this.pixelOffsetY;

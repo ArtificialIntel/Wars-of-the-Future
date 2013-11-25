@@ -363,9 +363,9 @@ var game = {
 				return 1;
 			return a.life-b.life;
 		});
-		if (enemies!=null)
+		if (typeof enemies !== 'undefined' && enemies.length > 0)
 		{
-/* 			alert("enemy near movable unit"); */
+ 			console.log("enemy near movable unit");
 			var currentEnemy = enemies.pop();
 			game.sendCommand(MUnit.uid, {type:"attack", to:currentEnemy});
 			currentEnemy.underAttack = true;
@@ -375,7 +375,7 @@ var game = {
 	AIStaticUnit:function() {
 		var SUnit = game.getStaticUnit("B");
 		
-		if (game.getMovableUnit("B").lifeCode=="dead"){
+		/*if (game.getMovableUnit("B").lifeCode=="dead"){
 			var MUnit = game.getMovableUnit("B");
 			if (MUnit.counter==0) {
 				MUnit.life = MUnit.hitpoints;
@@ -384,7 +384,7 @@ var game = {
 			}
 			else
 				MUnit.counter--;
-		}
+		}*/
 		
 		var enemies=new Array();
 		for (var x=SUnit.x-3; x<=SUnit.x+3; x++)
@@ -405,7 +405,7 @@ var game = {
 		});
 		if (typeof enemies !== 'undefined' && enemies.length > 0)
 		{
-/* 			alert("enemy near static unit"); */
+ 			console.log("enemy near static unit");
 			var currentEnemy = enemies.pop();
 			game.sendCommand(SUnit.uid, {type:"attack", to:currentEnemy});
 			currentEnemy.underAttack = true;
@@ -418,7 +418,7 @@ var game = {
         // this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
 		
-		//game.AIStaticUnit();
+		game.AIStaticUnit();
 		//game.AIMovableUnit();
 		
         for (var i = game.items.length - 1; i >= 0; i--) {
