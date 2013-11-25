@@ -291,6 +291,7 @@ var game = {
 		var currentTask = priority.pop()[1];
 		while (true)
 		{
+			console.log(currentTask);
 			if (currentTask == "defendSU")
 			{
 				if (myStaticUnit.underAttack)
@@ -338,6 +339,7 @@ var game = {
 			if (currentTask == "attackDU")
 			{
 				game.sendCommand(MUnit.uid, {type:"move", to:{x:enemyDynamicUnit.x, y:enemyDynamicUnit.y}});
+				console.log(enemyDynamicUnit.x,enemyDynamicUnit.y)
 				break;
 			}
 			if (currentTask == "attackMU")
@@ -428,11 +430,11 @@ var game = {
 
         //dynamic unit player
     	game.dUnitAi("A","A");
+		game.AIStaticUnit();
+		game.AIMovableUnit();
         this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
 		
-		game.AIStaticUnit();
-		//game.AIMovableUnit();
 		
         for (var i = game.items.length - 1; i >= 0; i--) {
             if(game.items[i].movable) {
