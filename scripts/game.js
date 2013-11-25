@@ -417,8 +417,8 @@ var game = {
         this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
 		
-		game.AIStaticUnit();
-		game.AIMovableUnit();
+		//game.AIStaticUnit();
+		//game.AIMovableUnit();
 		
         for (var i = game.items.length - 1; i >= 0; i--) {
             if(game.items[i].movable) {
