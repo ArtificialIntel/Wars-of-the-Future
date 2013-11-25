@@ -87,10 +87,10 @@ var dynamicUnits = {
                 this.lifeCode = "healthy";
             } else if (this.life > 0) {
                 this.lifeCode = "alive";
-            } else {
+            } else {            				
                 game.remove(this);
 				/*this.x=40;
-				this.y=40;
+				this.y=40; 
 				this.lifeCode = "dead";*/
                 return;
             }

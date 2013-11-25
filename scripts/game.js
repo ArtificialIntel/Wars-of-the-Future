@@ -420,8 +420,8 @@ var game = {
         this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
 		
-		game.AIStaticUnit();
-		game.AIMovableUnit();
+		//game.AIStaticUnit();
+		//game.AIMovableUnit();
 		
         for (var i = game.items.length - 1; i >= 0; i--) {
             if(game.items[i].movable) {
@@ -499,12 +499,10 @@ var game = {
     },
     dUnitAi:function(teamA,teamB){
     	if(game.isNearEnemy("A","B")==true){
-/* 	    	alert("detected") */
     	}else{
 	    	game.moveDUnitAi("A","A");
 	    }
     	if(game.isNearEnemy("B","A")==true){
-/* 	    	alert("detected") */
     	}else{
 	    	game.moveDUnitAi("B","A");
 	    }
@@ -534,6 +532,7 @@ var game = {
 	    var moveX =0;
 	    var moveY = 0;
 	    //if mUnit is on the same axisrelative to dUnit
+		console.log(unit.lifeCode);
 		if (unit.lifeCode =="dead")
 			return;
 		if(mUnit.x==unit.x || mUnit.y==unit.y){
@@ -597,6 +596,8 @@ var game = {
 	                }
 	            }
 	    }
+	    item.lifeCode="dead";
+	    return item;
     },
 
     getMovableUnit: function(label){
@@ -609,6 +610,8 @@ var game = {
                 }
             }
 	    }
+	    item.lifeCode="dead";
+	    return item;
     },
     getStaticUnit: function(label){
 	    for (var i = game.items.length - 1; i >= 0; i--) {
@@ -620,6 +623,8 @@ var game = {
                 }
             }
 	    }
+	    item.lifeCode="dead";
+	    return item;
     },
     // Displays a message for 'time' in milliseconds
     displayMessage:function(message, time, type) {

@@ -95,8 +95,8 @@ var movableUnits = {
                 this.lifeCode = "alive";
             } else {
 				game.remove(this);
-				/*this.x=50;
-				this.y=50;
+				/*this.x=40;
+				this.y=40; 
 				this.lifeCode = "dead";*/
                 return;
             }
