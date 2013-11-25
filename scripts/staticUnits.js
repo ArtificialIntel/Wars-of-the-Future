@@ -93,7 +93,9 @@ var staticUnits = {
             } else if (this.life > 0) {
                 this.lifeCode = "alive";
             } else {
-                game.remove(this);
+                this.x=60;
+				this.y=60;
+				this.lifeCode = "dead";
                 return;
             }
 

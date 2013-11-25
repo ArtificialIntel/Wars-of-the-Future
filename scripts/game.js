@@ -364,7 +364,7 @@ var game = {
 				return 1;
 			return a.life-b.life;
 		});
-		if (typeof enemies !== 'undefined' && enemies.length > 0)
+		if (typeof enemies != 'undefined' && enemies.length > 0)
 		{
  			console.log("enemy near movable unit");
 			var currentEnemy = enemies.pop();
@@ -375,9 +375,9 @@ var game = {
 	
 	AIStaticUnit:function() {
 		var SUnit = game.getStaticUnit("B");
+		var MUnit = game.getMovableUnit("B");
 		
-		/*if (game.getMovableUnit("B").lifeCode=="dead"){
-			var MUnit = game.getMovableUnit("B");
+		if (MUnit.lifeCode=="dead"){
 			if (MUnit.counter==0) {
 				MUnit.life = MUnit.hitpoints;
 				MUnit.x=SUnit.x+2;
@@ -385,7 +385,7 @@ var game = {
 			}
 			else
 				MUnit.counter--;
-		}*/
+		}
 		
 		var enemies=new Array();
 		for (var x=SUnit.x-3; x<=SUnit.x+3; x++)
@@ -404,7 +404,7 @@ var game = {
 				return 1;
 			return a.life-b.life;
 		});
-		if (typeof enemies !== 'undefined' && enemies.length > 0)
+		if (typeof enemies != 'undefined' && enemies.length > 0)
 		{
  			console.log("enemy near static unit");
 			var currentEnemy = enemies.pop();
@@ -437,11 +437,12 @@ var game = {
             }
         }
 
-    	game.dUnitAi();
+        //dynamic unit player
+    	game.dUnitAi("A","A");
         this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
 		
-		game.AIStaticUnit();
+		//game.AIStaticUnit();
 		//game.AIMovableUnit();
 		
         for (var i = game.items.length - 1; i >= 0; i--) {
@@ -453,16 +454,6 @@ var game = {
 
         this.clearSelection();
     },
-
-    dUnitAi:function(){
-    	if(game.isNearEnemy()==true){
-/* 	    	alert("detected") */
-    	}else{
-	    	game.moveDUnitAi();
-	    }
-
-    },
-
     checkForWinner:function() {
         var teamACount = 0;
         var teamBCount = 0;
@@ -496,19 +487,19 @@ var game = {
         $('#endscreen').show();
     },
 
-    isNearEnemy:function(){
-       	var unit = game.getDynamicUnit("A");
-	    var eUnit = game.getMovableUnit("B");
+    isNearEnemy:function(teamA,teamB){
+       	var unit = game.getDynamicUnit(teamA);
+	    var eUnit = game.getMovableUnit(teamB);
 	    if(game.isInRange(unit, eUnit)){
 	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
 		    return true;
 	    }
-	    eUnit = game.getDynamicUnit("B");
+	    eUnit = game.getDynamicUnit(teamB);
 	    if(game.isInRange(unit, eUnit)){
 	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
 		    return true;
 	    }
-	    eUnit = game.getStaticUnit("B");
+	    eUnit = game.getStaticUnit(teamB);
 	    if(game.isInRange(unit, eUnit)){
 	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
 		    return true;
@@ -528,22 +519,46 @@ var game = {
 	
         return false;
     },
-    moveDUnitAi:function(){
-    	var unit = game.getDynamicUnit("A");
-	    var mUnit = game.getMovableUnit("A");
+    dUnitAi:function(teamA,teamB){
+    	if(game.isNearEnemy("A","B")==true){
+/* 	    	alert("detected") */
+    	}else{
+	    	game.moveDUnitAi("A","A");
+	    }
+    	if(game.isNearEnemy("B","A")==true){
+/* 	    	alert("detected") */
+    	}else{
+	    	game.moveDUnitAi("B","A");
+	    }
+
+    },
+	getAliveUnit:function(teamA,teamB){
+		var unit=game.getMovableUnit(teamB);
+		if (unit.lifeCode == "dead"){
+			unit=game.getDynamicUnit(teamB);
+			if (unit.lifeCode == "dead"||teamA==teamB){
+				unit=game.getStaticUnit(teamB);
+			}	
+		}
+		return unit;		
+	},
+    moveDUnitAi:function(teamA,teamB){
+    	var unit = game.getDynamicUnit(teamA);
+	    var mUnit = game.getAliveUnit(teamA,teamB);
 	    var moveX =0;
 	    var moveY = 0;
 	    //if mUnit is on the same axisrelative to dUnit
-
+		if (unit.lifeCode =="dead")
+			return;
 		if(mUnit.x==unit.x || mUnit.y==unit.y){
 			    if(mUnit.x==unit.x){
 				    if (mUnit.y<unit.y){
-						moveY = Math.min(unit.speed,unit.y-mUnit.y-1);
+						moveY = Math.min(unit.speed,unit.y-mUnit.y+1);
 						game.sendCommand(unit.uid, {type:"move", to:{x:unit.x, y:unit.y-moveY}});
 
 				    }
 				    else if(mUnit.y>unit.y) {
-					    moveY = Math.min(unit.speed,-unit.y+mUnit.y+1);
+					    moveY = Math.min(unit.speed,-unit.y+mUnit.y-1);
 						game.sendCommand(unit.uid, {type:"move", to:{x:unit.x, y:unit.y+moveY}});
 				    }
 				    	
@@ -582,7 +597,7 @@ var game = {
 		else if(mUnit.x>unit.x && mUnit.y>unit.y){
 			    moveX = Math.min(unit.speed,-unit.x+mUnit.x);
 			    moveY = Math.min(unit.speed,-unit.y+mUnit.y+1);
-			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x-moveX, y:unit.y+moveY}});
+			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x+moveX, y:unit.y+moveY}});
 		}
 	},
 	
@@ -645,3 +660,7 @@ var game = {
         return false;
     }
 }
+function sleep(milliSeconds){
+		var startTime = new Date().getTime(); // get the current time
+		while (new Date().getTime() < startTime + milliSeconds); // hog cpu
+	}
