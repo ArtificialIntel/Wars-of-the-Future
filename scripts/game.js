@@ -521,24 +521,30 @@ var game = {
     },
     dUnitAi:function(teamA,teamB){
     	if(game.isNearEnemy("A","B")==true){
-/* 	    	alert("detected") */
     	}else{
 	    	game.moveDUnitAi("A","A");
 	    }
     	if(game.isNearEnemy("B","A")==true){
-/* 	    	alert("detected") */
     	}else{
 	    	game.moveDUnitAi("B","A");
 	    }
 
     },
 	getAliveUnit:function(teamA,teamB){
-		var unit=game.getMovableUnit(teamB);
-		if (unit.lifeCode == "dead"){
-			unit=game.getDynamicUnit(teamB);
-			if (unit.lifeCode == "dead"||teamA==teamB){
-				unit=game.getStaticUnit(teamB);
-			}	
+		var unit;
+		if (teamA==teamB){
+			teamB="B";
+			unit = game.getStaticUnit(teamB);
+
+		}
+		else if(teamA!=teamB){
+			unit= game.getMovableUnit(teamB);
+			if (unit.lifeCode == "dead"){
+				unit = game.getStaticUnit(teamB);
+				if (unit.lifeCode=="dead"){
+					unit=game.getDynamicUnit(teamB);
+				}
+			}
 		}
 		return unit;		
 	},
@@ -548,6 +554,7 @@ var game = {
 	    var moveX =0;
 	    var moveY = 0;
 	    //if mUnit is on the same axisrelative to dUnit
+		console.log(unit.lifeCode);
 		if (unit.lifeCode =="dead")
 			return;
 		if(mUnit.x==unit.x || mUnit.y==unit.y){
@@ -611,6 +618,8 @@ var game = {
 	                }
 	            }
 	    }
+	    item.lifeCode="dead";
+	    return item;
     },
 
     getMovableUnit: function(label){
@@ -623,6 +632,8 @@ var game = {
                 }
             }
 	    }
+	    item.lifeCode="dead";
+	    return item;
     },
     getStaticUnit: function(label){
 	    for (var i = game.items.length - 1; i >= 0; i--) {
@@ -634,6 +645,8 @@ var game = {
                 }
             }
 	    }
+	    item.lifeCode="dead";
+	    return item;
     },
     // Displays a message for 'time' in milliseconds
     displayMessage:function(message, time, type) {
