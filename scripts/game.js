@@ -14,6 +14,10 @@ var game = {
     offsetY:0,
     // Time in ms until animationloop is called
     animationTimeout:100,
+    // Buffer multipliers
+    movementBuff:1,
+    damageBuff:1,
+    rangeBuff:1,
 
     init:function() {
         loader.init();
@@ -49,10 +53,13 @@ var game = {
         buffIcon.setAttribute("src", game.buffIcon);
         if (singleplayer.buff == "movement") {
             buffIcon.setAttribute("title","Gym: Your units are extra fit and move faster.");
+            game.movementBuff = 1.5;
         } else if (singleplayer.buff == "damage") {
             buffIcon.setAttribute("title","Armory: Your units have kick-ass weapons and do more damage.");
+            game.damageBuff = 1.5;
         } else if (singleplayer.buff == "range") {
             buffIcon.setAttribute("title","Tower: The tower increases your units' range. Don't ask. It's magic.");
+            game.rangeBuff = 1.5;
         }
 
         game.running = true;
@@ -441,17 +448,19 @@ var game = {
 		    return true;
 	    }
 	    return false;
-	    
+	
     },
     isInRange:function(unit,eUnit){
-	    if(eUnit.x>=unit.x-unit.range&&eUnit.x<=unit.x+unit.range){
-		    if(eUnit.y>=unit.y-unit.range&&eUnit.y<=unit.y+unit.range){
+	    if(eUnit && unit &&
+           eUnit.x >= unit.x - unit.range &&
+           eUnit.x <= unit.x + unit.range)
+        {
+		    if(eUnit.y>=unit.y-unit.range&&eUnit.y<=unit.y+unit.range) {
 		    	return true;
 		    }
 	    }
-	    
-	    else 
-	    	return false;
+	
+        return false;
     },
     moveDUnitAi:function(){
     	var unit = game.getDyanmicUnit("A");

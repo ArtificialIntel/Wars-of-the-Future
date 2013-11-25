@@ -70,7 +70,7 @@ var attacks = {
                     // Move towards destination and stop when close by or if travelled past range
                     var reachedTarget = this.reachedTarget();
                     if (reachedTarget) {
-                        this.target.life -= this.damage;
+                        this.target.life -= this.damage * game.damageBuff;
                         this.orders = {type:"explode"};
                         this.action = "explode";
                         this.animationIndex = 0;
@@ -148,7 +148,9 @@ function getCenterOfUnitDrawing(unit) {
 }
 
 function isSquareInRange(unit, x, y) {
-    if (Math.abs(unit.x - x) > unit.range || Math.abs(unit.y - y) > unit.range) {
+    if (Math.abs(unit.x - x) > unit.range * game.rangeBuff ||
+        Math.abs(unit.y - y) > unit.range * game.rangeBuff)
+    {
         return false;
     }
 

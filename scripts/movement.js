@@ -84,7 +84,7 @@ function moveUnitToSquare(unit, x, y) {
     // Stop when the center of the unit is within squareSize / 6 pixels
     // of the destination square's center
     if (Math.abs(centerOfUnit.x - destinationCenter.x) < game.squareSize / 6 &&
-        Math.abs(centerOfUnit.y - destinationCenter.y) < game.squareSize / 6) 
+        Math.abs(centerOfUnit.y - destinationCenter.y) < game.squareSize / 6)
     {
         return true;
     }
@@ -107,7 +107,9 @@ function getCenterOfUnit(unit) {
 }
 
 function isSquareInMovementRange(unit, x, y) {
-    if (Math.abs(unit.x - x) > unit.speed || Math.abs(unit.y - y) > unit.speed) {
+    if (Math.abs(unit.x - x) > unit.speed * game.movementBuff ||
+        Math.abs(unit.y - y) > unit.speed * game.movementBuff)
+    {
         return false;
     }
 
