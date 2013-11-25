@@ -23,7 +23,7 @@ var dynamicUnits = {
             ],
             specialAttackName:"Firebomb",
             specialAttackTooltip:"Set an area on fire, damaging enemy units inside",
-            specialAttack:function() {
+            specialAttack:function(x, y) {
 
             },
             restCounter:-1
@@ -51,7 +51,7 @@ var dynamicUnits = {
             ],
             specialAttackName:"Omnomnomnom",
             specialAttackTooltip:"Eat a movable enemy unit, killing it instantly",
-            specialAttack:function() {
+            specialAttack:function(x, y) {
             },
             restCounter:-1
         },
@@ -78,7 +78,17 @@ var dynamicUnits = {
             ],
             specialAttackName:"Heal",
             specialAttackTooltip:"Heal a friendly unit or youself",
-            specialAttack:function() {
+            specialAttack:function(x , y) {
+                var unit = game.getItemOnSquare({x:x, y:y});
+
+                if(unit && unit.life > 0) {
+                    unit.life += 30;
+                    if(unit.life > unit.hitPoints) {
+                        unit.life = unit.hitPoints;
+                    }
+
+                    this.restCounter = 5;
+                }
             },
             restCounter:-1
         },
@@ -210,6 +220,15 @@ var dynamicUnits = {
                                     });
                     this.orders = {type:"stand"};
                     this.hasAttacked = true;
+                    break;
+              case "special":
+                    if(this.restCounter > 0) {
+                        game.displayMessage("Ability is on cooldown(" + this.restCounter + ")", 2500, "error");
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+                    this.specialAttack(this.orders.x, this.orders.y);
+                    this.orders = {type:"stand"};
                     break;
             }
         },

@@ -125,6 +125,13 @@ var game = {
             if (game.selectedItem.movable) {
                 game.selectedItem.drawMovement();
             }
+
+            // todo game.selectedItem.drawRange();
+        }
+
+        if(game.state == "selectFriendlyUnit") {
+            game.foregroundContext.fillStyle = "rgba(10,10,10,0.5)";
+            game.foregroundContext.fillRect(0, 0, game.canvasWidth, game.canvasHeight);
         }
 
         // Start drawing the foreground elements
@@ -233,6 +240,26 @@ var game = {
                 icon.setAttribute("title", item.specialAttackTooltip);
             }
         }
+    },
+
+    selectTarget:function() {
+        if(game.selectedItem.type == "dynamicUnits") {
+            if(game.selectedItem.specialAttackName == "Heal") {
+                game.state = "selectFriendlyUnit";
+            }
+        }
+    },
+
+    targetSelected:function(target) {
+        if(!target) {
+            return;
+        }
+
+        if(game.state == "selectFriendlyUnit") {
+            game.sendCommand(game.selectedItem.uid, {type:"special", x:target.x, y:target.y});
+        }
+
+        game.state = "unitSelected";
     },
     // END SELCTION CODE
 
@@ -465,10 +492,14 @@ var game = {
                 game.items[i].hasMoved = false;
             }
             game.items[i].hasAttacked = false;
+            if(game.items[i].restCounter) {
+                game.items[i].restCounter--;
+            }
         }
 
         this.clearSelection();
     },
+
     checkForWinner:function() {
         var teamACount = 0;
         var teamBCount = 0;

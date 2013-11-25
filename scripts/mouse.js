@@ -70,9 +70,13 @@ var mouse = {
 
                     if (clickedItem.team == game.team) {
                         // Player clicked on friendly unit
-                        game.clearSelection();
-                        game.selectItem(clickedItem);
 
+                        if(game.state == "selectFriendlyUnit") {
+                            game.targetSelected(clickedItem);
+                        } else {
+                            game.clearSelection();
+                            game.selectItem(clickedItem);
+                        }
                     } else {
                         game.sendCommand(game.selectedItem.uid, {type:"attack", to:clickedItem});
                     }
