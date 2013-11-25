@@ -363,7 +363,7 @@ var game = {
 				return 1;
 			return a.life-b.life;
 		});
-		if (typeof enemies !== 'undefined' && enemies.length > 0)
+		if (typeof enemies != 'undefined' && enemies.length > 0)
 		{
  			console.log("enemy near movable unit");
 			var currentEnemy = enemies.pop();
@@ -374,9 +374,9 @@ var game = {
 	
 	AIStaticUnit:function() {
 		var SUnit = game.getStaticUnit("B");
+		var MUnit = game.getMovableUnit("B");
 		
-		/*if (game.getMovableUnit("B").lifeCode=="dead"){
-			var MUnit = game.getMovableUnit("B");
+		if (MUnit.lifeCode=="dead"){
 			if (MUnit.counter==0) {
 				MUnit.life = MUnit.hitpoints;
 				MUnit.x=SUnit.x+2;
@@ -384,7 +384,7 @@ var game = {
 			}
 			else
 				MUnit.counter--;
-		}*/
+		}
 		
 		var enemies=new Array();
 		for (var x=SUnit.x-3; x<=SUnit.x+3; x++)
@@ -403,7 +403,7 @@ var game = {
 				return 1;
 			return a.life-b.life;
 		});
-		if (typeof enemies !== 'undefined' && enemies.length > 0)
+		if (typeof enemies != 'undefined' && enemies.length > 0)
 		{
  			console.log("enemy near static unit");
 			var currentEnemy = enemies.pop();
