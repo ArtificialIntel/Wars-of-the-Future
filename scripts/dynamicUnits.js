@@ -180,7 +180,8 @@ var dynamicUnits = {
                     var newDirection = findFiringAngle(this.orders.to, this, this.directions);
                     var angleRadians = -(Math.round(this.direction) / this.directions) * 2 * Math.PI;
                     var bulletX = this.x - (this.radius * Math.sin(angleRadians) / game.squareSize);
-                    var bulletY = this.y - (this.radius * Math.cos(angleRadians) / game.squareSize) - this.pixelShadowHeight / game.squareSize;
+                    var flightHeight = this.isFlying ? this.pixelShadowHeight : 0;
+                    var bulletY = this.y - (this.radius * Math.cos(angleRadians) / game.squareSize) - flightHeight / game.squareSize;
                     var bullet = game.add(
                                     {
                                         name:this.attack,

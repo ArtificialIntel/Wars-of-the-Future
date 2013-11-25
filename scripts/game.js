@@ -415,7 +415,7 @@ var game = {
     nextTurn:function() {
         game.checkForWinner();
     	game.dUnitAi();
-        this.turn++;
+        // this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
 		
 		//game.AIStaticUnit();

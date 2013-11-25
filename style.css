@@ -139,5 +139,9 @@
 }
 
 #endscreen #returnMenu {
+    margin:0 auto;
+    width:150px;
+    border:1px black solid;
+    padding:5px 0px;
     cursor:pointer;
 }

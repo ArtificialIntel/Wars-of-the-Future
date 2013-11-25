@@ -99,9 +99,6 @@ var attacks = {
         },
 
         draw:function() {
-            if (isNaN(this.y)){
-                this.y=this.x;
-            }
             var x = this.x * game.squareSize - this.pixelOffsetX;
             var y = this.y * game.squareSize - this.pixelOffsetY;
             var colorOffset = 0;
