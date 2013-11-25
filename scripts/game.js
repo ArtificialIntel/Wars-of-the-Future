@@ -51,6 +51,7 @@ var game = {
 
         var buffIcon = document.getElementById('buff-icon');
         buffIcon.setAttribute("src", game.buffIcon);
+        buffIcon.style.display = "inline";
         if (singleplayer.buff == "movement") {
             buffIcon.setAttribute("title","Gym: Your units are extra fit and move faster.");
             game.movementBuff = 1.5;
@@ -208,6 +209,12 @@ var game = {
 
     clearSelection:function() {
         if(!game.selectedItem) return;
+
+        if(game.selectedItem.type == "dynamicUnits") {
+            var icon = document.getElementById('special-icon');
+            icon.style.display = "none";
+        }
+
         game.selectedItem.selected = false;
         game.selectedItem = undefined;
         game.state = "intro";
@@ -218,6 +225,13 @@ var game = {
             item.selected = true;
             game.selectedItem = item;
             game.state = "unitSelected";
+
+            if(item.type == "dynamicUnits") {
+                var icon = document.getElementById('special-icon');
+                icon.style.display = "inline";
+                icon.setAttribute("src", "images/icons/" + item.specialAttackName + ".png");
+                icon.setAttribute("title", item.specialAttackTooltip);
+            }
         }
     },
     // END SELCTION CODE

@@ -104,7 +104,7 @@ var singleplayer = {
         game.add({"type":"dynamicUnits","name":this.dynamicUnit,"x":13,"y":17,"team":"A","direction":"0"});
         game.add({"type":"movableUnits","name":this.movableUnit,"x":12,"y":17,"team":"A","direction":"2","counter":5});
 
-        game.buffIcon = "images/buffs/" + this.buff + ".png";
+        game.buffIcon = "images/icons/" + this.buff + ".png";
         singleplayer.play();
     }
 };

@@ -21,6 +21,12 @@ var dynamicUnits = {
             spriteImages:[
                 {name:"stand",count:1,directions:8}
             ],
+            specialAttackName:"Firebomb",
+            specialAttackTooltip:"Set an area on fire, damaging enemy units inside",
+            specialAttack:function() {
+
+            },
+            restCounter:-1
         },
         "hamster":{
             name:"hamster",
@@ -43,6 +49,11 @@ var dynamicUnits = {
             spriteImages:[
                 {name:"stand",count:1,directions:8}
             ],
+            specialAttackName:"Omnomnomnom",
+            specialAttackTooltip:"Eat a movable enemy unit, killing it instantly",
+            specialAttack:function() {
+            },
+            restCounter:-1
         },
         "turtle":{
             name:"turtle",
@@ -65,6 +76,11 @@ var dynamicUnits = {
             spriteImages:[
                 {name:"stand",count:1,directions:8}
             ],
+            specialAttackName:"Heal",
+            specialAttackTooltip:"Heal a friendly unit or youself",
+            specialAttack:function() {
+            },
+            restCounter:-1
         },
     },
     defaults:{
@@ -79,7 +95,7 @@ var dynamicUnits = {
         action:"stand",
         orders:{type:"stand"},
         selected:false,
-        selectable:false,
+        selectable:true,
         directions:8,
 
         animate:function() {
@@ -87,11 +103,9 @@ var dynamicUnits = {
                 this.lifeCode = "healthy";
             } else if (this.life > 0) {
                 this.lifeCode = "alive";
-            } else {            				
+            } else {
                 game.remove(this);
-				/*this.x=40;
-				this.y=40; 
-				this.lifeCode = "dead";*/
+				this.lifeCode = "dead";
                 return;
             }
 
