@@ -47,7 +47,6 @@ var attacks = {
             var dx = centerOfUnit.x / game.squareSize - this.x;
             var dy = centerOfUnit.y / game.squareSize - this.y;
             var movement = this.speed * game.speedAdjustmentFactor;
-
             this.x = this.x + dx * movement;
             this.y = this.y + dy * movement;
         },
@@ -100,6 +99,9 @@ var attacks = {
         },
 
         draw:function() {
+            if (isNaN(this.y)){
+                this.y=this.x;
+            }
             var x = this.x * game.squareSize - this.pixelOffsetX;
             var y = this.y * game.squareSize - this.pixelOffsetY;
             var colorOffset = 0;
