@@ -450,6 +450,11 @@ var game = {
 	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
 		    return true;
 	    }
+	    eUnit = game.getStaticUnit("B");
+	    if(game.isInRange(unit, eUnit)){
+	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
+		    return true;
+	    }
 	    return false;
 	
     },
@@ -546,8 +551,7 @@ var game = {
             }
 	    }
     },
-
-	getStaticUnit: function(label){
+    getStaticUnit: function(label){
 	    for (var i = game.items.length - 1; i >= 0; i--) {
             var item = game.items[i];
 		    if (item.type=="staticUnits") {
@@ -558,7 +562,6 @@ var game = {
             }
 	    }
     },
-
     // Displays a message for 'time' in milliseconds
     displayMessage:function(message, time, type) {
         messagePlaceholder = document.getElementById('message');
