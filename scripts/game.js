@@ -413,6 +413,7 @@ var game = {
 	},
 
     nextTurn:function() {
+        game.checkForWinner();
     	game.dUnitAi();
         this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
@@ -438,6 +439,40 @@ var game = {
 	    }
 
     },
+
+    checkForWinner:function() {
+        var teamACount = 0;
+        var teamBCount = 0;
+
+        for(i = 0; i < game.items.length; i++) {
+            if(game.items[i].type == "terrain") {
+                continue;
+            }
+
+            if(game.items[i].team == "A") {
+                teamACount++;
+            } else if(game.items[i].team == "B") {
+                teamBCount++;
+            }
+        }
+
+        if(teamACount == 0 || teamBCount == 0) {
+            game.endGame(teamACount > teamBCount);
+        }
+    },
+
+    endGame:function(hasPlayerOne) {
+        var messageHolder = document.getElementById('gameOverMessage');
+        if(hasPlayerOne) {
+            messageHolder.innerHTML = 'Congrats, you won!';
+        } else {
+            messageHolder.innerHTML = 'You lost, try again.';
+        }
+
+        $('.layer').hide();
+        $('#endscreen').show();
+    },
+
     isNearEnemy:function(){
        	var unit = game.getDynamicUnit("A");
 	    var eUnit = game.getMovableUnit("B");
