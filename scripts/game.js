@@ -299,7 +299,7 @@ var game = {
 				}
 				else
 				{
-					currentTask = proiority.pop()[1];
+					currentTask = priority.pop()[1];
 					continue;
 				}
 			}
@@ -312,7 +312,7 @@ var game = {
 				}
 				else
 				{
-					currentTask = proiority.pop()[1];
+					currentTask = priority.pop()[1];
 					continue;
 				}
 			}
@@ -325,7 +325,7 @@ var game = {
 				}
 				else
 				{
-					currentTask = proiority.pop()[1];
+					currentTask = priority.pop()[1];
 					continue;
 				}
 			}
@@ -403,7 +403,7 @@ var game = {
 				return 1;
 			return a.life-b.life;
 		});
-		if (enemies!=null)
+		if (typeof enemies !== 'undefined' && enemies.length > 0)
 		{
 /* 			alert("enemy near static unit"); */
 			var currentEnemy = enemies.pop();
@@ -416,7 +416,10 @@ var game = {
     	game.dUnitAi();
         this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
-
+		
+		game.AIStaticUnit();
+		game.AIMovableUnit();
+		
         for (var i = game.items.length - 1; i >= 0; i--) {
             if(game.items[i].movable) {
                 game.items[i].hasMoved = false;
@@ -436,13 +439,13 @@ var game = {
 
     },
     isNearEnemy:function(){
-       	var unit = game.getDyanmicUnit("A");
+       	var unit = game.getDynamicUnit("A");
 	    var eUnit = game.getMovableUnit("B");
 	    if(game.isInRange(unit, eUnit)){
 	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
 		    return true;
 	    }
-	    eUnit = game.getDyanmicUnit("B");
+	    eUnit = game.getDynamicUnit("B");
 	    if(game.isInRange(unit, eUnit)){
 	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
 		    return true;
@@ -463,7 +466,7 @@ var game = {
         return false;
     },
     moveDUnitAi:function(){
-    	var unit = game.getDyanmicUnit("A");
+    	var unit = game.getDynamicUnit("A");
 	    var mUnit = game.getMovableUnit("A");
 	    var moveX =0;
 	    var moveY = 0;
@@ -520,7 +523,7 @@ var game = {
 		}
 	},
 	
-    getDyanmicUnit:function(label){
+    getDynamicUnit:function(label){
 	    for (var i = game.items.length - 1; i >= 0; i--) {
             var item = game.items[i];
 		    if (item.type=="dynamicUnits") {
