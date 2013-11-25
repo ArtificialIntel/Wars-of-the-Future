@@ -428,11 +428,12 @@ var game = {
 
             if(item.turns == 0) {
                 var staticUnit = game.getStaticUnit(item.unit.team);
-                item.unit.x = staticUnit.x + 2;
-                item.unit.y = staticUnit.y + 2;
+                item.unit.x = Math.abs(2 - staticUnit.x);
+                item.unit.y = staticUnit.y;
                 item.unit.lifeCode = "alive";
                 item.unit.life = item.unit.hitPoints;
-                // TODO fix drawing, call .draw manually?
+                item.unit.drawingX = undefined;
+                item.unit.drawingY = undefined;
                 game.add(item.unit);
             }
         }
@@ -635,6 +636,7 @@ var game = {
 	    item.lifeCode="dead";
 	    return item;
     },
+
     getStaticUnit: function(label){
 	    for (var i = game.items.length - 1; i >= 0; i--) {
             var item = game.items[i];
@@ -648,6 +650,7 @@ var game = {
 	    item.lifeCode="dead";
 	    return item;
     },
+
     // Displays a message for 'time' in milliseconds
     displayMessage:function(message, time, type) {
         messagePlaceholder = document.getElementById('message');
@@ -673,6 +676,7 @@ var game = {
         return false;
     }
 }
+
 function sleep(milliSeconds){
 		var startTime = new Date().getTime(); // get the current time
 		while (new Date().getTime() < startTime + milliSeconds); // hog cpu
