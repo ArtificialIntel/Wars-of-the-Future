@@ -24,7 +24,15 @@ var dynamicUnits = {
             specialAttackName:"Firebomb",
             specialAttackTooltip:"Set an area on fire, damaging enemy units inside",
             specialAttack:function(x, y) {
-                console.log("fire");
+                game.fire = [];
+
+                for(i = x - 2; i <= x + 2; i++) {
+                    for(j = y - 2; j <= y + 2; j++) {
+                        game.fire.push({x:i, y:j});
+                    }
+                }
+
+                this.restCounter = 5;
             },
             restCounter:-1
         },

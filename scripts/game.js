@@ -129,6 +129,16 @@ var game = {
             // todo game.selectedItem.drawRange();
         }
 
+        if(game.fire) {
+            game.foregroundContext.fillStyle = "rgba(255,0,0,0.3)";
+
+            for(i = 0; i < game.fire.length; i++) {
+                x = game.fire[i].x * game.squareSize;
+                y = game.fire[i].y * game.squareSize;
+                game.foregroundContext.fillRect(x, y, game.squareSize, game.squareSize);
+            }
+        }
+
         if(game.state == "selectFriendlyUnit") {
             game.foregroundContext.fillStyle = "rgba(10,10,10,0.5)";
             game.foregroundContext.fillRect(0, 0, game.canvasWidth, game.canvasHeight);
@@ -492,11 +502,25 @@ var game = {
             if(game.items[i].movable) {
                 game.items[i].hasMoved = false;
             }
+
             game.items[i].hasAttacked = false;
+
             if(game.items[i].restCounter) {
                 game.items[i].restCounter--;
             }
+
+            if(game.fire) {
+                for(var j = 0; j < game.fire.length; j++) {
+                    if(game.items[i].x == game.fire[j].x &&
+                       game.items[i].y == game.fire[j].y)
+                    {
+                        game.items[i].life -= 30;
+                    }
+
+                };
+            }
         }
+
 
         this.clearSelection();
     },
