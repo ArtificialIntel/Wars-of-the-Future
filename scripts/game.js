@@ -472,8 +472,8 @@ var game = {
 
         //dynamic unit player
     	game.dUnitAi("A","A");
-		game.AIStaticUnit();
-		game.AIMovableUnit();
+ 		game.AIStaticUnit(); 
+ 		game.AIMovableUnit(); 
         this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
 		
