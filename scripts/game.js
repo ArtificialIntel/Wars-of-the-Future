@@ -712,10 +712,9 @@ var game = {
 	    var mUnit = game.getAliveUnit(teamA,teamB);
 	    var moveX =0;
 	    var moveY = 0;
-	    //if mUnit is on the same axisrelative to dUnit
-		console.log(unit.lifeCode);
 		if (unit.lifeCode =="dead")
 			return;
+		//if mUnit is on the same axisrelative to dUnit
 		if(mUnit.x==unit.x || mUnit.y==unit.y){
 			    if(mUnit.x==unit.x){
 				    if (mUnit.y<unit.y){
