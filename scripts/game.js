@@ -548,8 +548,28 @@ var game = {
     },
 
     isNearEnemy:function(teamA,teamB){
-       	var unit = game.getMovableUnit(teamA);
-	    var eUnit = game.getDynamicUnit(teamB);
+    	var unit = game.getMovableUnit(teamA);
+	    var eUnit = game.getAliveUnit(teamA,teamB);
+	    if(game.isInRange(unit, eUnit)){
+	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
+		    return true;
+	    }
+	    eUnit = game.getMovableUnit(teamB);
+	    if(game.isInRange(unit, eUnit)){
+	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
+		    return true;
+	    }
+	    eUnit = game.getStaticUnit(teamB);
+	    if(game.isInRange(unit, eUnit)){
+	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
+		    return true;
+	    }
+	    return false;
+	
+    },
+    isNearEnemyD:function(teamA,teamB){
+    	var unit = game.getDynamicUnit(teamA);
+	    var eUnit = game.getAliveUnit(teamA,teamB);
 	    if(game.isInRange(unit, eUnit)){
 	        game.sendCommand(unit.uid, {type:"attack", to:eUnit});
 		    return true;
@@ -581,11 +601,13 @@ var game = {
     },
 
     dUnitAi:function(teamA,teamB){
+
     	if(game.isNearEnemy("A","B")==true){
     	}else{
-	    	game.moveDUnitAi("A","A");
+	    	game.moveMUnitAi("A","A");
 	    }
-    	if(game.isNearEnemy("B","A")==true){
+
+    	if(game.isNearEnemyD("B","A")==true){
     	}else{
 	    	game.moveDUnitAi("B","A");
 	    }
@@ -608,8 +630,67 @@ var game = {
 		}
 		return unit;		
 	},
-    moveDUnitAi:function(teamA,teamB){
+    moveMUnitAi:function(teamA,teamB){
     	var unit = game.getMovableUnit(teamA);
+	    var mUnit = game.getAliveUnit(teamA,teamB);
+	    var moveX =0;
+	    var moveY = 0;
+	    //if mUnit is on the same axisrelative to dUnit
+		console.log(unit.lifeCode);
+		if (unit.lifeCode =="dead")
+			return;
+		if(mUnit.x==unit.x || mUnit.y==unit.y){
+			    if(mUnit.x==unit.x){
+				    if (mUnit.y<unit.y){
+						moveY = Math.min(unit.speed,unit.y-mUnit.y+1);
+						game.sendCommand(unit.uid, {type:"move", to:{x:unit.x, y:unit.y-moveY}});
+
+				    }
+				    else if(mUnit.y>unit.y) {
+					    moveY = Math.min(unit.speed,-unit.y+mUnit.y-1);
+						game.sendCommand(unit.uid, {type:"move", to:{x:unit.x, y:unit.y+moveY}});
+				    }
+				    	
+			    }
+			    else if(mUnit.y==unit.y){
+				    if (mUnit.x<unit.x){
+						moveY = Math.min(unit.speed,unit.x-mUnit.x);
+						game.sendCommand(unit.uid, {type:"move", to:{x:unit.x-moveX, y:unit.y+1}});
+
+				    }
+				    else if(mUnit.x>unit.x) {
+					    moveX = Math.min(unit.speed,-unit.x+mUnit.x);
+						game.sendCommand(unit.uid, {type:"move", to:{x:unit.x+moveX, y:unit.y+1}});
+				    }
+				    	
+			    }
+		}		//if mUnit is in upper left quadrant relative to dUnit
+		else if(mUnit.x<unit.x && mUnit.y<unit.y){
+			    moveX = Math.min(unit.speed,unit.x-mUnit.x);
+			    moveY = Math.min(unit.speed,unit.y-mUnit.y-1);
+			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x-moveX, y:unit.y-moveY}});
+		}
+		//if mUnit is in upper right quadrant relative to dUnit
+		else if(mUnit.x>unit.x && mUnit.y<unit.y){
+			    moveX = Math.min(unit.speed,-unit.x+mUnit.x);
+			    moveY = Math.min(unit.speed,unit.y-mUnit.y-1);
+			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x+moveX, y:unit.y-moveY}});
+		}
+		//if mUnit is in lower left quadrant relative to dUnit
+		else if(mUnit.x<unit.x && mUnit.y>unit.y){
+			    moveX = Math.min(unit.speed,unit.x-mUnit.x);
+			    moveY = Math.min(unit.speed,-unit.y+mUnit.y+1);
+			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x-moveX, y:unit.y+moveY}});
+		}
+		//if mUnit is in lower right quadrant relative to dUnit
+		else if(mUnit.x>unit.x && mUnit.y>unit.y){
+			    moveX = Math.min(unit.speed,-unit.x+mUnit.x);
+			    moveY = Math.min(unit.speed,-unit.y+mUnit.y+1);
+			    game.sendCommand(unit.uid, {type:"move", to:{x:unit.x+moveX, y:unit.y+moveY}});
+		}
+	},
+	moveDUnitAi:function(teamA,teamB){
+    	var unit = game.getDynamicUnit(teamA);
 	    var mUnit = game.getAliveUnit(teamA,teamB);
 	    var moveX =0;
 	    var moveY = 0;
@@ -735,8 +816,3 @@ var game = {
         return false;
     }
 }
-
-function sleep(milliSeconds){
-		var startTime = new Date().getTime(); // get the current time
-		while (new Date().getTime() < startTime + milliSeconds); // hog cpu
-	}
