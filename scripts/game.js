@@ -328,12 +328,12 @@ var game = {
 		distances=[Math.abs(MUnit.x-myStaticUnit.x)+Math.abs(MUnit.y-myStaticUnit.y), Math.abs(MUnit.x-myDynamicUnit.x)+Math.abs(MUnit.y-myDynamicUnit.y), Math.abs(MUnit.x-enemyStaticUnit.x)+Math.abs(MUnit.y-enemyStaticUnit.y), Math.abs(MUnit.x-enemyDynamicUnit.x)+Math.abs(MUnit.y-enemyDynamicUnit.y), Math.abs(MUnit.x-enemyMovableUnit.x)+Math.abs(MUnit.y-enemyMovableUnit.y)];
 		
 		var priority = new Array();
-		priority.push([5/distances[0],"defendSU"]); //add modifier
-		priority.push([4/distances[1],"defendDU"]); //add modifier
-		priority.push([3/distances[2],"attackSU"]); //add modifier
+		priority.push([6/distances[0],"defendSU"]); //add modifier
+		priority.push([1/distances[1],"defendDU"]); //add modifier
+		priority.push([5/distances[2],"attackSU"]); //add modifier
 		priority.push([2/distances[3],"attackDU"]); //add modifier
-		priority.push([2/distances[4],"attackMU"]); //add modifier
-		priority.push([1/distances[1],"repair"]); //add modifier
+		priority.push([4/distances[4],"attackMU"]); //add modifier
+		priority.push([3/distances[1],"repair"]); //add modifier
 		priority.sort(function(a,b)
 					{
 						return b[0]-a[0];
@@ -407,7 +407,6 @@ var game = {
 			target.y = Math.floor(MUnit.y+r*Math.sin(theta));
 		}
 		game.sendCommand(MUnit.uid, {type:"move", to:{x:target.x, y:target.y}});
-		console.log(MUnit.x,MUnit.y,target.x,target.y,MUnit.lifecode);
 		
 		var enemies=new Array();
 		for (var x=MUnit.x-3; x<=MUnit.x+3; x++)
@@ -420,18 +419,18 @@ var game = {
 			}
 		enemies.sort(function(a,b)
 		{
-			if (game.isInRange(MUnit,a)&&!game.isInRange(MUnit,b))
+			if (game.isInRange(a,MUnit)&&!game.isInRange(b,MUnit))
 				return -1;
-			if (!game.isInRange(MUnit,a)&&game.isInRange(MUnit,b))
+			if (!game.isInRange(a,MUnit)&&game.isInRange(b,MUnit))
 				return 1;
-			return a.life-b.life;
+			if (a.life != b.life)
+				return a.life-b.life;
+			return b.attack.damage-a.attack.damage;
 		});
 		if (typeof enemies != 'undefined' && enemies.length > 0)
 		{
- 			console.log("enemy near movable unit");
 			var currentEnemy = enemies.pop();
 			game.sendCommand(MUnit.uid, {type:"attack", to:currentEnemy});
-			console.log(currentEnemy.type, currentEnemy.x,currentEnemy.y);
 			currentEnemy.underAttack = true;
 		}
 	},
@@ -449,15 +448,16 @@ var game = {
 			}
 		enemies.sort(function(a,b)
 		{
-			if (game.isInRange(SUnit,a)&&!game.isInRange(SUnit,b))
+			if (game.isInRange(a,SUnit)&&!game.isInRange(b,SUnit))
 				return -1;
-			if (!game.isInRange(SUnit,a)&&game.isInRange(SUnit,b))
+			if (!game.isInRange(a,SUnit)&&game.isInRange(b,SUnit))
 				return 1;
-			return a.life-b.life;
+			if (a.life != b.life)
+				return a.life-b.life;
+			return b.attack.damage-a.attack.damage;
 		});
 		if (typeof enemies != 'undefined' && enemies.length > 0)
 		{
- 			console.log("enemy near static unit");
 			var currentEnemy = enemies.pop();
 			game.sendCommand(SUnit.uid, {type:"attack", to:currentEnemy});
 			currentEnemy.underAttack = true;
@@ -470,11 +470,11 @@ var game = {
         turnButton.style.display = "none";
         game.checkForWinner();
 
-        //dynamic unit player
-    	game.dUnitAi("A","A");
  		game.AIStaticUnit("A"); 
 		game.AIStaticUnit("B"); 
  		game.AIMovableUnit(); 
+		game.dUnitAi("A","A");
+		
         this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
 		
@@ -714,7 +714,6 @@ var game = {
 	    var moveX =0;
 	    var moveY = 0;
 	    //if mUnit is on the same axisrelative to dUnit
-		console.log(unit.lifeCode);
 		if (unit.lifeCode =="dead")
 			return;
 		if(mUnit.x==unit.x || mUnit.y==unit.y){
