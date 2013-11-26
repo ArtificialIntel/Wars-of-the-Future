@@ -341,14 +341,14 @@ var game = {
 					});
 		
 		var currentTask = priority.pop()[1];
+		var target = {x:MUnit.x, y:MUnit.y};
 		while (true)
 		{
-			console.log(currentTask);
 			if (currentTask == "defendSU")
 			{
 				if (myStaticUnit.underAttack)
 				{
-					game.sendCommand(MUnit.uid, {type:"move", to:{x:myStaticUnit.x+1, y:myStaticUnit.y+1}});
+					target = {x:myStaticUnit.x+1, y:myStaticUnit.y+1};
 					break;
 				}
 				else
@@ -361,7 +361,7 @@ var game = {
 			{
 				if (myDynamicUnit.name=="hamster" && myDynamicUnit.state == "inactive" && myDynamicUnit.underAttack)
 				{
-					game.sendCommand(MUnit.uid, {type:"move", to:{x:myDynamicUnit.x+1, y:myDynamicUnit.y-1}});
+					target = {x:myDynamicUnit.x+1, y:myDynamicUnit.y-1};
 					break;
 				}
 				else
@@ -374,7 +374,7 @@ var game = {
 			{
 				if (myDynamicUnit.name=="turtle" && MUnit.life != MUnit.hitPoints)
 				{
-					game.sendCommand(MUnit.uid, {type:"move", to:{x:myDynamicUnit.x+1, y:myDynamicUnit.y+1}});
+					target = {x:myDynamicUnit.x+1, y:myDynamicUnit.y+1};
 					break;
 				}
 				else
@@ -385,21 +385,30 @@ var game = {
 			}
 			if (currentTask == "attackSU")
 			{
-				game.sendCommand(MUnit.uid, {type:"move", to:{x:enemyStaticUnit.x-1, y:enemyStaticUnit.y-1}});
+				target = {x:enemyStaticUnit.x-1, y:enemyStaticUnit.y-1};
 				break;
 			}
 			if (currentTask == "attackDU")
 			{
-				game.sendCommand(MUnit.uid, {type:"move", to:{x:enemyDynamicUnit.x-1, y:enemyDynamicUnit.y-1}});
-				console.log(enemyDynamicUnit.x-1,enemyDynamicUnit.y-1)
+				target = {x:enemyDynamicUnit.x-1, y:enemyDynamicUnit.y-1};
 				break;
 			}
 			if (currentTask == "attackMU")
 			{
-				game.sendCommand(MUnit.uid, {type:"move", to:{x:enemyMovableUnit.x-1, y:enemyMovableUnit.y-1}});
+				target = {x:enemyMovableUnit.x-1, y:enemyMovableUnit.y-1};
 				break;
 			}
 		}
+		
+		if (!isSquareInMovementRange(MUnit,target.x,target.y))
+		{
+			var theta = Math.atan((target.y-MUnit.y)/(target.x-MUnit.x));
+			var r = MUnit.speed * game.movementBuff;
+			target.x = MUnit.x+r*Math.cos(theta);
+			target.y = MUnit.y+r*Math.sin(theta);
+		}
+		game.sendCommand(MUnit.uid, {type:"move", to:{x:target.x, y:target.y}});
+		console.log(MUnit.x,MUnit.y,target.x,target.y,MUnit.lifecode);
 		
 		var enemies=new Array();
 		for (var x=MUnit.x-3; x<=MUnit.x+3; x++)
@@ -614,7 +623,6 @@ var game = {
 	    var moveX =0;
 	    var moveY = 0;
 	    //if mUnit is on the same axisrelative to dUnit
-		console.log(unit.lifeCode);
 		if (unit.lifeCode =="dead")
 			return;
 		if(mUnit.x==unit.x || mUnit.y==unit.y){
