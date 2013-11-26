@@ -436,15 +436,15 @@ var game = {
 		}
 	},
 	
-	AIStaticUnit:function() {
-		var SUnit = game.getStaticUnit("B");
+	AIStaticUnit:function(team) {
+		var SUnit = game.getStaticUnit(team);
 		var enemies=new Array();
 		for (var x=SUnit.x-3; x<=SUnit.x+3; x++)
 			for (var y=SUnit.y-3; y<=SUnit.y+3; y++)
 			{
 				var square={"x":x,"y":y};
 				var item = game.getItemOnSquare(square);
-				if (item!=false && item.team!=SUnit.team)
+				if (item!=false && item.team==(team=="A"?"B":"A"))
 					enemies.push(item);
 			}
 		enemies.sort(function(a,b)
@@ -472,7 +472,8 @@ var game = {
 
         //dynamic unit player
     	game.dUnitAi("A","A");
- 		game.AIStaticUnit(); 
+ 		game.AIStaticUnit("A"); 
+		game.AIStaticUnit("B"); 
  		game.AIMovableUnit(); 
         this.turn++;
         document.getElementById('turndisplay').innerHTML = "Turn: " + this.turn;
