@@ -133,8 +133,9 @@ var dynamicUnits = {
             } else if (this.life > 0) {
                 this.lifeCode = "alive";
             } else {
-                game.remove(this);
 				this.lifeCode = "dead";
+                game.respawnBuffer.push({unit:this, turns:5});
+                game.remove(this);
                 return;
             }
 

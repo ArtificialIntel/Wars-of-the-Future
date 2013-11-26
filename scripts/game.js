@@ -307,7 +307,6 @@ var game = {
         }
 
         var item = game.getItemByUid(uid);
-        //if uid is a valid item, set the order for the item
         if (item) {
             item.orders = $.extend([],details);
             if (item.orders.type == "move") {
@@ -466,29 +465,10 @@ var game = {
 	},
 
     nextTurn:function() {
+        this.clearSelection();
+        var turnButton = document.getElementById('end-turn');
+        turnButton.style.display = "none";
         game.checkForWinner();
-
-        for(i = 0; i < game.respawnBuffer.length; i++) {
-            var item = game.respawnBuffer[i];
-            item.turns--;
-
-            if(item.turns == -1) {
-                // Unit has been respawned -> remove it
-                game.respawnBuffer.splice(i,1);
-                continue;
-            }
-
-            if(item.turns == 0) {
-                var staticUnit = game.getStaticUnit(item.unit.team);
-                item.unit.x = Math.abs(2 - staticUnit.x);
-                item.unit.y = staticUnit.y;
-                item.unit.lifeCode = "alive";
-                item.unit.life = item.unit.hitPoints;
-                item.unit.drawingX = undefined;
-                item.unit.drawingY = undefined;
-                game.add(item.unit);
-            }
-        }
 
         //dynamic unit player
     	game.dUnitAi("A","A");
@@ -521,7 +501,36 @@ var game = {
             }
         }
 
-        this.clearSelection();
+        for(i = 0; i < game.respawnBuffer.length; i++) {
+            var item = game.respawnBuffer[i];
+            item.turns--;
+
+            if(item.turns == -1) {
+                // Unit has been respawned -> remove it
+                game.respawnBuffer.splice(i,1);
+                i--;
+                continue;
+            }
+
+            if(item.turns == 0) {
+                var staticUnit = game.getStaticUnit(item.unit.team);
+                if(!staticUnit){
+                    continue;
+                }
+                item.unit.x = Math.abs(2 - staticUnit.x);
+                item.unit.y = staticUnit.y;
+                item.unit.lifeCode = "alive";
+                item.unit.life = item.unit.hitPoints;
+                item.unit.drawingX = undefined;
+                item.unit.drawingY = undefined;
+                item.unit.orders = {type:"stand"};
+                game.add(item.unit);
+                item.unit.draw();
+            }
+        }
+
+
+        turnButton.style.display = "inline";
     },
 
     checkForWinner:function() {
