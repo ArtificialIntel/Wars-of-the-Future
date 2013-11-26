@@ -404,8 +404,8 @@ var game = {
 		{
 			var theta = Math.atan((target.y-MUnit.y)/(target.x-MUnit.x));
 			var r = MUnit.speed * game.movementBuff;
-			target.x = MUnit.x+r*Math.cos(theta);
-			target.y = MUnit.y+r*Math.sin(theta);
+			target.x = Math.floor(MUnit.x+r*Math.cos(theta));
+			target.y = Math.floor(MUnit.y+r*Math.sin(theta));
 		}
 		game.sendCommand(MUnit.uid, {type:"move", to:{x:target.x, y:target.y}});
 		console.log(MUnit.x,MUnit.y,target.x,target.y,MUnit.lifecode);
@@ -416,7 +416,7 @@ var game = {
 			{
 				var square={"x":x,"y":y};
 				var item = game.getItemOnSquare(square);
-				if (item!=false && item.team!=MUnit.team)
+				if (item!=false && item.team=="A")
 					enemies.push(item);
 			}
 		enemies.sort(function(a,b)
@@ -432,6 +432,7 @@ var game = {
  			console.log("enemy near movable unit");
 			var currentEnemy = enemies.pop();
 			game.sendCommand(MUnit.uid, {type:"attack", to:currentEnemy});
+			console.log(currentEnemy.type, currentEnemy.x,currentEnemy.y);
 			currentEnemy.underAttack = true;
 		}
 	},
