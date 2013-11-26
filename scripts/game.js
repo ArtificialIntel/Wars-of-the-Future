@@ -126,6 +126,10 @@ var game = {
                 game.selectedItem.drawMovement();
             }
 
+            if (game.selectedItem.drawRange) {
+                game.selectedItem.drawRange();
+            }
+
             // todo game.selectedItem.drawRange();
         }
 

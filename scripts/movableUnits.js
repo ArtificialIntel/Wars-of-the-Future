@@ -262,6 +262,12 @@ var movableUnits = {
                                              this.pixelWidth,this.pixelHeight);
         },
 
+        drawRange:function() {
+            var range = Math.floor(this.range * game.rangeBuff);
+            game.foregroundContext.strokeStyle = game.selectionBorderColor;
+            game.foregroundContext.strokeRect((this.x - range) * game.squareSize, (this.y - range) * game.squareSize, (range * 2 + 1) * game.squareSize, (range * 2 + 1) * game.squareSize);
+        },
+
         drawMovement:function() {
             for(x = 0; x < game.gridLength; x++) {
                 for(y = 0; y < game.gridLength; y++) {

@@ -178,6 +178,12 @@ var staticUnits = {
             game.foregroundContext.strokeRect(x-1,y-1,this.baseWidth+2,this.baseHeight+2);
         },
 
+        drawRange:function() {
+            var range = Math.floor(this.range * game.rangeBuff);
+            game.foregroundContext.strokeStyle = game.selectionBorderColor;
+            game.foregroundContext.strokeRect((this.x - range) * game.squareSize, (this.y - range) * game.squareSize, (range * 2 + 1) * game.squareSize, (range * 2 + 1) * game.squareSize);
+        },
+
         draw:function(){
             var x = (this.x * game.squareSize) - game.offsetX - this.pixelOffsetX;
             var y = (this.y * game.squareSize) - game.offsetY - this.pixelOffsetY;

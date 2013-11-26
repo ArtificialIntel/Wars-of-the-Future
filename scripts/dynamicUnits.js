@@ -247,6 +247,13 @@ var dynamicUnits = {
                         this.orders = {type:"stand"};
                         return;
                     }
+
+                    if(!isSquareInRange(this, this.orders.x, this.orders.y)) {
+                        game.displayMessage("Sorry, but that's out of range.", 2500, "error");
+                        this.orders = {type:"stand"};
+                        return;
+                    }
+
                     this.specialAttack(this.orders.x, this.orders.y);
                     this.orders = {type:"stand"};
                     break;
@@ -283,6 +290,12 @@ var dynamicUnits = {
             game.foregroundContext.drawImage(this.spriteSheet, this.imageOffset * this.pixelWidth, colorOffset,
                                              this.pixelWidth, this.pixelHeight, this.drawingX, this.drawingY,
                                              this.pixelWidth,this.pixelHeight);
+        },
+
+        drawRange:function() {
+            var range = Math.floor(this.range * game.rangeBuff);
+            game.foregroundContext.strokeStyle = game.selectionBorderColor;
+            game.foregroundContext.strokeRect((this.x - range) * game.squareSize, (this.y - range) * game.squareSize, (range * 2 + 1) * game.squareSize, (range * 2 + 1) * game.squareSize);
         },
 
         drawMovement:function() {
