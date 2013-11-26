@@ -94,13 +94,13 @@ var movableUnits = {
             } else if (this.life > 0) {
                 this.lifeCode = "alive";
             } else {
+				this.lifeCode = "dead";
                 game.remove(this);
                 game.respawnBuffer.push({unit:this, turns:5});
-				this.lifeCode = "dead";
                 return;
             }
 
-            switch (this.action){
+            switch (this.action) {
                 case "stand":
                     var direction = wrapDirection(Math.round(this.direction), this.directions);
                     this.imageList = this.spriteArray["fly-" + direction];
@@ -121,13 +121,13 @@ var movableUnits = {
 
                     if (this.hasMoved) {
                         game.displayMessage("Sorry, I've moved already this turn.", 2500, "error");
-                        this.orders = {type:"stand"};
+                        this.orderProcessed();
                         return;
                     }
 
                     if (!isSquareInMovementRange(this, this.orders.to.x, this.orders.to.y)) {
                         game.displayMessage("I can not move this far", 2500, "error");
-                        this.orders = {type:"stand"};
+                        this.orderProcessed();
                         return;
                     }
 
@@ -135,39 +135,39 @@ var movableUnits = {
                         this.orders.to.y == this.positionBeforeMove.y)
                     {
                         game.displayMessage("I'm already here!", 2500);
-                        this.orders = {type:"stand"};
+                        this.orderProcessed();
                         return;
                     }
 
                     var unit = game.getItemOnSquare(this.orders.to);
                     if (unit && unit.uid != this.uid) {
                         game.displayMessage("That square is occupied.", 2500, "error");
-                        this.orders = {type:"stand"};
+                        this.orderProcessed();
                         return;
                     }
 
                     var destinationReached = moveUnitToSquare(this, this.orders.to.x, this.orders.to.y);
                     if (destinationReached) {
                         this.hasMoved = true;
-                        this.orders = {type:"stand"};
+                        this.orderProcessed();
                     }
                     break;
                 case "attack":
                     if (this.orders.to.lifeCode == "dead") {
-                        this.orders = {type:"stand"};
+                        this.orderProcessed();
                         return;
                     }
 
 
                     if (this.hasAttacked) {
                         game.displayMessage("I've already attacked this turn.", 2500, "error");
-                        this.orders = {type:"stand"};
+                        this.orderProcessed();
                         return;
                     }
 
                     if (!isSquareInRange(this, this.orders.to.x, this.orders.to.y)) {
                         game.displayMessage("That unit is out of range", 2500, "error");
-                        this.orders = {type:"stand"};
+                        this.orderProcessed();
                         return;
                     }
 
@@ -187,9 +187,17 @@ var movableUnits = {
                                         direction:newDirection,
                                         target:this.orders.to
                                     });
-                    this.orders = {type:"stand"};
+                    this.orderProcessed();
                     this.hasAttacked = true;
                     break;
+            }
+        },
+
+        orderProcessed:function() {
+            if(this.orders.nextOrder) {
+                this.orders = this.orders.nextOrder;
+            } else {
+                this.orders = {type:"stand"};
             }
         },
 

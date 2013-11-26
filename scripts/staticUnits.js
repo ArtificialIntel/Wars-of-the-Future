@@ -82,6 +82,7 @@ var staticUnits = {
         movable:false,
         hasAttacked:false,
         animationIndex:0,
+        radius:25,
         direction:0,
         directions:8,
         orders:{ type:"stand" },
@@ -94,10 +95,8 @@ var staticUnits = {
             } else if (this.life > 0) {
                 this.lifeCode = "alive";
             } else {
+				this.lifeCode = "dead";
                 game.remove(this);
-				/*this.x=40;
-				this.y=40;
-				this.lifeCode = "dead";*/
                 return;
             }
 
@@ -151,8 +150,9 @@ var staticUnits = {
 
                     var newDirection = findFiringAngle(this.orders.to, this, this.directions);
                     var angleRadians = -(Math.round(this.direction) / this.directions) * 2 * Math.PI;
+                    var flightHeight = this.isFlying ? this.pixelShadowHeight : 0;
                     var bulletX = this.x - (this.radius * Math.sin(angleRadians) / game.squareSize);
-                    var bulletY = this.y - (this.radius * Math.cos(angleRadians) / game.squareSize) - this.pixelShadowHeight / game.squareSize;
+                    var bulletY = this.y - (this.radius * Math.cos(angleRadians) / game.squareSize) - flightHeight / game.squareSize;
                     var bullet = game.add(
                                     {
                                         name:this.attack,

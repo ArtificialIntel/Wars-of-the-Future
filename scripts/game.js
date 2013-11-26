@@ -511,7 +511,6 @@ var game = {
             }
         }
 
-
         this.clearSelection();
     },
 
@@ -580,6 +579,7 @@ var game = {
 	
         return false;
     },
+
     dUnitAi:function(teamA,teamB){
     	if(game.isNearEnemy("A","B")==true){
     	}else{
@@ -596,7 +596,6 @@ var game = {
 		if (teamA==teamB){
 			teamB="B";
 			unit = game.getStaticUnit(teamB);
-
 		}
 		else if(teamA!=teamB){
 			unit= game.getDynamicUnit(teamB);

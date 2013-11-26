@@ -127,7 +127,7 @@ function findFiringAngle(target, source, directions) {
 
     if (source.isFlying) {
         dy += source.pixelShadowHeight / game.squareSize;
-    } else if (target.baseWidth && target.baseHeight) {
+    } else if (source.baseWidth && source.baseHeight) {
         dy -= source.baseWidth / 2 / game.squareSize;
         dx -= source.baseHeight / 2 / game.squareSize;
     }
