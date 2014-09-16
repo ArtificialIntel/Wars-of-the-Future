@@ -1,4 +1,4 @@
 Wars-of-the-Future
 ==================
 
-Future Wars Student Project
+A turn based strategy game for two players.
